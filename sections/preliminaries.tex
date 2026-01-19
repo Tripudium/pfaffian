@@ -1,0 +1,318 @@
+\section{Pfaffian functions and Pfaffian sets}
+We review the theory of Pfaffian functions and sets, leading up to an important result by Khovanskii that bounds the number of regular solutions of a system of Pfaffian equations in terms of the parameters of the Pfaffian functions and chains involved. References for the material in this section are~\cite{khovanskiui1991fewnomials, zell2003quantitative, gabrielov2004complexity}.
+
+\subsection{Pfaffian functions}
+Pfaffian functions, introduced by Khovanskii~\cite{khovanskiui1991fewnomials}, are functions that satisfy triangular systems of first-order partial differential equations with polynomial coefficients. Pfaffian functions have a well-defined notion of complexity that can be used to prove various quantitative results about the geometric objects they define.
+
+\begin{definition}[Pfaffian function]
+Let $\cU \subset \R^n$ be an open set. A Pfaffian chain of order $s \in \N$ and chain-degree $\alpha \in \N_{>0}$ over $\mathcal{U}$ is a sequence of functions $\vec{\boldq} = (q_1, \dotsc, q_s)$, $q_i\in C^1(\cU)$, such that there exist polynomials $P_{ij}\in \R[X_1,\dots,X_n,Y_1,\dots,Y_i]_{\leq \alpha}$, for $i\in [s]$ and $j\in [n]$, that verify
+\begin{equation}\label{eq:pfaffchain}
+\frac{\partial q_i}{\partial x_j} = P_{ij}(\vct{x}, q_1(\vct{x}), \dotsc, q_i(\vct{x})).
+\end{equation}
+A function $g(\vct{x})=P(\vct{x},q_1(\vct{x}),\dots,q_s(\vct{x}))$, with $P\in \R[X_1,\dots,X_n,Y_1,\dots,Y_s]_{\leq \beta}$, is called a Pfaffian function of chain degree $\alpha$, degree $\beta$, and order $r$. 
+We call a Pfaffian function $g\colon \cU\to \R$ autonomous, if 
+\begin{equation}\label{eq:simplepfaff}
+  \frac{\partial q_i}{\partial x_j} = P_{ij}(q_1(\vct{x}),\dots,q_i(\vct{x}))
+\end{equation}
+for some $P_{ij}\in \R[Y_1,\dots,Y_s]$, and $g(\vct{x})=P(q_1(\vct{x}), \dots, q_s(\vct{x}))$ for some $P\in \R[Y_1,\dots,Y_s]$. A function $\cU\to \R^m$ is called Pfaffian if all its components are Pfaffian. 
+\end{definition}
+
+\begin{remark}
+The triple $(\alpha, \beta, s)$ is called a format of $g$. Note that the Pfaffian chain associated with a Pfaffian function, and hence also a format, is not unique. In the following, we will often leave the chain implicit, and our results will be stated in terms of the format. When we say that a Pfaffian function $\cU\to \R^m$ has a particular format, we mean that every component has that same format.
+\end{remark}
+
+\begin{example}\label{ex:1} The following are simple examples of Pfaffian functions.
+        \begin{enumerate}
+            \item Any polynomial $g \in \R[X_1, \dots, X_n]$ is Pfaffian with format $(\alpha,\deg g,0)$ for any $\alpha>0$;
+            \item $\exp\colon \R\to \R$ is Pfaffian with format $(1,1,1)$. A Pfaffian chain is $\vec{\boldq}=(\exp)$ and $P_{11}(x,y)=y$;
+            \item Any function $q\in \R[X,1/X,\ln(X)]$ is Pfaffian. A corresponding Pfaffian chain is $\vec{\boldq}=(1/x,\ln(x))$ and the chain degree is $\alpha=2$;
+            \item $\tanh$ is Pfaffian with format $(2,1,1)$. A Pfaffian chain is $\vec{\boldq}=(\tanh)$ and $P_{11}(x,y)=1-y^2$;
+            \item The logistic sigmoid $\sigma = (1 + \mathrm{e}^{-x})^{-1}$ is Pfaffian with format $(2, 1, 1)$. A Pfaffian chain is $\vec{\boldq}=(\sigma)$ and $P_{11}(x,y)=y(1-y)$;
+            \item $\arctan$ is Pfaffian with format $(3, 1, 2)$. A corresponding chain is $q_1(x)=(1+x^2)^{-1}$ and $q_2(x)=\arctan(x)$. The polynomials are $P_{11}(X,Y_1,Y_2) = -2XY_1^2$ and $P_{21}(X,Y_1,Y_2)=Y_1$. 
+        \end{enumerate}
+Examples (2-5) are autonomous, while (1) and (6) are not. 
+\end{example}
+
+\begin{definition}[Algebraically independent Pfaffian chain]
+\label{defn:algebraically-independent-pfaffian-chain}
+A Pfaffian chain $\vec{\boldq} = (q_1, \ldots, q_r)$ is called algebraically independent if for all non-zero $P \in \R[Y_1, \ldots, Y_r]$, $P(q_1(\vct{x}), \ldots, q_r(\vct{x}))$ is not identically zero.
+\end{definition}
+
+\begin{remark}
+All the cases in Example~\ref{ex:1} have algebraically independent Pfaffian chains. In~\cite{lotz2024partitioning} it is shown that the chain $\vec{\boldq}=(1/x,x^m)$ is algebraically independent if $m\in \R\backslash \mathbb{Q}$.    
+\end{remark}
+
+Pfaffian functions enjoy some convenient closure properties under algebraic operations and composition, as illustrated in the following two results (see also~\cite[Proposition 1.8]{zell2003quantitative}).
+
+\begin{lemma}\label{le:pfaffalgebra}
+Let $g, h : \cU \to \R$ be Pfaffian functions with respective formats $(\alpha, \beta, s)$ and $(\alpha', \beta', s')$. Then: 
+\begin{enumerate}
+\item $g + h$ is Pfaffian with format $(\max\{\alpha,\alpha'\}, \max\{\beta,\beta'\},s+s')$;
+\item $gh$ is Pfaffian with format $(\max\{\alpha,\alpha'\}, \beta+\beta',s+s')$;
+\item For each $i\in [n]$, $\partial g/\partial x_i$ is Pfaffian with format $(\alpha,\alpha+\beta-1,s)$. 
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+The first two statements are straightforward consequences of the fact that the concatenation of Pfaffian chains is again a Pfaffian chain. For the third statement, assume $g(\vct{x})=P(\vct{x},q_1(\vct{x}),\dots,q_s(\vct{x}))$ for a polynomial $P\in \R[X_1,\dots,X_n,Y_1,\dots,Y_s]_{\leq \beta}$. Then
+\begin{equation*}
+  \frac{\partial g}{\partial x_i} = \sum_{j=1}^n \frac{\partial P}{\partial x_j}+\sum_{\ell=1}^s \frac{\partial P}{\partial y_\ell}\frac{\partial q_\ell}{\partial x_i}= \sum_{j=1}^n \frac{\partial P}{\partial x_j}+\sum_{\ell=1}^s \frac{\partial P}{\partial y_\ell}P_{\ell i}(\vct{x},q_1(\vct{x}),\dots,q_s(\vct{x})).
+\end{equation*}
+The resulting expression is a polynomial in $\vct{x}$ and the $q_j$, and the degree is clearly bounded by $\alpha+\beta-1$.
+\end{proof}
+
+\begin{remark}\label{re:1}
+Note that the bound on the length of $g+h$ and $gh$ is in general not sharp: if $g$ and $h$ are Pfaffian with respect to the same chain $\vec{\boldq}$ of length $s$, then clearly the length of $g+h$ and $gh$ is also $s$. It also follows from Lemma~\ref{le:pfaffalgebra} that a linear combination of Pfaffian functions $g_1,\dots,g_m$ with formats $(\alpha_i,\beta_i,s_i)$ is Pfaffian with format $(\max_i \{\alpha_i\},\max_i\{\beta_i\}, \sum_i s_i)$. 
+\end{remark}
+
+\begin{lemma}\label{le:composition}
+The $g\colon \R^n\to \R^m$ and $h\colon \R^m\to \R$ be Pfaffian functions,  with formats $(\alpha,\beta,s)$ and $(\alpha',\beta',s')$, respectively, and assume $s'\geq 1$. 
+\begin{enumerate}
+\item The composition $h\circ g$ is Pfaffian with format $((\alpha'+1)\beta+\alpha-1, \beta\beta', ms+s')$;
+\item If $h$ is autonomous, then $h\circ g$ is Pfaffian with format $(\alpha'+\beta-1,\beta', ms+s')$;
+\item If all the functions in $g$ depend on the same Pfaffian chain $\vec{\boldq}$ of length $s$, then $h\circ g$ has Pfaffian order $s+s'$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Let $g=(g_1,\dots,g_m)$, and for each $i\in \{1,\dots,m\}$, let $\vec{\vct{q}}^{(i)}=(q_1^{(i)},\dots,q_s^{(i)})$ be a Pfaffian chain for $g_i$. Let $\vec{\boldq}'=(q_1',\dots,q_{s'}')$ be a Pfaffian chain for $h$. Let $P$ and $P_i$, $i\in \{1,\dots,m\}$, be the polynomials representing $h$ and the $g_i$, respectively. The composition $h\circ g$ is then represented as 
+\begin{equation}\label{eq:longpoly}
+ h\circ g(\vct{x}) = P(P_1(\vct{x},\vec{\boldq}^{(1)}(\vct{x})),\dots,P_m(\vct{x},\vec{\boldq}^{(m)}(\vct{x})),\vec{\boldq}'(g(\vct{x}))),
+\end{equation}
+which is clearly a polynomial in $\vct{x}=(x_1,\dots,x_n)$ and in the chain
+\begin{equation}\label{eq:newchain}
+  (q_1^{(1)},\dots,q_s^{(1)},\dots,q_1^{(m)},\dots,q_s^{(m)},q'_1\circ g,\dots,q_{s'}'\circ g)
+\end{equation}
+of length $ms+s'$. It remains to be seen that this is a Pfaffian chain. For the first $ms$ functions in this chain there is nothing to show. It remains to be seen that the derivatives of $q_i'\circ g$ can be expressed as polynomials in $\vct{x}$ and in the previous elements of the chain. In fact, for $j\in \{1,\dots,n\}$ we have
+\begin{equation}\label{eq:composite}
+  \frac{\partial q'_i\circ g}{\partial x_j} = \sum_{\ell=1}^m \frac{\partial q'_i}{\partial x_\ell}\frac{\partial g_\ell}{\partial x_j} = \sum_{\ell=1}^m P'_{i\ell}(g(\vct{x}),q_1'(\vct{x}),\dots,q_i'(\vct{x}))  \frac{\partial g_\ell}{\partial x_j},
+\end{equation}
+where the $P_{i\ell}'$ are the polynomials associated to the chain $\vec{\boldq}'$. 
+This shows that the partial derivative is a polynomial in $q_1',\dots,q_i'$. 
+Note that $g_{\ell}$ and, by virtue of Lemma~\ref{le:pfaffalgebra}(3), its partial derivatives are polynomials in $q_1^{(\ell)},\dots,q_s^{(\ell)}$. This establishes that~\eqref{eq:newchain} is a Pfaffian chain of length $ms+s'$. 
+
+To prove the degree bounds in the general case (1), note that the degree of the composition of polynomials is bounded by the product of the degrees. The degree of $P_{i\ell}'(g(\vct{x}),q_1',\dots,q_i')$ is bounded by $\alpha'\beta$, and Lemma~\ref{le:pfaffalgebra}(3) shows that the degree of $\partial g_{\ell}/\partial x_i$ is bounded by $\alpha+\beta-1$, establishing the bound $(\alpha'+1)\beta+\alpha-1$ on the degree of the new Pfaffian chain~\eqref{eq:newchain}. 
+Moreover, the degree of the polynomial~\eqref{eq:longpoly} representing $h\circ g$ is clearly bounded by $\beta\beta'$. 
+For the autonomous case (2), note that the degree of~\eqref{eq:composite} is $\alpha'+\beta-1$ if the $P_{ij}'$ only depend on the elements $q_1',\dots,q_i'$ and not explicitly on $\vct{x}$. We also observe from~\eqref{eq:longpoly} that in the autonomous case, $h\circ g$ depends only on the last $s'$ elements of its Pfaffian chain in the same way that $h$ depends on its Pfaffian chain $\vec{\boldq}'$. This implies that the degree is bounded by $\beta'$.
+Case (3) is clear.
+\end{proof}
+
+\begin{remark}\label{re:affine}
+The special case where $g\colon \R^n\to \R^m$ is a linear map shows that the Pfaffian structure is invariant under affine change of coordinates.
+\end{remark}
+
+Besides Pfaffian functions, we are interested in the geometric objects they define.
+
+\begin{definition}
+A \emph{Pfaffian set} (or Pfaffian variety) is a set of the form 
+\begin{equation*}
+  V = \mathcal{Z}(g_1, \dotsc, g_k) = \{\vct{x}\colon g_1(\vct{x})=\cdots = g_k(\vct{x})=0\},
+\end{equation*}  
+where the $g_i\colon \R^n\to \R$ are Pfaffian functions. A {\em basic semi-Pfaffian set} is a set of the form
+\begin{equation*}
+ B = \{\vct{x} \colon g_1(\vct{x})=\cdots = g_k(\vct{x})=0, h_1(\vct{x})>0,\dots,h_{\ell}(\vct{x})>0\},
+\end{equation*}
+where the $g_i$ and $h_j$ are Pfaffian functions. A {\em semi-Pfaffian set} is a finite union of basic semi-Pfaffian sets.
+\end{definition}
+
+Note that semi-Pfaffian sets are precisely the sets that can be written as unions, intersections, and complements of sets defined by expressions of the form $g_i(\vct{x}) \star 0$, with $\star \in \{0,\leq,\geq\}$. 
+
+We conclude this section with the following central result on Pfaffian systems.
+We call a solution $\vct{a}\in \R^n$ of a system of equations $F(\vct{x})=0$ regular, if the differential $\diff{F}(\vct{a})$ has maximal rank. 
+
+\begin{theorem}[Khovanskii] \label{thm:khovanskii}
+Let $F=(f_1,\dots,f_n) \colon \R^n \to \R^n$ be a Pfaffian function with chain $\vec{\vct{q}}=(q_1,\dots,q_s)$ and component-wise formats $(\alpha, \beta_i, s)$, for which the functions in the Pfaffian chain depend only on $x_1,\dots,x_k$ for some $k\leq n$. Then the number of regular real solutions of the system $F(\vct{x}) = \zerovct$ is bounded by 
+\begin{equation*}
+2^{\frac{s(s - 1)}{2}} \beta_1 \dotsm \beta_n \left(\beta_1 + \dotsb + \beta_n - n + \min\{k, s\}\alpha + 1 \right)^s.
+\end{equation*}
+\end{theorem}
+
+In~\cite[\S 3.12, Corollary 5]{khovanskiui1991fewnomials}, a version of Theorem~\ref{thm:khovanskii} is derived from more general results. The following result is stated
+in~\cite[Theorem 2.3]{jones2012density}.
+
+\begin{corollary}
+Let $F=(f_1,\dots,f_m) \colon \R^n \to \R^m$ be a Pfaffian function with chain $\vec{\vct{q}}=(q_1,\dots,q_s)$ and formats $(\alpha, \beta, s)$. Then the number of connected components of the zero set $\mathcal{Z}(f_1,\dots,f_m)$ is bounded by 
+\begin{equation}\label{eq:jones}
+2^{\frac{s(s - 1)}{2}+1} (\alpha+2\beta-1)^{n-1}\beta \left( n (\alpha+2\beta-2)+\alpha(\min\{k, s\}-1) + 2 \right)^s.
+\end{equation}
+\end{corollary}
+
+The proof follows along the lines of the proof of Proposition 11.5.2 and 11.5.3 in~\cite{bochnak2013real}, using Lemma~\ref{le:pfaffalgebra}(3) to bound the degrees of the derivatives and invoking 
+Theorem~\ref{thm:khovanskii} instead of B\'ezout's theorem. While the bound~\eqref{eq:jones} is not as sharp as possible, it gives a convenient way of counting the number of solutions to a system of Pfaffian
+equations without reference to the number of equations.
+
+\subsection{Neural networks}
+Artificial neural networks, or multilayer perceptrons, can be described in terms of Pfaffian functions~\cite{karpinski1997polynomial,bianchini2014complexity}. Let $\cN$ be a fully connected neural network with $\ell$ hidden layers and $h$ hidden units. Such a network is characterized by a function $F=F^{\ell+1}\circ \cdots \circ F^1\colon \R^n\to \R^m$, where
+\begin{align*}
+  F^{i}(\vct{x}) &= \sigma^{i}(\mtx{A}^{i}\vct{x}+\vct{b}^{i}), \quad i\in \{1,\dots,\ell\},\\
+  F^{\ell+1}(\vct{x}) &= g(\vct{x})
+\end{align*}
+%\begin{align*}
+%  &  z^{(0)} = x \\
+%  &  z^{(i)} = \sigma (A_i z^{(i-1)} + b^{(i)}), \ 1 \le i \le \ell \\
+%  & f(x) = A_{\ell +1} z^{(l)},
+%\end{align*}  
+for matrices $\mtx{A}^{i} \in \R^{n_{i} \times n_{i-1}}$ (for this to work, we need $n_0 = n$ and $n_{\ell + 1} = m$), vectors $\vct{b}^{i} \in \R^{n_i}$, and activation functions $\sigma^i\colon \R\to \R$ that are applied componentwise. The function $g\colon \R^{n_\ell}\to \R^m$ is an output function, examples are a linear map $g(\vct{x})=\mtx{A}^{\ell+1}\vct{x}$ or the softmax function (see Example~\ref{ex:softmax}).
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[thick, scale=1.5]
+  % Node placement
+  \node [every neuron] (I1) at (-2,0.5) {};
+  \node [every neuron] (I2) at (-2,-0.5) {};
+  \node [every neuron] (M1) at (-1,1) {};
+  \node [every neuron] (M2) at (-1,0) {};
+  \node [every neuron] (M3) at (-1,-1) {};
+  \node [every neuron] (O1) at (0,0.5) {};
+  \node [every neuron] (O2) at (0,-0.5) {};
+  
+  \node (OO1) at (0.75,0.5) [] {$F_1(\vct{x})$};
+  \node (OO2) at (0.75,-0.5) [] {$F_2(\vct{x})$};
+  \node (II1) at (-3,0.5) [] {$x_1$};
+  \node (II2) at (-3,-0.5) [] {$x_2$};
+  \node [every neuron] (II1) at (-3,0.5) {};
+  \node [every neuron] (II2) at (-3,-0.5) {};
+  
+  % Arrows
+  %\draw[->] (III1) -- (II1);
+  %\draw[->] (III2) -- (II2);
+  \draw[->] (II1) -- (I1);
+  \draw[->] (II1) -- (I2);
+  \draw[->] (II2) -- (I1);
+  \draw[->] (II2) -- (I2);
+  \draw[->] (I1) -- (M1);
+  \draw[->] (I1) -- (M2);
+  \draw[->] (I2) -- (M2);
+  \draw[->] (I2) -- (M3);
+  \draw[->] (I1) -- (M3);
+  \draw[->] (I2) -- (M1);
+  \draw[->] (M1) -- (O1);
+  \draw[->] (M2) -- (O1);
+  \draw[->] (M2) -- (O2);
+  \draw[->] (M3) -- (O2);
+  \draw[->] (M1) -- (O2);
+  \draw[->] (M3) -- (O1);
+  \draw[->] (O1) -- (OO1);
+  \draw[->] (O2) -- (OO2);
+\end{tikzpicture}
+\caption{A fully connected neural network with $n = 2, m=2, \ell = 2, h = 5$}\label{fig:nn}
+\end{figure}
+
+%\begin{figure}
+%    \centering
+%          \begin{neuralnetwork}[height=6]
+%            \newcommand{\x}[2]{$x_#2$}
+%            \newcommand{\y}[2]{$f(x)$}
+%            \newcommand{\hfirst}[2]{\small $z^{(1)}_#2$}
+%            \newcommand{\hsecond}[2]{\small $z^{(2)}_#2$}
+%            \inputlayer[count=3, bias=false, title=Input\\layer, text=\x]
+%            \hiddenlayer[count=5, bias=false, title=Hidden\\layer 1, text=\hfirst] \linklayers
+%            \hiddenlayer[count=5, bias=false, title=Hidden\\layer 2, text=\hsecond] \linklayers
+%            \outputlayer[count=1, title=Output\\layer, text=\y] \linklayers
+%        \end{neuralnetwork}
+%    \caption{Neural network with $n = 3, \ell = 2, h = 10$}
+%\end{figure}
+
+The number of hidden units is given as the sum $h:=\sum_{i=1}^{\ell} n_i$. 
+
+\subsection{Neural Networks for classification}
+In its most simple form, a neural network 
+
+\subsection{Neural Networks and Pfaffian functions}
+Suppose that the activation functions $\sigma^i$ are autonomous Pfaffian functions with formats $(\alpha_i, \beta_i, s_i)$ with $s_i\geq 1$ for $i\in \{1,\dots,\ell\}$. 
+That is, 
+\begin{equation*}
+\sigma^i(x) = Q^i(\sigma_1^i(x), \dotsc, \sigma_{s_i}^i(x)),
+\end{equation*}
+where $Q^i\in \R[y_1,\dots,y_{s_i}]$ with $\deg Q^i\leq \beta_i$ and $(\sigma_1^i, \dotsc, \sigma_{s_i}^i)$ is a 
+Pfaffian chain satisfying
+\begin{equation*}
+\frac{\diff{\sigma_j^i}}{\diff{x}} = P_j^i (\sigma_1^i(x), \dotsc, \sigma_j^i(x)),
+\end{equation*}
+for polynomials $P_j^i$ satisfying $\deg P_j^i \le \alpha_i$.
+
+If the output function $g$ is also Pfaffian, then Lemma~\ref{le:composition} implies that each component of $F^i$ is a Pfaffian function, with a Pfaffian chain consisting of $s_i$ functions for every unit the $i$-th layer of the network. If we denote the output of the $k$-th node in the $i$-th layer by $z^i_k$, i.e., the $k$-th component of the vector $\vct{z}^i := F^i\circ \cdots \circ F^1(\vct{x})$, then this node 
+contributes the functions
+\begin{equation*}
+  (\sigma_1^i(z^i_k),\dots,\sigma_{s^i}^i(z^i_k))
+\end{equation*}
+to the Pfaffian chain of the network. We can use Lemma~\ref{le:composition} (2) to derive the following result on the Pfaffian structure of such a neural network. The proof is a simple induction on the depth of the network.
+
+\begin{proposition}
+Let $F\colon\R^n\to \R^m$ be a function implemented by a neural network with $\ell$ hidden layers and $n_i$ units in hidden layer $i$, for $i\in \{1,\dots,\ell\}$. Assume that the activation functions functions at the $i$-th layer are autonomous Pfaffian functions with format $(\alpha_i,\beta_i,s_i)$, $s_i\geq 1$. Then for $i\in \{1,\dots,\ell\}$, the function $F^i\circ \cdots \circ F^1\colon \R^n\to \R^{n_i}$ is Pfaffian with format
+\begin{equation*}
+  \left(\sum_{j=1}^{i} (\alpha_{j} + \beta_{j-1})-i+1 , \beta_{i}, \sum_{j=1}^i n_j s_j\right),
+\end{equation*}
+where $\beta_0=0$.
+\end{proposition}
+
+\begin{example}[Activation functions]
+Common activation functions such the logistic sigmoid $\sigma(x)=(1 + \mathrm{e}^{-x})^{-1}$ and $\sigma(x)=\tanh(x)$ are Pfaffian, as seen in Example~\ref{ex:1}. An example of an activation function with a Pfaffian chain of length greater than one is the softplus function $\sigma(x)=\ln(1+\mathrm{e}^{x})$~\cite{glorot2011deep}, which is Pfaffian with format $(2,1,2)$. Gaussian Error Linear Units (GELUs)~\cite{hendrycks2016gaussian} are activation functions defined as $\sigma(x)=x\Phi(x)$, where $\Phi(x)$ is the Guassian cumulative distribution function (cdf). One can verify that this function is Pfaffian with format $(2,2,2)$, with Pfaffian chain $(\phi(x),\Phi(x))$, where $\phi(x)$ is the Gaussian density. The GELU function is an example of a non-autonomous activation function. Nonsmooth activation functions such as ReLU do not fall into our framework.
+\end{example}
+
+\begin{example}[Softmax]\label{ex:softmax}
+A common output function for classification problems is the softmax function. Each component of the softmax function
+\begin{equation}\label{eq:softmax}
+  g(\vct{x}) = \left(\frac{\mathrm{e}^{x_1}}{\sum_{j}\mathrm{e}^{x_j}}, \dots, \frac{\mathrm{e}^{x_m}}{\sum_{j}\mathrm{e}^{x_j}}\right).
+\end{equation}
+is Pfaffian with format $(2,1,m)$, but the Pfaffian chains of the different components differ by a permutation. For example, 
+\begin{equation*}
+  \frac{\partial g_i}{\partial x_j}(\vct{x}) = \begin{cases}
+    -g_i(\vct{x})g_j(\vct{x}) & \text{ if } i\neq j\\
+    g_i(\vct{x})(1-g_i(\vct{x})) & \text{ if } i=j.
+  \end{cases}
+\end{equation*}
+In this case, a Pfaffian chain is arrived at by listing the components so that $g_i$ comes last.
+\end{example}
+
+When using a neural network as a classifier, we can interpret $F_i(\vct{x})$ as representing the likelihood that $\vct{x}$ belongs to class $i$ (for example, if the output map $g$ is the softmax function). Thus a data point $\vct{x}\in \R^n$ is assigned to class $j$ if $F_j(\vct{x})>F_i(\vct{x})$ for all $i\neq j$, with an arbitrary tie break if $F_i(\vct{x})=F_j(\vct{x})$.
+For $i\neq j$, define the functions
+$g_{ij} := F_j-F_i$. The map $F$ induces a subdivision of $\R^n$ into $m$ regions
+\begin{equation*}
+ C_j = \{\vct{x}\in \R^n \colon g_{ij}(\vct{x}) \geq 0 \text{ for } i\neq j\}, \quad \quad j\in \{1,\dots,m\}.
+\end{equation*}
+If $C_j$ has non-empty interior, then the interior $\inter(C_j)$ is the set of $\vct{x}$ that are unequivocally assigned to class $j$. 
+The boundary of $C_j$ and the decision boundary of the classifier are given by
+\begin{equation*}
+ \Sigma_j = \bigcup_{i\neq j} (C_j\cap C_i), \quad j\in \{1,\dots,k\} \quad \text{ and }  \quad \Sigma = \bigcup_j \Sigma_j,
+\end{equation*}
+respectively. 
+
+The following result is a straight-forward consequence of the algebraic properties of Pfaffian functions and the definition of semi-Pfaffian sets.
+
+\begin{proposition}\label{prop:decision-pfaffian}
+Assume the neural network classifier implemented by $F\colon \R^n\to \R^m$ is a Pfaffian function. Then the functions $g_{ij}:=F_j-F_i$ are also Pfaffian, and the decision boundaries $\Sigma_j$ and $\Sigma$ are semi-Pfaffian sets. 
+\end{proposition}
+
+\begin{example}
+Consider an $\ell$-layer neural network for classification in which all the activation functions at hidden nodes are of format $(2,1,1)$ (for example, $\tanh$ and the logistic sigmoid $\sigma$). Then the $g_{ij}(\vct{x})$ are Pfaffian with format
+\begin{equation*}
+  (2\ell+1, 1, h+2),
+\end{equation*}
+where $h$ is the total number of hidden nodes.
+\end{example}
+
+%Define the \emph{decision boundary} of the classifier $f$ by $\cD = \{f = 0\}$, and assume $\nabla f$ doesn't vanish on $\cD$.
+%Applying Theorem \ref{thm:prob_bound} to $f$ then yields
+%\begin{thm} \label{thm:nn_decision_boundary_prob_bound}
+%\begin{align*}
+%\prob\{ d(X, \cD) & \le \varepsilon \} \le 2^{\frac{h s(h \gamma-1)}{2} + 3} \sum_{i=0}^{n-1} \binom{n}{1+i} \beta \big((\alpha + \beta -1) \ell + \beta \big)^{i-1} \\
+%& \quad \quad \big(i \beta + 2(1-i) + (2i-1) ((\alpha + \beta -1)\ell + 1)\big)^{h \gamma} \Big(1 + \frac{\varepsilon}{\sigma}\Big)^{n-1-i} \Big(\frac{\varepsilon}{\sigma}\Big)^{i+1} 
+%\end{align*}
+%\end{thm}
+
+%In the case of the commonly used activation function $\sigma = \tanh$, this bound simplifies quite a bit since $\tanh$ has format $(2,1,1)$ (with respect to the chain $(\tanh)$).
+%\begin{cor}  \label{cor:nn_tanh_decision_boundary_prob_bound}
+%$$
+%\prob\{ d(X, \cD)  \le \varepsilon \}  \le 2^{\frac{h(h-1)}{2} + 3} \sum_{i=0}^{n-1} \binom{n}{1+i} (2 \ell + 1)^{i-1} 
+%\big((2-i) + (2i-1) (2\ell + 1)\big)^{h} \Big(1 + \frac{\varepsilon}{\sigma}\Big)^{n-1-i} \Big(\frac{\varepsilon}{\sigma}\Big)^{i+1} 
+%$$
+%\end{cor}
+
+
+%\begin{lem} \label{lem:pfaffian-comp}
+%Let $f, g : \R \to \R$ be Pfaffian with respective chains $(f_1, \dotsc, d_\gamma)$ and $(g_1, \dotsc, g_{\gamma'})$, and respective formats $(\alpha, \beta, \gamma)$ and $(\alpha', \beta', \gamma')$. Then $f \circ g$ is Pfaffain with respect to chain $(f_1, \dotsc, f_\gamma, g_1, \dotsc g_{\gamma'})$ and has format $\big(\max\{\alpha, \alpha'\}, \beta \beta', \gamma + \gamma' \big)$.
+%\end{lem}
+%\begin{proof}
+ %   The argument is very similar to the proof of the previous lemma. See \citep[Proposition 1.18]{zell2003quantitative}.
+%\end{proof}

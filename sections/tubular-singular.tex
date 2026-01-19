@@ -1,0 +1,136 @@
+\section{Tubular neighbourhoods of semi-Pfaffian sets}
+
+The following theorem generalizes~\cite[Proposition 2.5]{}
+
+\begin{theorem}\label{thm:hausdorff-limit-ominimal}
+    Let $\mathcal{R}$ be an o\mbox{-}minimal expansion of the ordered field 
+    $(\mathbb{R},+,\cdot)$. Let $B \subset \mathbb{R}^n$ be a bounded set,
+    $A \subset B \times (0,\infty)$, and assume $B$ and $A$ are definable in $\mathcal{R}$. For $t>0$ set
+    \begin{equation*}
+    A_t \;:=\; \{ x \in B : (x,t) \in A \},
+    \end{equation*}
+    and define
+    \begin{equation*}
+    A_0 \;:=\; \pi_1\bigl( \overline{A} \cap (B \times \{0\}) \bigr),
+    \end{equation*}
+    where $\pi_1 : \mathbb{R}^n \times \mathbb{R} \to \mathbb{R}^n$ is the projection 
+    onto the first factor, and $\overline{A}$ denotes the closure of $A$ in 
+    $B \times [0,\infty)$.
+    Then the family $(A_t)_{t>0}$ converges to $A_0$ in the Hausdorff metric as 
+    $t \to 0^+$. 
+\end{theorem}
+
+\begin{proof}[Sketch]
+    We keep the notation and hypotheses of Theorem~\ref{thm:hausdorff-limit-ominimal},
+    and assume that all sets and maps are definable in the fixed o\mbox{-}minimal
+    expansion $\mathcal{R}$ of $(\mathbb{R},+,\cdot)$.
+    
+    As in the proof of Proposition~2.5 of Basu--Lerario, the inclusion
+    \begin{equation*}
+    \lim_{t \to 0^+} A_t \;\subset\; A_0
+    \end{equation*}
+    uses only compactness and closedness properties of $\overline{B} \times [0,\infty)$
+    and does not rely on semi-algebraicity. Hence that part of the proof carries
+    over verbatim.
+    
+    We focus on the reverse inclusion
+    \begin{equation*}
+    A_0 \;\subset\; \lim_{t \to 0^+} A_t,
+    \end{equation*}
+    and only on the points where semi-algebraicity was used in
+    Basu-Lerario. The argument proceeds by contradiction exactly as in the
+    semi-algebraic case: one assumes that there exist $a_0 \in A_0$ and
+    $\varepsilon > 0$ such that, after extracting a suitable sequence
+    $t_n \to 0^+$, one has
+    \begin{equation}\label{eq:BL-ineq}
+      \operatorname{dist}(a_0, a_{t_n}) \;\geq\; \varepsilon
+      \quad\text{for all } a_{t_n} \in A_{t_n}, \text{ and all } n.
+    \end{equation}
+    All of this is purely topological and does not use definability.
+    
+    The only place where Basu--Lerario use semi-algebraicity is in the
+    construction of a ``semi-algebraic arc'' approaching $(a_0,0)$ inside
+    $A$, via the semi-algebraic Curve Selection Lemma, and then in the
+    fact that the $t$-coordinate of this arc can be taken to be injective
+    on a small interval.
+    
+    In the o\mbox{-}minimal setting, we replace these two facts as follows.
+    
+    \noindent\textbf{Step 1: Definable curve selection.}
+    Since $a_0 \in A_0$ by definition, we have
+    \[
+    (a_0,0) \;\in\; \overline{A} \cap \bigl( B \times \{0\} \bigr),
+    \]
+    where the closure is taken in $B \times [0,\infty)$.
+    By the \emph{definable curve selection lemma} in o\mbox{-}minimal structures,
+    there exists a definable continuous map
+    \[
+    \gamma \colon [0,\delta) \to \overline{B} \times [0,\infty)
+    \]
+    such that
+    \[
+    \gamma(0) = (a_0,0), \qquad
+    \gamma\bigl( (0,\delta) \bigr) \subset A.
+    \]
+    Write
+    \[
+    \gamma(s) = \bigl( a(s), t(s) \bigr),
+    \]
+    with $a(s) \in \overline{B} \subset \mathbb{R}^n$ and $t(s) \in [0,\infty)$.
+    By construction we have $t(0) = 0$ and $t(s) > 0$ for all $s \in (0,\delta)$.
+    
+    \medskip
+    
+    \noindent\textbf{Step 2: Monotonicity of the $t$-coordinate.}
+    The function
+    \[
+    t \colon (0,\delta) \to (0,\infty)
+    \]
+    is definable in $\mathcal{R}$, since $\gamma$ is definable and
+    $\mathcal{R}$ is closed under coordinate projection. By the
+    \emph{Monotonicity Theorem} for definable functions in an o\mbox{-}minimal
+    structure, there exists $0 < \delta' \leq \delta$ such that
+    \[
+    t \big\vert_{(0,\delta')} \colon (0,\delta') \to (0,\infty)
+    \]
+    is continuous and either constant or strictly monotone. It cannot be
+    constant, since $t(0) = 0$ and $t(s) > 0$ for $s > 0$. Hence, after
+    possibly shrinking $\delta'$ once more, we may assume that
+    $t \big\vert_{(0,\delta')}$ is continuous and strictly monotone, and in
+    particular injective.
+    
+    Moreover, the image $t\bigl( (0,\delta') \bigr)$ is an interval of the
+    form $(0,\tau)$ or $(0,\tau]$ for some $\tau>0$. In particular,
+    for each sufficiently small $t>0$ there is a unique $s \in (0,\delta')$
+    such that $t(s) = t$.
+    
+    \noindent\textbf{Step 3: Contradiction with \eqref{eq:BL-ineq}.}
+    Now fix the sequence $(t_n)$ used to obtain \eqref{eq:BL-ineq}, and for
+    all $n$ large enough choose $s_n \in (0,\delta')$ with
+    \begin{equation*}
+    t(s_n) = t_n.
+    \end{equation*}
+    Define $a_{t_n} := a(s_n)$. Since $\gamma(s) \in A$ for all
+    $s \in (0,\delta)$, we have
+    \[
+    (a_{t_n}, t_n) = \gamma(s_n) \in A,
+    \]
+    hence $a_{t_n} \in A_{t_n}$ by definition of the fibers $A_t$.
+    
+    On the other hand, continuity of $\gamma$ at $0$ implies that
+    \[
+    \lim_{n\to\infty} a_{t_n} = \lim_{n\to\infty} a(s_n) = a_0.
+    \]
+    Thus, given any $\varepsilon>0$, for all sufficiently large $n$ we have
+    \[
+    \operatorname{dist}(a_0, a_{t_n}) < \varepsilon,
+    \]
+    contradicting \eqref{eq:BL-ineq}. This contradiction shows that the
+    assumption that $A_0 \not\subset \lim_{t\to 0^+} A_t$ is impossible.
+    
+    Since all other steps of the proof in Basu--Lerario are purely
+    topological and do not use semi-algebraicity, they carry over unchanged
+    to the definable/o\mbox{-}minimal setting. This establishes the claimed
+    inclusion $A_0 \subset \lim_{t\to 0^+} A_t$ and completes the proof.
+    \end{proof}
+    
