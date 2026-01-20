@@ -56,3 +56,12 @@ Push your branch to the remote repository:
 ```bash
 git push -u origin my-new-feature
 ```
+
+#### Open a Pull Request
+After pushing your changes, open a Pull Request (PR) to merge them into `main`.
+
+1.  Go to the repository on GitHub.
+2.  Click **New Pull Request**.
+3.  Select your branch (`my-new-feature`) against `main`.
+4.  Add a title and description, then click **Create Pull Request**.
+5.  Wait for review or merge your changes if approved.
