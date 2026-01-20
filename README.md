@@ -47,7 +47,7 @@ git status
 #### Commit Changes
 Add files to the staging area and commit:
 ```bash
-git add <filename>   # Or 'git add .' to add all changes
+git add <filename>   # Or 'git add .' or 'git add -u' to add all changes
 git commit -m "Description of changes"
 ```
 
