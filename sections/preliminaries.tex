@@ -6,22 +6,24 @@ We will assume throughout that $n\in \N_{>0}$.
 Pfaffian functions, introduced by Khovanskii~\cite{khovanskiui1991fewnomials}, are functions that satisfy triangular systems of first-order partial differential equations with polynomial coefficients. Pfaffian functions have a well-defined notion of complexity that can be used to prove various quantitative results about the geometric objects they define.
 
 \begin{definition}[Pfaffian function]
-Let $\cU \subset \R^n$ be an open set. A \emph{Pfaffian chain} of order $s \in \N$ and chain-degree $\alpha \in \N_{>0}$ over $\mathcal{U}$ is a sequence of functions $\vec{\boldq} = (q_1, \dotsc, q_s)$, $q_i\in C^1(\cU)$, such that there exist polynomials $P_{ij}\in \R[X_1,\dots,X_n,Y_1,\dots,Y_i]_{\leq \alpha}$, for $i\in [s]$ and $j\in [n]$, that verify
+Let $\cU \subset \R^n$ be an open set. A \emph{Pfaffian chain} of order $s \in \N$ and chain-degree $\alpha \in \N_{>0}$ over $\cU$ is a sequence of functions $\vec{\boldq} = (q_1, \dotsc, q_s)$, $q_i\in C^1(\cU)$, such that there exist polynomials $P_{ij}\in \R[X_1,\dots,X_n,Y_1,\dots,Y_i]_{\leq \alpha}$, for $i\in [s]$ and $j\in [n]$, that verify
 \begin{equation}\label{eq:pfaffchain}
 \frac{\partial q_i}{\partial x_j} = P_{ij}(x, q_1(x), \dotsc, q_i(x)).
 \end{equation}
-A function $g(x)=P(x,q_1(x),\dots,q_s(x))$, with $P\in \R[X_1,\dots,X_n,Y_1,\dots,Y_s]_{\leq \beta}$, is called a {\em Pfaffian function} of chain degree $\alpha$, degree $\beta$, and order $s$. The triple $(\alpha, \beta, s)$ is called a {\em format} of $g$.
+A function $g(x)=P(x,q_1(x),\dots,q_s(x))$, with $P\in \R[X_1,\dots,X_n,Y_1,\dots,Y_s]_{\leq \beta}$, is called a \emph{Pfaffian function} of chain degree $\alpha$, degree $\beta$, and order $s$.  A function $\cU\to \R^m$ is called Pfaffian if all its components are Pfaffian. 
 \end{definition}
 
+The triple $(\alpha, \beta, s)$ is called a \emph{format} of $g$. We denote by $\Pfaff_{\pfaffchain{q},\beta}(\cU)$ the set of all Pfaffian functions over $\cU$ with chain $\pfaffchain{q}$ and degree $\beta$, and by $\Pfaff_{\alpha,\beta,s}(\cU)$ the set of all Pfaffian functions over $\cU$ with format $(\alpha,\beta,s)$.  When we say that a Pfaffian function $\cU\to \R^m$ has a particular format, we mean that every component has that same format, and we write $\Pfaff_{\alpha,\beta,s}(\cU; \R^m)$.
+
 \begin{remark}
- Note that the Pfaffian chain associated with a Pfaffian function, and hence also a format, is not unique. In the following, we will often leave the chain implicit, and our results will be stated in terms of the format. When we say that a Pfaffian function $\cU\to \R^m$ has a particular format, we mean that every component has that same format.
+ Note that the Pfaffian chain associated with a Pfaffian function, and hence also a format, is not unique. In the following, we will often leave the chain implicit, and our results will be stated in terms of the format.
 \end{remark}
 
-We call a Pfaffian function $g\colon \cU\to \R$ autonomous, if 
+We call a Pfaffian function $g\colon \cU\to \R$ \emph{autonomous}, if 
 \begin{equation}\label{eq:simplepfaff}
   \frac{\partial q_i}{\partial x_j} = P_{ij}(q_1(x),\dots,q_i(x))
 \end{equation}
-for some $P_{ij}\in \R[Y_1,\dots,Y_s]$, and $g(x)=P(q_1(x), \dots, q_s(x))$ for some $P\in \R[Y_1,\dots,Y_s]$. A function $\cU\to \R^m$ is called Pfaffian if all its components are Pfaffian. 
+for some $P_{ij}\in \R[Y_1,\dots,Y_s]$, and $g(x)=P(q_1(x), \dots, q_s(x))$ for some $P\in \R[Y_1,\dots,Y_s]$.
 
 \begin{example}\label{ex:1} The following are simple examples of Pfaffian functions.
         \begin{enumerate}

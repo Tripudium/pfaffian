@@ -20,7 +20,7 @@
 
 % Algorithms
 \usepackage[]{algorithm2e}
-\usepackage{listings}
+%\usepackage{listings}
 
 % Fonts
 \usepackage{times}
@@ -70,11 +70,11 @@
 }    
     
 % listing options
-\tcbuselibrary{listings}
-\lstloadlanguages{Python} %use listings with Python
-\newlength\inwd
-\setlength\inwd{1.7cm}
-\newcounter{ipythcntr}
+%\tcbuselibrary{listings}
+%\lstloadlanguages{Python} %use listings with Python
+%\newlength\inwd
+%\setlength\inwd{1.7cm}
+%\newcounter{ipythcntr}
 
 % Colours
 \definecolor{darkblue}{rgb}{0,0,.75}
@@ -112,7 +112,6 @@
 % Theorem environment
 %=================================================
 
-
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -126,6 +125,10 @@
 % Symbols
 %=================================================
 
+\providecommand{\mathbbm}{\mathbb} % In case we don't load bbm
+\newcommand{\R}{\mathbbm{R}}
+\newcommand{\N}{\mathbbm{N}}
+
 \newcommand{\cE}{\mathcal{E}}
 \newcommand{\cN}{\mathcal{N}}
 \newcommand{\cD}{\mathcal{D}}
@@ -136,10 +139,10 @@
 \renewcommand{\mid}{\mathrel{|}}
 \newcommand{\inter}{{\operatorname{int}}}
 \newcommand{\boldq}{\mathbf{q}}
-\newcommand{\Pfaff{\mathrm{Pfaff}}
 \DeclareMathOperator{\md}{\mathrm{mdeg}}
 \DeclareMathOperator{\reg}{\mathrm{reg}}
-\DeclareMathOperator*{\prob}{\mathbb{P}}
+\DeclareMathOperator*{\prob}{\mathbbm{P}}
+%\newcommand{\vec}[1]{\overrightarrow{#1}}
 \newcommand{\vct}[1]{\mathbold{#1}}
 \newcommand{\mtx}[1]{\mathbold{#1}}
 \newcommand{\trans}{\top}
@@ -147,9 +150,7 @@
 \newcommand{\econst}{\mathrm{e}}
 \newcommand{\zerovct}{\vct{0}} % Zero vector
 \newcommand{\onemtx}{\mtx{1}}
-\providecommand{\mathbbm}{\mathbb} % In case we don't load bbm
-\newcommand{\R}{\mathbbm{R}}
-\newcommand{\N}{\mathbbm{N}}
+
 \newcommand{\diff}[1]{\mathrm{d}{#1}}
 \newcommand{\argmin}{\operatorname*{arg\; min}}
 \newcommand{\Prob}{\mathbbm{P}}
@@ -158,3 +159,6 @@
 \DeclarePairedDelimiterX{\infdivx}[2]{(}{)}{%
   #1\;\delimsize\|\;#2%
 }
+
+\newcommand{\Pfaff}{\mathrm{Pfaff}}
+\newcommand{\pfaffchain}[1]{\vec{\mathbold{#1}}}
