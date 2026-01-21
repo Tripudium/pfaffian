@@ -29,7 +29,7 @@ Assuming that $\vct{x}\in \mX\backslash \Sigma$ has a unique closest point on $\
 In particular, in this case we have $\Delta(\vct{x})=\|\vct{r}(\vct{x})\|$. 
 
 It is reasonable to measure the distance to misclassification relative to the size of $\vct{x}$. In analogy to the theory of conditioning in numerical analysis 
-and optimization~\cite{Condition}, we can define the condition of $\vct{x}$.
+and optimization~\cite{burgisser2013condition}, we can define the condition of $\vct{x}$.
 
 \begin{definition}
 The condition of the classification map $F$ at $\vct{x}\in \mX\backslash \Sigma$ is defined as
@@ -74,7 +74,7 @@ When considering a distribution on data space, we can consider different setting
 \item Robustness of a random perturbation of a given data point.
 \end{enumerate}
 
-In the classical analysis of condition numbers, these two cases correspond to average-case and smoothed analysis, as discussed in~\cite{Condition}. 
+In the classical analysis of condition numbers, these two cases correspond to average-case and smoothed analysis, as discussed in~\cite{burgisser2013condition}. 
 We look at both these cases in a unified way. The first 
 natural question to ask is regarding the distribution of $\Delta(X)$, namely
 \begin{equation}\label{eqn:main-problem}
@@ -96,7 +96,7 @@ adversarially robust.\\
   \Prob\{\mathcal{C}(X)>t\}
 \end{equation*}
 for some $t>0$ in terms of parameters of the neural network.\\
-This problem is an instance of smoothed analysis of condition numbers, studied in detail in~\cite{Condition}. 
+This problem is an instance of smoothed analysis of condition numbers, studied in detail in~\cite{burgisser2013condition}. 
 
 \subsection{Gaussian perturbations} In the literature on smoothed analysis it is common to consider Guassian perturbations. 
 
