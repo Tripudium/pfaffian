@@ -6,7 +6,7 @@ We will assume throughout that $n\in \N_{>0}$.
 Pfaffian functions, introduced by Khovanskii~\cite{khovanskiui1991fewnomials}, are functions that satisfy triangular systems of first-order partial differential equations with polynomial coefficients. Pfaffian functions have a well-defined notion of complexity that can be used to prove various quantitative results about the geometric objects they define.
 
 \begin{definition}[Pfaffian function]
-Let $\cU \subset \R^n$ be an open set. A \emph{Pfaffian chain} of order $s \in \N$ and chain-degree $\alpha \in \N_{>0}$ over $\cU$ is a sequence of functions $\vec{\boldq} = (q_1, \dotsc, q_s)$, $q_i\in C^1(\cU)$, such that there exist polynomials $P_{ij}\in \R[X_1,\dots,X_n,Y_1,\dots,Y_i]_{\leq \alpha}$, for $i\in [s]$ and $j\in [n]$, that verify
+Let $\cU \subset \R^n$ be an open set. A \emph{Pfaffian chain} of order $s \in \N$ and chain-degree $\alpha \in \N_{>0}$ over $\cU$ is a sequence of functions $\pfaffchain{q}= (q_1, \dotsc, q_s)$, $q_i\in C^1(\cU)$, such that there exist polynomials $P_{ij}\in \R[X_1,\dots,X_n,Y_1,\dots,Y_i]_{\leq \alpha}$, for $i\in [s]$ and $j\in [n]$, that verify
 \begin{equation}\label{eq:pfaffchain}
 \frac{\partial q_i}{\partial x_j} = P_{ij}(x, q_1(x), \dotsc, q_i(x)).
 \end{equation}
@@ -27,38 +27,37 @@ for some $P_{ij}\in \R[Y_1,\dots,Y_s]$, and $g(x)=P(q_1(x), \dots, q_s(x))$ for 
 
 \begin{example}\label{ex:1} The following are simple examples of Pfaffian functions.
         \begin{enumerate}
-            \item Any polynomial $g \in \R[X_1, \dots, X_n]$ is Pfaffian with format $(\alpha,\deg g,0)$ for any $\alpha>0$;
-            \item $\exp\colon \R\to \R$ is Pfaffian with format $(1,1,1)$. A Pfaffian chain is $\vec{\boldq}=(\exp)$ and $P_{11}(x,y)=y$;
-            \item Any function $q\in \R[X,1/X,\ln(X)]$ is Pfaffian. A corresponding Pfaffian chain is $\vec{\boldq}=(1/x,\ln(x))$ and the chain degree is $\alpha=2$;
-            \item $\tanh$ is Pfaffian with format $(2,1,1)$. A Pfaffian chain is $\vec{\boldq}=(\tanh)$ and $P_{11}(x,y)=1-y^2$;
-            \item The logistic sigmoid $\sigma = (1 + \mathrm{e}^{-x})^{-1}$ is Pfaffian with format $(2, 1, 1)$. A Pfaffian chain is $\vec{\boldq}=(\sigma)$ and $P_{11}(x,y)=y(1-y)$;
-            \item $\arctan$ is Pfaffian with format $(3, 1, 2)$. A corresponding chain is $q_1(x)=(1+x^2)^{-1}$ and $q_2(x)=\arctan(x)$. The polynomials are $P_{11}(X,Y_1,Y_2) = -2XY_1^2$ and $P_{21}(X,Y_1,Y_2)=Y_1$. 
+            \item Any polynomial $g \in \R[X_1, \dots, X_n]$ gives rise to a Pfaffian function with format $(\alpha,\deg g,0)$ for any $\alpha>0$ via the evaluation homomorphism;
+            \item $\exp\colon \R\to \R$ is Pfaffian with format $(1,1,1)$. A Pfaffian chain is $\pfaffchain{q}=(\exp)$ and $P_{11}(x,y)=y$;
+            \item $\tanh$ is Pfaffian with format $(2,1,1)$. A Pfaffian chain is $\pfaffchain{q}=(\tanh)$ and $P_{11}(x,y)=1-y^2$;
+            \item The logistic sigmoid $\sigma = (1 + \econst^{-x})^{-1}$ is Pfaffian with format $(2, 1, 1)$. A Pfaffian chain is $\pfaffchain{q}=(\sigma)$ and $P_{11}(x,y)=y(1-y)$;
+            \item $\arctan$ is Pfaffian with format $(3, 1, 2)$. A Pfaffian chain is $\pfaffchain{q}=((1+x^2)^{-1},\arctan(x))$. The polynomials are $P_{11}(X,Y_1,Y_2) = -2XY_1^2$ and $P_{21}(X,Y_1,Y_2)=Y_1$. 
         \end{enumerate}
-Examples (2-5) are autonomous, while (1) and (6) are not. 
+Examples (2-4) are autonomous, while (1) and (5) are not.
 \end{example}
 
-\begin{definition}[Algebraically independent Pfaffian chain]
-\label{defn:algebraically-independent-pfaffian-chain}
-A Pfaffian chain $\vec{\boldq} = (q_1, \ldots, q_r)$ is called algebraically independent if for all non-zero $P \in \R[Y_1, \ldots, Y_r]$, $P(q_1(x), \ldots, q_r(x))$ is not identically zero.
-\end{definition}
+%\begin{definition}[Algebraically independent Pfaffian chain]
+%\label{defn:algebraically-independent-pfaffian-chain}
+%A Pfaffian chain $\pfaffchain{q} = (q_1, \ldots, q_r)$ is called algebraically independent if for all non-zero $P \in \R[Y_1, \ldots, Y_r]$, $P(q_1(x), \ldots, q_r(x))$ is not identically zero.
+%\end{definition}
 
-\begin{remark}
-All the cases in Example~\ref{ex:1} have algebraically independent Pfaffian chains. In~\cite{lotz2024partitioning} it is shown that the chain $\vec{\boldq}=(1/x,x^m)$ is algebraically independent if $m\in \R\backslash \mathbb{Q}$.    
-\end{remark}
+%\begin{remark}
+%All the cases in Example~\ref{ex:1} have algebraically independent Pfaffian chains. In~\cite{lotz2024partitioning} it is shown that the chain $\pfaffchain{q}=(1/x,x^m)$ is algebraically independent if $m\in \R\backslash \mathbb{Q}$.    
+%\end{remark}
 
 Pfaffian functions enjoy some convenient closure properties under algebraic operations and composition, as illustrated in the following two results (see also~\cite[Proposition 1.8]{zell2003quantitative}).
 
 \begin{lemma}\label{le:pfaffalgebra}
-Let $g, h : \cU \to \R$ be Pfaffian functions with respective formats $(\alpha, \beta, s)$ and $(\alpha', \beta', s')$. Then: 
+Let $g\in \Pfaff_{\alpha, \beta, s}(\cU)$ and $h\in \Pfaff_{\alpha', \beta', s'}(\cU)$. Then: 
 \begin{enumerate}
-\item $g + h$ is Pfaffian with format $(\max\{\alpha,\alpha'\}, \max\{\beta,\beta'\},s+s')$;
-\item $gh$ is Pfaffian with format $(\max\{\alpha,\alpha'\}, \beta+\beta',s+s')$;
-\item For each $i\in [n]$, $\partial g/\partial x_i$ is Pfaffian with format $(\alpha,\alpha+\beta-1,s)$. 
+\item $g + h \in \Pfaff_{\max\{\alpha,\alpha'\}, \max\{\beta,\beta'\},s+s'}(\cU)$;
+\item $gh \in \Pfaff_{\max\{\alpha,\alpha'\}, \beta+\beta',s+s'}(\cU)$;
+\item For each $i\in [n]$, $\partial g/\partial x_i \in \Pfaff_{\alpha,\alpha+\beta-1,s}(\cU)$. 
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-The first two statements are straightforward consequences of the fact that the concatenation of Pfaffian chains is again a Pfaffian chain. For the third statement, assume $g(\vct{x})=P(\vct{x},q_1(\vct{x}),\dots,q_s(\vct{x}))$ for a polynomial $P\in \R[X_1,\dots,X_n,Y_1,\dots,Y_s]_{\leq \beta}$. Then
+The first two statements are straightforward consequences of the fact that the concatenation of Pfaffian chains is again a Pfaffian chain. For the third statement, assume $g(x)=P(x,q_1(x),\dots,q_s(x))$ for a polynomial $P\in \R[X_1,\dots,X_n,Y_1,\dots,Y_s]_{\leq \beta}$. Then
 \begin{equation*}
   \frac{\partial g}{\partial x_i} = \sum_{j=1}^n \frac{\partial P}{\partial x_j}+\sum_{\ell=1}^s \frac{\partial P}{\partial y_\ell}\frac{\partial q_\ell}{\partial x_i}= \sum_{j=1}^n \frac{\partial P}{\partial x_j}+\sum_{\ell=1}^s \frac{\partial P}{\partial y_\ell}P_{\ell i}(x,q_1(x),\dots,q_s(x)).
 \end{equation*}
@@ -66,22 +65,22 @@ The resulting expression is a polynomial in $x$ and the $q_j$, and the degree is
 \end{proof}
 
 \begin{remark}\label{re:1}
-Note that the bound on the length of $g+h$ and $gh$ is in general not sharp: if $g$ and $h$ are Pfaffian with respect to the same chain $\vec{\boldq}$ of length $s$, then clearly the length of $g+h$ and $gh$ is also $s$. It also follows from Lemma~\ref{le:pfaffalgebra} that a linear combination of Pfaffian functions $g_1,\dots,g_m$ with formats $(\alpha_i,\beta_i,s_i)$ is Pfaffian with format $(\max_i \{\alpha_i\},\max_i\{\beta_i\}, \sum_i s_i)$. 
+Note that the bound on the length of $g+h$ and $gh$ is in general not sharp: if $g$ and $h$ are Pfaffian with respect to the same chain $\pfaffchain{q}$ of length $s$, then clearly the length of $g+h$ and $gh$ is also $s$. It also follows from Lemma~\ref{le:pfaffalgebra} that a linear combination of Pfaffian functions $g_1,\dots,g_m$ with formats $(\alpha_i,\beta_i,s_i)$ is Pfaffian with format $(\max_i \{\alpha_i\},\max_i\{\beta_i\}, \sum_i s_i)$. 
 \end{remark}
 
 \begin{lemma}\label{le:composition}
-Let $g\colon \R^n\to \R^m$ and $h\colon \R^m\to \R$ be Pfaffian functions,  with formats $(\alpha,\beta,s)$ and $(\alpha',\beta',s')$, respectively, and assume $s'\geq 1$. 
+Let $g\in \Pfaff_{\alpha,\beta,s}(\cU;\R^m)$ and $h\in \Pfaff_{\alpha',\beta',s'}(\R^m)$ be Pfaffian functions, and assume $s'\geq 1$. 
 \begin{enumerate}
-\item The composition $h\circ g$ is Pfaffian with format $((\alpha'+1)\beta+\alpha-1, \beta\beta', ms+s')$;
-\item If $h$ is autonomous, then $h\circ g$ is Pfaffian with format $(\alpha'+\beta-1,\beta', ms+s')$;
-\item If all the functions in $g$ depend on the same Pfaffian chain $\vec{\boldq}$ of length $s$, then $h\circ g$ has Pfaffian order $s+s'$.
+\item $h\circ g \in \Pfaff_{(\alpha'+1)\beta+\alpha-1, \beta\beta', ms+s'}(\cU)$;
+\item If $h$ is autonomous, then $h\circ g \in \Pfaff_{\alpha'+\beta-1,\beta', ms+s'}(\cU)$;
+\item If all the functions in $g$ depend on the same Pfaffian chain $\pfaffchain{q}$ of length $s$, then $h\circ g$ has Pfaffian order $s+s'$.
 \end{enumerate}
 \end{lemma}
 
 \begin{proof}
-Let $g=(g_1,\dots,g_m)$, and for each $i\in \{1,\dots,m\}$, let $\vec{\boldq}^{(i)}=(q_1^{(i)},\dots,q_s^{(i)})$ be a Pfaffian chain for $g_i$. Let $\vec{\boldq}'=(q_1',\dots,q_{s'}')$ be a Pfaffian chain for $h$. Let $P$ and $P_i$, $i\in \{1,\dots,m\}$, be the polynomials representing $h$ and the $g_i$, respectively. The composition $h\circ g$ is then represented as 
+Let $g=(g_1,\dots,g_m)$, and for each $i\in \{1,\dots,m\}$, let $\pfaffchain{q}^{(i)}=(q_1^{(i)},\dots,q_s^{(i)})$ be a Pfaffian chain for $g_i$. Let $\pfaffchain{q}'=(q_1',\dots,q_{s'}')$ be a Pfaffian chain for $h$. Let $P$ and $P_i$, $i\in \{1,\dots,m\}$, be the polynomials representing $h$ and the $g_i$, respectively. The composition $h\circ g$ is then represented as 
 \begin{equation}\label{eq:longpoly}
- h\circ g(x) = P(P_1(x,\vec{\boldq}^{(1)}(x)),\dots,P_m(x,\vec{\boldq}^{(m)}(x)),\vec{\boldq}'(g(x))),
+ h\circ g(x) = P(P_1(x,\pfaffchain{q}^{(1)}(x)),\dots,P_m(x,\pfaffchain{q}^{(m)}(x)),\pfaffchain{q}'(g(x))),
 \end{equation}
 which is clearly a polynomial in $x=(x_1,\dots,x_n)$ and in the chain
 \begin{equation}\label{eq:newchain}
@@ -91,13 +90,13 @@ of length $ms+s'$. It remains to be seen that this is a Pfaffian chain. For the 
 \begin{equation}\label{eq:composite}
   \frac{\partial q'_i\circ g}{\partial x_j} = \sum_{\ell=1}^m \frac{\partial q'_i}{\partial x_\ell}\frac{\partial g_\ell}{\partial x_j} = \sum_{\ell=1}^m P'_{i\ell}(g(x),q_1'(x),\dots,q_i'(x))  \frac{\partial g_\ell}{\partial x_j},
 \end{equation}
-where the $P_{i\ell}'$ are the polynomials associated to the chain $\vec{\boldq}'$. 
+where the $P_{i\ell}'$ are the polynomials associated to the chain $\pfaffchain{q}'$. 
 This shows that the partial derivative is a polynomial in $q_1',\dots,q_i'$. 
 Note that $g_{\ell}$ and, by virtue of Lemma~\ref{le:pfaffalgebra}(3), its partial derivatives are polynomials in $q_1^{(\ell)},\dots,q_s^{(\ell)}$. This establishes that~\eqref{eq:newchain} is a Pfaffian chain of length $ms+s'$. 
 
 To prove the degree bounds in the general case (1), note that the degree of the composition of polynomials is bounded by the product of the degrees. The degree of $P_{i\ell}'(g(x),q_1',\dots,q_i')$ is bounded by $\alpha'\beta$, and Lemma~\ref{le:pfaffalgebra}(3) shows that the degree of $\partial g_{\ell}/\partial x_i$ is bounded by $\alpha+\beta-1$, establishing the bound $(\alpha'+1)\beta+\alpha-1$ on the degree of the new Pfaffian chain~\eqref{eq:newchain}. 
 Moreover, the degree of the polynomial~\eqref{eq:longpoly} representing $h\circ g$ is clearly bounded by $\beta\beta'$. 
-For the autonomous case (2), note that the degree of~\eqref{eq:composite} is $\alpha'+\beta-1$ if the $P_{ij}'$ only depend on the elements $q_1',\dots,q_i'$ and not explicitly on $x$. We also observe from~\eqref{eq:longpoly} that in the autonomous case, $h\circ g$ depends only on the last $s'$ elements of its Pfaffian chain in the same way that $h$ depends on its Pfaffian chain $\vec{\boldq}'$. This implies that the degree is bounded by $\beta'$.
+For the autonomous case (2), note that the degree of~\eqref{eq:composite} is $\alpha'+\beta-1$ if the $P_{ij}'$ only depend on the elements $q_1',\dots,q_i'$ and not explicitly on $x$. We also observe from~\eqref{eq:longpoly} that in the autonomous case, $h\circ g$ depends only on the last $s'$ elements of its Pfaffian chain in the same way that $h$ depends on its Pfaffian chain $\pfaffchain{q}'$. This implies that the degree is bounded by $\beta'$.
 Case (3) is clear.
 \end{proof}
 
@@ -110,22 +109,26 @@ Besides Pfaffian functions, we are interested in the geometric objects they defi
 \begin{definition}
 A \emph{Pfaffian set} (or Pfaffian variety) is a set of the form 
 \begin{equation*}
-  V = \mathcal{Z}(g_1, \dotsc, g_k) = \{x\colon g_1(x)=\cdots = g_k(x)=0\},
+  V = \mathcal{Z}(g_1, \dotsc, g_k) = \{x\in \R^n\colon g_1(x)=\cdots = g_k(x)=0\},
 \end{equation*}  
 where the $g_i\colon \R^n\to \R$ are Pfaffian functions. A {\em basic semi-Pfaffian set} is a set of the form
 \begin{equation*}
- B = \{x \colon g_1(x)=\cdots = g_k(x)=0, h_1(x)>0,\dots,h_{\ell}(x)>0\},
+ B = \{x\in \R^n \colon g_1(x)=\cdots = g_k(x)=0, h_1(x)>0,\dots,h_{\ell}(x)>0\},
 \end{equation*}
 where the $g_i$ and $h_j$ are Pfaffian functions. A {\em semi-Pfaffian set} is a finite union of basic semi-Pfaffian sets.
 \end{definition}
 
 Note that semi-Pfaffian sets are precisely the sets that can be written as unions, intersections, and complements of sets defined by expressions of the form $g_i(x) \star 0$, with $\star \in \{0,\leq,\geq\}$. 
 
+\begin{remark}
+  Since the concatenation of Pfaffian chains is again a Pfaffian chain, we can assume without loss of generality that the functions $g_i$ and $h_j$ in the definition of a (semi-)Pfaffian set are Pfaffian with respect to the same Pfaffian chain.
+\end{remark} 
+
 We conclude this section with the following central result on Pfaffian systems.
 We call a solution $a\in \R^n$ of a system of equations $F(x)=0$ regular, if the differential $\diff{F}(a)$ has maximal rank. 
 
 \begin{theorem}[Khovanskii] \label{thm:khovanskii}
-Let $F=(f_1,\dots,f_n) \colon \R^n \to \R^n$ be a Pfaffian function with chain $\vec{\boldq}=(q_1,\dots,q_s)$ and component-wise formats $(\alpha, \beta_i, s)$, for which the functions in the Pfaffian chain depend only on $x_1,\dots,x_k$ for some $k\leq n$. Then the number of regular real solutions of the system $F(x) = 0$ is bounded by 
+Let $F=(f_1,\dots,f_n) \colon \R^n\to \R^n$ be a Pfaffian function with chain $\pfaffchain{q}=(q_1,\dots,q_s)$ and component-wise formats $(\alpha, \beta_i, s)$, for which the functions in the Pfaffian chain depend only on $\{x_1,\dots,x_k\}$ for some $k\leq n$. Then the number of regular real solutions of the system $F(x) = 0$ is bounded by 
 \begin{equation*}
 2^{\frac{s(s - 1)}{2}} \beta_1 \dotsm \beta_n \left(\beta_1 + \dotsb + \beta_n - n + \min\{k, s\}\alpha + 1 \right)^s.
 \end{equation*}
@@ -135,7 +138,7 @@ In~\cite[\S 3.12, Corollary 5]{khovanskiui1991fewnomials}, a version of Theorem~
 in~\cite[Theorem 2.3]{jones2012density}.
 
 \begin{corollary}
-Let $F=(f_1,\dots,f_m) \colon \R^n \to \R^m$ be a Pfaffian function with chain $\vec{\boldq}=(q_1,\dots,q_s)$ and formats $(\alpha, \beta, s)$. Then the number of connected components of the zero set $\mathcal{Z}(f_1,\dots,f_m)$ is bounded by 
+Let $F=(f_1,\dots,f_m) \colon \R^n \to \R^m$ be a Pfaffian function with chain $\pfaffchain{q}=(q_1,\dots,q_s)$ and formats $(\alpha, \beta, s)$. Then the number of connected components of the zero set $\mathcal{Z}(f_1,\dots,f_m)$ is bounded by 
 \begin{equation}\label{eq:jones}
 2^{\frac{s(s - 1)}{2}+1} (\alpha+2\beta-1)^{n-1}\beta \left( n (\alpha+2\beta-2)+\alpha(\min\{k, s\}-1) + 2 \right)^s.
 \end{equation}
