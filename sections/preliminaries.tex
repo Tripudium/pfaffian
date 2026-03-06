@@ -1,6 +1,5 @@
 \section{Pfaffian functions and Pfaffian sets}
-We review the theory of Pfaffian functions and sets, leading up to an important result by Khovanskii that bounds the number of regular solutions of a system of Pfaffian equations in terms of the parameters of the Pfaffian functions and chains involved. References for the material in this section are~\cite{khovanskiui1991fewnomials, zell2003quantitative, gabrielov2004complexity}.
-We will assume throughout that $n\in \N_{>0}$.
+We review the theory of Pfaffian functions and sets, leading up to an important result by Khovanskii that bounds the number of regular solutions of a system of Pfaffian equations in terms of the parameters of the Pfaffian functions and chains involved. References for the material in this section are~\cite{khovanskiui1991fewnomials, zell2003quantitative, gabrielov2004complexity}. We assume throughout that $n\in \N_{>0}$.
 
 \subsection{Pfaffian functions}
 Pfaffian functions, introduced by Khovanskii~\cite{khovanskiui1991fewnomials}, are functions that satisfy triangular systems of first-order partial differential equations with polynomial coefficients. Pfaffian functions have a well-defined notion of complexity that can be used to prove various quantitative results about the geometric objects they define.
@@ -159,7 +158,7 @@ Artificial neural networks, or multilayer perceptrons, can be described in terms
 %  &  z^{(i)} = \sigma (A_i z^{(i-1)} + b^{(i)}), \ 1 \le i \le \ell \\
 %  & f(x) = A_{\ell +1} z^{(l)},
 %\end{align*}  
-for matrices $A^{i} \in \R^{n_{i} \times n_{i-1}}$ (for this to work, we need $n_0 = n$ and $n_{\ell + 1} = m$), vectors $b^{i} \in \R^{n_i}$, and activation functions $\sigma^i\colon \R\to \R$ that are applied componentwise. The function $g\colon \R^{n_\ell}\to \R^m$ is an output function, examples are a linear map $g(x)=A^{\ell+1}x$ or the softmax function (see Example~\ref{ex:softmax}).
+for matrices $A^{i} \in \R^{n_{i} \times n_{i-1}}$ (for this to work, we need $n_0 = n$ and $n_{\ell + 1} = m$), vectors $b^{i} \in \R^{n_i}$, and activation functions $\sigma^i\colon \R\to \R$ that are applied componentwise. The function $g\colon \R^{n_\ell}\to \R^m$ is an output function; examples are a linear map $g(x)=A^{\ell+1}x$ or the softmax function (see Example~\ref{ex:softmax}). The number of hidden units is given as the sum $h:=\sum_{i=1}^{\ell} n_i$. 
 
 \begin{figure}[h!]
 \centering
@@ -219,11 +218,6 @@ for matrices $A^{i} \in \R^{n_{i} \times n_{i-1}}$ (for this to work, we need $n
 %        \end{neuralnetwork}
 %    \caption{Neural network with $n = 3, \ell = 2, h = 10$}
 %\end{figure}
-
-The number of hidden units is given as the sum $h:=\sum_{i=1}^{\ell} n_i$. 
-
-\subsection{Neural Networks for classification}
-In its most simple form, a neural network 
 
 \subsection{Neural Networks and Pfaffian functions}
 Suppose that the activation functions $\sigma^i$ are autonomous Pfaffian functions with formats $(\alpha_i, \beta_i, s_i)$ with $s_i\geq 1$ for $i\in \{1,\dots,\ell\}$. 
