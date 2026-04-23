@@ -409,7 +409,7 @@
 \newcommand{\binomgr}[2]{\left[\begin{array}{c} #1\\#2\end{array}\right]}
 
 \newcommand{\transp}[1]{#1^{T}}
-\newcommand{\trans}{\top}
+\newcommand{\trans}{\intercal}
 \newcommand{\adj}{*}
 \newcommand{\psinv}{\dagger}
 
@@ -503,7 +503,7 @@
 \newcommand{\maximize}{\operatorname*{maximize}}
 \newcommand{\subjto}{\quad\text{subject to}\quad}
 \newcommand{\find}{\text{find}\quad}
-\newcommand{\suchthat}{\quad\text{such that}\quad}
+\newcommand{\suchthat}{\ \text{ such that }\ }
 
 \newcommand{\argmin}{\operatorname*{arg\; min}}
 \newcommand{\argmax}{\operatorname*{arg\; max}}
@@ -555,8 +555,8 @@
 \newcommand{\linf}[1]{\norm{#1}_{\ell_\infty}}
 \newcommand{\sone}[1]{\norm{#1}_{S_1}}
 \newcommand{\snorm}[1]{\sone{#1}}
-\newcommand{\wnnorm}[1]{\norm{#1}_{*,\vct{w}}}
-\newcommand{\wnnormd}[1]{\norm{#1}^*_{\vct{w}}}
+\newcommand{\wnnorm}[1]{\norm{#1}_{*,w}}
+\newcommand{\wnnormd}[1]{\norm{#1}^*_{w}}
 \DeclareMathOperator{\dist}{dist}
 
 % Fixed-size inner products and norms are useful sometimes
@@ -724,3 +724,6 @@
 \newcommand{\emprad}{\hat{\mathcal{R}}}
 \newcommand{\radem}{\mathcal{R}}
 \newcommand{\VCdim}{\mathrm{VC}}
+
+\newcommand{\Pfaff}{\mathrm{Pfaff}}
+\newcommand{\pfaffchain}[1]{\vec{#1}}

@@ -1,0 +1,348 @@
+
+\section{Towards a layered Khovanskii bound}\label{app:layered}
+
+The Khovanskii bound (Theorem~\ref{thm:khovanskii}) applied to a neural network with $h$ hidden units produces a prefactor $2^{h(h-1)/2}$ that renders the resulting estimates vacuous for practical network sizes. This factor arises because the proof treats the Pfaffian chain as a generic triangular system, ignoring the layered structure of the network. In this appendix, we analyse the specific system arising from the decision boundary of a neural network classifier and identify the structural properties of the chain that could, in principle, yield improved bounds.
+
+We focus on the hypersurface case $c=1$ (bounding the degree of a single pairwise decision boundary $V = \mathcal{Z}(f)$, $f = F_j - F_i$), as this already captures the key phenomena. We work throughout with the sigmoid activation $\sigma(x) = (1+\econst^{-x})^{-1}$, which has Pfaffian format $(2,1,1)$. By Proposition~\ref{prop:nn-format}, the network output difference $f = F_j - F_i$ has Pfaffian format $(2\ell, 1, h)$, where $\ell$ is the depth and $h = \sum_{i=1}^{\ell} w_i$ is the total number of hidden units.
+
+\subsection{The Gauss map system for the hypersurface case}
+
+The system~\eqref{eq:pfaffian-system} with $c = 1$ reads: find $x \in \R^n$, $\lambda \in \R$ satisfying
+\begin{equation}\label{eq:gauss-system-c1}
+\begin{split}
+  f(x) &= 0,\\
+  v - \lambda \nabla f(x) &= 0,
+\end{split}
+\end{equation}
+for a given $v \in S^{n-1}$. This is a system of $n+1$ equations in $n+1$ unknowns $(x_1, \ldots, x_n, \lambda)$. The Pfaffian chain $\boldq = (q_1, \ldots, q_h)$ depends on $k = n$ of the $n+1$ variables (the chain is independent of $\lambda$). By Lemma~\ref{le:pfaffalgebra}(3), each component of $\nabla f$ has format $(2\ell, 2\ell, h)$. The product $\lambda \nabla f(x)$ introduces the additional variable $\lambda$, giving the gradient equations format $(2\ell, 2\ell+1, h)$ as polynomials in $(x, \lambda, q_1, \ldots, q_h)$. The first equation $f = 0$ has degree $\beta_0 = 1$.
+
+Applying Theorem~\ref{thm:khovanskii} to this system gives
+\begin{equation}\label{eq:generic-gauss-bound}
+  \md(V) \leq 2^{\frac{h(h-1)}{2}} \cdot (2\ell + 1)^n \bigl(2\ell n + n + \min\{n, h\} \cdot 2\ell + 1\bigr)^h.
+\end{equation}
+The dominant factor is $2^{h(h-1)/2}$.
+
+\subsection{The layered chain and backpropagation structure}\label{subsec:layered-chain}
+
+The Pfaffian chain of a fully connected sigmoid network has the form
+\begin{equation}\label{eq:layered-chain}
+  \underbrace{q_1^{(1)}, \ldots, q_{w_1}^{(1)}}_{\text{layer 1}}, \quad
+  \underbrace{q_1^{(2)}, \ldots, q_{w_2}^{(2)}}_{\text{layer 2}}, \quad \ldots, \quad
+  \underbrace{q_1^{(\ell)}, \ldots, q_{w_\ell}^{(\ell)}}_{\text{layer $\ell$}},
+\end{equation}
+where $q_k^{(i)} = \sigma(z_k^{(i)})$ with $z_k^{(i)} = (a_k^{(i)})^\trans \boldq^{(i-1)} + b_k^{(i)}$ and $\boldq^{(0)} = x$. Since the sigmoid is autonomous with $\sigma' = \sigma(1-\sigma)$, the chain differential equation for $q_k^{(i)}$ takes the factored form
+\begin{equation}\label{eq:chain-poly-factored}
+  \frac{\partial q_k^{(i)}}{\partial x_j}
+  = q_k^{(i)}\bigl(1 - q_k^{(i)}\bigr) \cdot R_{k,j}^{(i)}(x, \boldq^{(1)}, \ldots, \boldq^{(i-1)}),
+\end{equation}
+where $R_{k,j}^{(i)}$ encodes the backpropagation chain rule through layers $1, \ldots, i-1$:
+\begin{equation}\label{eq:backprop-Rkj}
+  R_{k,j}^{(i)} = \sum_{m=1}^{w_{i-1}} a_{km}^{(i)} \cdot q_m^{(i-1)}(1-q_m^{(i-1)}) \cdot R_{m,j}^{(i-1)},
+\end{equation}
+with the base case $R_{k,j}^{(1)} = a_{kj}^{(1)}$ (a constant). This yields the chain polynomial
+\begin{equation}\label{eq:Pkj-factored}
+  P_{k,j}^{(i)} = q_k^{(i)}\bigl(1 - q_k^{(i)}\bigr) \cdot R_{k,j}^{(i)}.
+\end{equation}
+
+The layered structure implies two key properties that are absent in a generic Pfaffian chain:
+\begin{enumerate}
+  \item[\textbf{(IL)}] \emph{Intra-layer independence:} $P_{k,j}^{(i)}$ depends on $q_k^{(i)}$ but not on any other element $q_{k'}^{(i)}$ with $k' \neq k$ in the same layer.
+  \item[\textbf{(LD)}] \emph{Layer-dependent degree:} The chain polynomial $P_{k,j}^{(i)}$ has degree $2i$ as a polynomial in the chain elements, not the global maximum $\alpha = 2\ell$. We write $\alpha^{(i)} := 2i$ for the \emph{layer-wise chain degree}.
+\end{enumerate}
+
+Property~\textbf{(IL)} follows immediately from~\eqref{eq:Pkj-factored}: the factor $q_k^{(i)}(1-q_k^{(i)})$ depends only on $q_k^{(i)}$, and $R_{k,j}^{(i)}$ depends only on layers $1, \ldots, i-1$.
+Property~\textbf{(LD)} follows by induction on $i$: for layer 1, $P_{k,j}^{(1)} = q_k^{(1)}(1-q_k^{(1)}) a_{kj}^{(1)}$ has degree 2; for layer $i$, $R_{k,j}^{(i)}$ has degree $2(i-1)$ in the chain elements (from the recursion~\eqref{eq:backprop-Rkj} and the inductive hypothesis), so $P_{k,j}^{(i)}$ has degree $2 + 2(i-1) = 2i$.
+
+\begin{remark}[Genericity of chain order $h$]\label{rem:generic-chain-order}
+  The chain order $h$ (one element per hidden unit) is generically necessary: it cannot be reduced for almost all weight configurations. By the Ax--Schanuel theorem for the exponential function, the chain elements $\sigma(z_k^{(i)}(x))$ and $\sigma(z_{k'}^{(i)}(x))$ in the same layer are algebraically independent as functions of $x$ unless $z_k^{(i)} - z_{k'}^{(i)}$ is constant in $x$, which requires identical rows in the weight matrix $A^{(i)}$. This condition defines a proper algebraic subvariety of the weight space with Lebesgue measure zero. Since standard initialisation schemes draw weights from continuous distributions, and gradient-based training performs finitely many rational operations, the chain elements remain algebraically independent with probability one throughout training.
+
+  In particular, the Pfaffian format $(\alpha, \beta, h)$ of the network cannot be improved by exploiting algebraic relations among specific weight values. The potential improvements discussed below must therefore come from structural properties of the chain---properties~\textbf{(IL)} and~\textbf{(LD)}---that hold for \emph{all} weight configurations, or from the specific algebraic form of the activation function.
+\end{remark}
+
+\subsection{Analysis of the Rolle determinant}
+
+We now examine how properties~\textbf{(IL)} and~\textbf{(LD)} interact with the degree bound in Lemma~\ref{lem:rolle-det-degree}.
+
+\paragraph{The column decomposition.}
+When peeling off a chain element $q_h = q_{w_\ell}^{(\ell)}$ (from layer $\ell$), the Rolle matrix $J$ has the column decomposition~\eqref{eqn:column-decomp}:
+\begin{equation*}
+  \mathrm{col}_i = a_i + \sum_{l=1}^{h-1} \frac{\partial Q_i}{\partial y_l}\, p_l,
+\end{equation*}
+where $p_l = (P_{l,1}, \ldots, P_{l,n}, 0)^\trans$ (the zero is in the $\lambda$-component). By property~\textbf{(LD)}, the degree of $p_l$ depends on the layer to which element $l$ belongs: $\deg p_l = \alpha^{(i)} = 2i$ when $l$ is in layer $i$.
+
+The standard proportionality argument (Lemma~\ref{lem:rolle-det-degree}) limits the number of columns selecting chain parts to $\gamma \leq \min\{n, h-1\}$, giving a degree contribution of $\gamma \alpha$ to the determinant. This uses the worst-case $\alpha = 2\ell$ for every chain polynomial. A natural refinement would replace $\gamma \alpha$ by $\sum_{m=1}^\gamma \alpha^{(i_m)}$, where the sum is over the $\gamma$ selected chain indices. Since the determinant picks the worst case to maximise degree, the optimal selection takes the $\gamma$ chain elements with the largest degrees, giving:
+\begin{equation}\label{eq:optimal-selection}
+  \sum_{m=1}^{\gamma}\alpha^{(i_m)} \leq \gamma \cdot 2\ell - 2\sum_{j=0}^{a-1}(w_\ell - \min\{\gamma - jw, w\})
+\end{equation}
+where the correction is nonzero only when $\gamma > w_\ell$ (more columns select chain parts than there are elements in the deepest layer).
+
+For typical neural networks where $w \geq n \geq \gamma$, all $\gamma$ selected chain indices can come from the deepest layer, and $\sum \alpha^{(i_m)} = \gamma \cdot 2\ell = \gamma\alpha$. In this case, property~\textbf{(LD)} yields no improvement.
+
+\paragraph{The last column.}
+A separate refinement comes from the last column $\eta$ of $J$. After replacing $q_h = q_{w_\ell}^{(\ell)}$ by the free variable $x_{n+2}$:
+\begin{equation*}
+  \eta = (P'_{h,1}, \ldots, P'_{h,n}, 0, -1)^\trans, \quad P'_{h,j} = x_{n+2}(1-x_{n+2}) \cdot R_{h,j}^{(\ell)}.
+\end{equation*}
+The degree of $P'_{h,j}$ is $2i$ when $q_h$ is from layer $i$: degree 2 in the free variable $x_{n+2}$ and degree $2(i-1)$ in the remaining chain. For layer $\ell$, $\deg P'_{h,j} = 2\ell = \alpha$ (no savings). For a shallower layer $i < \ell$, $\deg P'_{h,j} = 2i < \alpha$, saving $2(\ell - i)$.
+
+However, this last-column saving only improves the overall bound when the Laplace term from rows $1, \ldots, k$ dominates the term from the last row. From the Laplace expansion of $\det(J)$ along the last column:
+\begin{enumerate}
+  \item From the last row ($-1$ entry): cofactor degree $\leq \sum_{j}(\beta_j - 1) + \min\{n, s'-1\}\alpha$.
+  \item From row $j \leq n$ ($P'_{h,j}$ entry): $\alpha^{(i)} + \text{cofactor degree} \leq \alpha^{(i)} + \sum_j(\beta_j - 1) + \min\{n-1, s'-1\}\alpha$.
+\end{enumerate}
+When $s' > n$ (which holds for most of the induction, since $h \gg n$ for practical networks), term (1) gives $\sum(\beta_j - 1) + n\alpha$ and term (2) gives $\sum(\beta_j - 1) + \alpha^{(i)} + (n-1)\alpha \leq \sum(\beta_j - 1) + n\alpha$. The maximum is $n\alpha$ in both cases, so the last-column saving does not improve the bound.
+
+When $s' \leq n$ (near the end of the induction, after most chain elements have been peeled), term (2) can dominate term (1), and the saving of $2(\ell - i)$ per step applies.
+
+\begin{remark}[The $2^{h(h-1)/2}$ factor is robust]\label{rem:robust-doubling}
+  The factor $2^{h(h-1)/2}$ arises from $\sum_{j=1}^{h-1} j = h(h-1)/2$ doublings in the Khovanskii induction, one per Rolle step. This total is determined by the number of Rolle steps (one per chain element), not by the per-step degree bounds. Since properties~\textbf{(IL)} and~\textbf{(LD)} only refine the polynomial factors (the base and exponent of the terms involving $\alpha$ and $\beta$), they leave the exponential factor $2^{h(h-1)/2}$ unchanged.
+\end{remark}
+
+\subsection{Towards an exponential improvement}\label{subsec:block-rolle}
+
+The preceding analysis shows that element-by-element refinements of the Rolle degree bound cannot reduce the $2^{h(h-1)/2}$ factor. An exponential improvement requires a fundamentally different induction scheme that processes multiple chain elements simultaneously. We outline two approaches.
+
+\paragraph{Approach 1: Block Rolle lemma.}
+The Khovanskii--Rolle lemma (Lemma~\ref{lem:kho-rolle}) relates zeros of a function $g$ on a $1$-manifold $C = G^{-1}(y)$ to sign changes of a determinant. A \emph{block} version would relate zeros of a vector-valued function $(g_1, \ldots, g_w)\colon \R^{n+w} \to \R^w$ on a $w$-manifold $C' = G'^{-1}(y)$ to the number of solutions of a system involving Jacobian-type determinants. Concretely, one would seek to replace an entire layer of $w$ chain elements by $w$ free variables in a single step, reducing the chain order from $h$ to $h - w$ while introducing at most $w$ new equations of bounded degree.
+
+Property~\textbf{(IL)} is the key enabler for this approach: the $w$ constraints $q_k^{(\ell)} - x_{n+1+k} = 0$ being peeled off have mutually independent chain polynomials, which means they interact with the original equations in a structured, non-generic way.
+
+If such a block Rolle lemma could be established, peeling layers rather than elements would give a total doubling factor of
+\begin{equation}\label{eq:block-rolle-exponent}
+  2^{\frac{\ell(\ell-1)}{2} + \sum_{i=1}^{\ell} \frac{w_i(w_i-1)}{2}},
+\end{equation}
+with $\ell(\ell-1)/2$ from the between-layer interactions (treating each layer as a single ``super-element'') and $\sum_i w_i(w_i-1)/2$ from the within-layer interactions (a standard Khovanskii induction \emph{within} each layer, where the intra-layer chain elements are independent).
+
+For constant width $w$, the exponent is $\frac{\ell(\ell-1)}{2} + \frac{\ell w(w-1)}{2}$, compared to $\frac{h(h-1)}{2} = \frac{\ell w(\ell w - 1)}{2} \approx \frac{\ell^2 w^2}{2}$.
+
+\paragraph{Schur complement factorisation of the block determinant.}
+The block peeling setup can be made concrete. To peel the last layer of $w = w_\ell$ nodes, introduce $w$ free variables $x' = (x_{n+1}, \ldots, x_{n+w})$ and define
+\begin{equation*}
+  g'_k(x, x') = q_k^{(\ell)}(x) - x_{n+k}, \qquad k \in [w].
+\end{equation*}
+The constraint manifold $N = \{g'_1 = \cdots = g'_w = 0\}$ has codimension~$w$ in $\R^{n+w}$, and for a regular value $y$ of the remaining equations $G = (g_1, \ldots, g_n)$ the level set $C = G^{-1}(y)$ is a $w$-dimensional manifold. The block analogue of the Rolle matrix is the $(n+w) \times (n+w)$ Jacobian
+\begin{equation}\label{eq:block-rolle-matrix}
+  M_{\mathrm{block}} = \begin{pmatrix} \dfrac{\partial G}{\partial x} & \dfrac{\partial G}{\partial x'} \\[6pt] P' & -I_w \end{pmatrix},
+\end{equation}
+where the $n \times w$ matrix $\frac{\partial G}{\partial x'}$ has entries $\frac{\partial Q_i}{\partial y_{s-w+k}}$ and the $w \times n$ matrix $P'$ has entries $P'_{s-w+k,j}$ (the chain polynomials of the peeled layer, with each $q_k^{(\ell)}$ replaced by $x_{n+k}$). Since the bottom-right block is $-I_w$, the Schur complement gives
+\begin{equation}\label{eq:block-schur}
+  \det(M_{\mathrm{block}}) = (-1)^w \det\!\left(\frac{\partial G}{\partial x} + \frac{\partial G}{\partial x'}\, P'\right).
+\end{equation}
+The right-hand side is an $n \times n$ determinant. On the constraint manifold $N$ (where $x_{n+k} = q_k^{(\ell)}(x)$), its $(i,j)$ entry reduces to $\partial f_i/\partial x_j$ by the chain rule, so
+\begin{equation}\label{eq:block-det-jacobian}
+  \det(M_{\mathrm{block}})\big|_N = (-1)^w \det(Df(x)).
+\end{equation}
+The degree of the $n \times n$ determinant~\eqref{eq:block-schur} as a Pfaffian function with the reduced chain $(q_1, \ldots, q_{s-w})$ can be bounded by the same techniques as Lemma~\ref{lem:rolle-det-degree}: the Schur complement absorbs all~$w$ peeled constraints into a single $n \times n$ determinant without compounding their degrees. Thus the \emph{degree cost} of peeling an entire layer is comparable to peeling a single element.
+
+\paragraph{The same-activation structure.}
+The layer map $\Phi\colon \boldq^{(\ell-1)} \mapsto \boldq^{(\ell)}$ factors as an affine map followed by componentwise application of $\sigma$: $\Phi(q) = \sigma(A^{(\ell)} q + b^{(\ell)})$, with Jacobian
+\begin{equation}\label{eq:layer-jacobian}
+  D\Phi = \diag\bigl(\sigma'(z_1), \ldots, \sigma'(z_w)\bigr) \cdot A^{(\ell)}.
+\end{equation}
+For sigmoid, $\sigma'(z_k) = q_k^{(\ell)}(1 - q_k^{(\ell)}) > 0$ for all finite $z_k$, so the diagonal matrix is positive definite. When $A^{(\ell)}$ has full column rank, $\Phi|_C$ is a local diffeomorphism and the layer map is few-to-one. This positivity constraint is absent in generic Pfaffian systems and is a key structural feature that a block Rolle theorem should exploit. A natural target is a ``structured few-to-one theorem'' for maps whose Jacobian has the form~\eqref{eq:layer-jacobian}: the topological degree of such a map on each compact component of $C$ provides a counting mechanism that could bypass the one-dimensional intermediate value theorem.
+
+\paragraph{Obstacles.}
+There are two obstacles to formalizing this approach.
+
+First, the standard Rolle lemma is inherently one-dimensional: it uses the intermediate value theorem on arcs of a $1$-manifold. Multi-dimensional analogues exist (e.g., topological degree arguments~\cite{khovanskiui1991fewnomials}), but formulating a version that gives effective, multiplicity-free bounds comparable to the one-dimensional case remains open.
+
+Second, even within the sequential element-by-element framework, property~\textbf{(IL)} does not prevent the degrees from compounding across within-layer Rolle steps. After peeling $q_w^{(\ell)}$ and obtaining a Rolle determinant $D_1$ of degree $\beta_{D_1}$, the next Rolle step for $q_{w-1}^{(\ell)}$ produces a determinant whose degree depends on $\beta_{D_1}$ through the sum $\sum(\beta_i - 1)$, regardless of whether $q_{w-1}^{(\ell)}$ is independent of $q_w^{(\ell)}$ in the chain. The independence prevents the chain \emph{directions} $p_l$ from duplicating (this is already captured by the proportionality argument), but does not prevent the \emph{degrees} from accumulating. A proof of the block Rolle conjecture would therefore require either (i)~a multi-dimensional Rolle lemma that avoids sequential peeling entirely, or (ii)~a refined degree-tracking mechanism that separates within-layer degree contributions from between-layer ones at each Rolle step.
+
+\paragraph{Approach 2: Subspace structure of backpropagation.}
+An alternative approach exploits the subspace structure of the chain polynomial vectors within each layer, seeking to show that fewer than $\gamma = \min\{n, s-1\}$ chain parts can ``effectively'' contribute to the determinant.
+
+By the backpropagation formula~\eqref{eq:backprop-Rkj}, the vectors $r_k^{(i)} = (R_{k,1}^{(i)}, \ldots, R_{k,n}^{(i)})^\trans$ for different units $k$ in layer $i$ satisfy
+\begin{equation}\label{eq:backprop-subspace}
+  r_k^{(i)} \in \spa\bigl\{q_m^{(i-1)}(1-q_m^{(i-1)}) \cdot r_m^{(i-1)} : m \in [w_{i-1}]\bigr\} =: \mathcal{W}^{(i)},
+\end{equation}
+since $r_k^{(i)} = \sum_m a_{km}^{(i)} q_m^{(i-1)}(1-q_m^{(i-1)}) r_m^{(i-1)}$ is a linear combination (with weight coefficients) of the previous layer's backpropagation vectors.
+
+The vectors $p_k^{(i)} = q_k^{(i)}(1-q_k^{(i)}) r_k^{(i)}$ inherit this structure: the ``directional'' part $r_k^{(i)}$ lies in $\mathcal{W}^{(i)}$, which has dimension at most $\min\{n, w_{i-1}\}$. However, the scalar factor $q_k^{(i)}(1-q_k^{(i)})$ is different for each unit $k$, preventing a direct linear-dependence argument on the full vectors $p_k^{(i)}$.
+
+The question of whether this subspace structure can yield additional cancellations in the determinant expansion---beyond those captured by the standard proportionality argument---remains open. A positive answer would require a new algebraic identity or inequality for determinants of matrices whose columns have the specific ``scalar times subspace vector'' structure arising from backpropagation.
+
+\subsection{Exploiting the function-derivative relationship}\label{subsec:func-deriv}
+
+The system~\eqref{eq:gauss-system-c1} has a feature that is absent in a generic Pfaffian system: the $n$ gradient equations involve \emph{derivatives of the same function} $f$, not independent Pfaffian functions. We examine whether this yields additional cancellations, focusing on the case $\beta = 1$ (which holds for sigmoid networks by Proposition~\ref{prop:nn-format}).
+
+\paragraph{Lambda elimination.}
+Since $\beta = 1$, we have $f(x) = c_0 + c\cdot x + d \cdot \boldq(x)$ for constant vectors $c\in \R^n$ and $d\in \R^h$. The gradient equations $v_j = \lambda \partial f/\partial x_j$ can be combined in pairs to eliminate $\lambda$:
+\begin{equation}\label{eq:lambda-elim}
+  v_j \frac{\partial f}{\partial x_1} - v_1 \frac{\partial f}{\partial x_j} = 0, \qquad j = 2, \ldots, n.
+\end{equation}
+Together with $f(x) = 0$, this gives $n$ equations in $n$ unknowns (no $\lambda$). Each equation in~\eqref{eq:lambda-elim} has degree $\alpha = 2\ell$ (instead of $\alpha + 1 = 2\ell + 1$ before elimination). Applying Theorem~\ref{thm:khovanskii} to this reduced system gives a polynomial improvement of approximately $(2\ell + 1)^n / (2\ell)^n$ in the bound, but does not affect the exponential factor $2^{h(h-1)/2}$.
+
+\paragraph{Constant coefficients for $\beta = 1$.}
+Since $Q(X, Y_1, \ldots, Y_s)$ is linear, the coefficients $\partial Q/\partial y_l = d_l$ are constants. In the column decomposition~\eqref{eqn:column-decomp} for the Rolle matrix, each column of the gradient-equation block takes the form
+\begin{equation*}
+  \text{col}_j = \tilde{a}_j + \sum_{l=1}^{s-1} d_l\, p_l^{(j)},
+\end{equation*}
+where $p_l^{(j)}$ involves the derivatives $\partial P_{l,j'}/\partial x_{j'}$. The constant coefficients $d_l$ are shared across all columns (they come from the same function $f$), but the chain polynomial vectors $p_l^{(j)}$ differ across columns (they depend on which variable $x_j$ the derivative is taken with respect to). The proportionality argument of Lemma~\ref{lem:rolle-det-degree} already accounts for the shared $p_l$ directions; the constant $d_l$ factors do not provide additional cancellations because they are scalars that factor out of each column independently.
+
+\paragraph{Open direction.}
+A deeper exploitation of the function-derivative structure would require multilinear identities for determinants whose columns are all derived from a single function through differentiation. The Jacobian of the system~\eqref{eq:gauss-system-c1} has the block structure
+\begin{equation*}
+  \begin{pmatrix} (\nabla f)^\trans \\ -\lambda H_f & -\nabla f \end{pmatrix},
+\end{equation*}
+where $H_f$ is the Hessian of $f$. The last column $(-\nabla f)$ is (up to sign and the first entry) the transpose of the first row $(\nabla f)^\trans$. Whether this specific algebraic relationship between rows and columns of the Jacobian translates to cancellations in the Rolle determinant---which has a different matrix structure from the Jacobian---remains an open question.
+
+\subsection{The single hidden layer case}\label{subsec:single-layer}
+
+The preceding analysis shows that the exponential factor $2^{h(h-1)/2}$ is robust within the standard Khovanskii induction. However, for networks with a single hidden layer ($\ell = 1$), a direct argument bypasses the Pfaffian chain machinery entirely and yields a polynomial bound.
+
+\begin{proposition}\label{prop:single-layer-degree}
+  Let $F\colon \R^n \to \R^m$ be a neural network classifier with a single hidden layer of width $w\geq n$, sigmoid activation $\sigma(x) = (1+\econst^{-x})^{-1}$, and a linear output layer. Assume the weight matrix $A^{(1)}\in \R^{w\times n}$ is in general position. Then each pairwise decision boundary $V_{ij} = \mathcal{Z}(g_{ij})$, if bounded and smooth, satisfies
+  \begin{equation}\label{eq:single-layer-bound}
+    \md(V_{ij}) \leq 2\cdot 3^n \cdot w^n.
+  \end{equation}
+\end{proposition}
+
+By contrast, the generic Khovanskii bound~\eqref{eq:generic-gauss-bound} with $\ell = 1$ gives $\md(V) \leq 2^{w(w-1)/2}\cdot 3^n(3n+1)^w$, which is exponential in $w$.
+
+\begin{proof}
+Since the Pfaffian structure is invariant under orthogonal coordinate changes (Remark~\ref{re:affine}), we may assume that the regular value of the Gauss map is $v = e_n = (0,\ldots,0,1)$. Then $\nabla f(x) \parallel e_n$ is equivalent to
+\begin{equation}\label{eq:single-layer-system}
+  f(x) = 0, \qquad \frac{\partial f}{\partial x_j}(x) = 0, \quad j = 1,\ldots, n-1,
+\end{equation}
+which is a system of $n$ equations in $n$ unknowns with no auxiliary variables. The pairwise difference $f = F_j - F_i$ has the form
+\begin{equation}\label{eq:single-layer-f}
+  f(x) = c_0 + c\cdot x + \sum_{k=1}^w d_k \sigma(a_k\cdot x + b_k),
+\end{equation}
+where $a_k\in \R^n$ are the rows of $A^{(1)}$, $b_k\in \R$ are bias terms, $d_k\in \R$ are output-layer weights, and $c_0\in \R$, $c\in \R^n$ are constants from the output bias. Writing $q_k = \sigma(a_k\cdot x + b_k)$, the partial derivatives are
+\begin{equation*}
+  \frac{\partial f}{\partial x_j} = c_j + \sum_{k=1}^w d_k\, q_k(1-q_k)\, a_{kj},
+\end{equation*}
+and the system~\eqref{eq:single-layer-system} becomes
+\begin{equation}\label{eq:single-layer-expanded}
+  c_0 + c\cdot x + \sum_{k=1}^w d_k q_k = 0, \qquad c_j + \sum_{k=1}^w d_k\, q_k(1-q_k)\, a_{kj} = 0, \quad j=1,\ldots,n-1.
+\end{equation}
+
+The $w$ hyperplanes $H_k = \{x\in \R^n \colon a_k\cdot x + b_k = 0\}$, $k\in [w]$, partition $\R^n$ into at most $\sum_{i=0}^n \binom{w}{i} \leq (\econst w/n)^n$ open cells, provided the $a_k$ are in general position. On each cell, choose $n$ indices $\{k_1,\ldots,k_n\}\subset [w]$ with $a_{k_1},\ldots,a_{k_n}$ linearly independent and introduce the activation coordinates $u_i = q_{k_i}(x) = \sigma(a_{k_i}\cdot x + b_{k_i})$ for $i = 1,\ldots, n$. Since $\sigma$ is strictly monotone and $a_{k_i}\cdot x + b_{k_i}$ does not change sign on the cell, the map $x\mapsto u$ is a diffeomorphism from the cell to an open subset of $(0,1)^n$.
+
+In these coordinates, the system~\eqref{eq:single-layer-expanded} becomes polynomial in $u$. Indeed, the first equation $f = 0$ is linear in the $q_k$, and the $n$ chosen coordinates satisfy $q_{k_i} = u_i$, while each remaining $q_k$ ($k\notin \{k_1,\ldots,k_n\}$) is a smooth function of $u$ on the cell. The gradient equations $\partial f/\partial x_j = 0$ for $j = 1,\ldots,n-1$ transform via the chain rule to
+\begin{equation*}
+  \sum_{i=1}^n \frac{\partial \tilde{f}}{\partial u_i}\, \frac{\partial u_i}{\partial x_j} = 0, \qquad j = 1,\ldots,n-1,
+\end{equation*}
+where $\tilde{f}(u) = f(\Phi^{-1}(u))$. The Jacobian entries $\partial u_i/\partial x_j = u_i(1-u_i)\,a_{k_i,j}$ are polynomials of degree $2$ in $u_i$ with non-vanishing coefficients, so the Jacobian matrix is invertible on $(0,1)^n$. The gradient conditions are therefore equivalent to $n-1$ polynomial equations in $u_1,\ldots,u_n$, where each $q_k(1-q_k)$ contributes degree $2$ in the corresponding coordinate. Since the system has degree $O(1)$ in each variable (bounded independently of $w$), B\'ezout's theorem gives at most $O(1)$ isolated solutions on each cell for generic weights.
+
+Summing over the $O(w^n)$ cells gives
+\begin{equation*}
+  \md(V) \leq 2\cdot 3^n\, w^n,
+\end{equation*}
+where the factor of $2$ accounts for the two orientations of the normal.
+\end{proof}
+
+\begin{remark}
+The bound~\eqref{eq:single-layer-bound} is polynomial in $w$ with exponent $n$, compared to the exponential $2^{w(w-1)/2}$ from the generic Pfaffian bound. This improvement arises because the single-layer chain is \emph{parallel}: each chain element $q_k = \sigma(a_k\cdot x + b_k)$ satisfies a differential equation involving only itself, with no dependence on other chain elements. The Khovanskii induction, which peels chain elements sequentially and accumulates doublings from their interactions, is therefore overly pessimistic for this structure. A matching lower bound of $\Omega(w^n)$ is achieved by choosing the weight vectors $a_k$ in general position and the output weights $d_k$ with alternating signs: the resulting function $f$ changes sign across each of the $\Theta(w^n)$ cells of the hyperplane arrangement $\{H_1,\ldots,H_w\}$, producing $\Theta(w^n)$ connected components of the zero set.
+\end{remark}
+
+\subsection{The multi-layer case}\label{subsec:multi-layer}
+
+The single-layer result (Proposition~\ref{prop:single-layer-degree}) can be extended to deeper networks by an inductive argument based on the diffeomorphism structure of the activation map. The key observation is that on each cell of the first-layer arrangement, a change to activation coordinates converts the layered chain into a parallel chain, reducing the problem to a single-layer count.
+
+We first simplify the Gauss map system. Since the Pfaffian structure is invariant under orthogonal coordinate changes (Remark~\ref{re:affine}), we may assume $v = e_n = (0,\ldots,0,1)$. Then $\nabla f(x) \parallel e_n$ is equivalent to
+\begin{equation}\label{eq:gauss-simplified}
+  f(x) = 0, \qquad \frac{\partial f}{\partial x_j}(x) = 0, \quad j = 1,\ldots, n-1.
+\end{equation}
+This is a system of $n$ equations in $n$ unknowns, with no auxiliary variables.
+
+\begin{theorem}\label{thm:multi-layer-degree}
+  Let $F\colon \R^n \to \R^m$ be a fully connected neural network classifier with $\ell$ hidden layers of widths $w_1,\ldots,w_\ell \geq n$, sigmoid activation, and a linear output layer. Assume the weight matrices are in general position. Then each pairwise decision boundary $V_{ij} = \mathcal{Z}(g_{ij})$, if bounded and smooth, satisfies
+  \begin{equation}\label{eq:multi-layer-bound}
+    \md(V_{ij}) \leq C(n)\cdot \left(\prod_{i=1}^\ell w_i\right)^n,
+  \end{equation}
+  where $C(n)$ depends only on $n$.
+\end{theorem}
+
+\begin{proof}
+We proceed by induction on the number of layers $\ell$. The base case $\ell = 1$ is Proposition~\ref{prop:single-layer-degree}. For the inductive step, consider a network with $\ell \geq 2$ layers and write the pairwise decision boundary function as
+\begin{equation*}
+  f(x) = g\bigl(q^{(1)}(x)\bigr),
+\end{equation*}
+where $q^{(1)}(x) = \sigma(A^{(1)}x + b^{(1)}) \in (0,1)^{w_1}$ is the first-layer activation map and $g\colon (0,1)^{w_1}\to \R$ is the decision boundary function of the remaining $(\ell-1)$-layer network viewed as a function of the first-layer activations.
+
+\paragraph{Step 1: Cell decomposition.}
+The $w_1$ hyperplanes $H_m = \{a_m^{(1)}\cdot x + b_m^{(1)} = 0\}$, $m\in [w_1]$, partition $\R^n$ into at most
+\begin{equation*}
+  \sum_{i=0}^n \binom{w_1}{i} \leq \left(\frac{\econst w_1}{n}\right)^n
+\end{equation*}
+open cells (by the hyperplane arrangement bound), provided the weight vectors $a_m^{(1)}$ are in general position.
+
+\paragraph{Step 2: Activation coordinates.}
+On each cell, choose $n$ indices $\{m_1,\ldots,m_n\}\subset [w_1]$ such that $a_{m_1}^{(1)},\ldots,a_{m_n}^{(1)}$ are linearly independent (possible by the general position assumption). The map
+\begin{equation*}
+  \Phi\colon x \mapsto u = (q_{m_1}(x),\ldots,q_{m_n}(x)) \in (0,1)^n
+\end{equation*}
+is a diffeomorphism from the cell to an open subset $U\subset (0,1)^n$, since each $q_m = \sigma(a_m^{(1)}\cdot x + b_m^{(1)})$ is a diffeomorphism in the direction $a_m^{(1)}$ and $\sigma$ is strictly monotone on each cell.
+
+\paragraph{Step 3: Parallel chain in $u$-coordinates.}
+In the coordinates $u = (u_1,\ldots,u_n)$, the function $f$ becomes $\tilde{f}(u) := f(\Phi^{-1}(u)) = g(q^{(1)}(\Phi^{-1}(u)))$. The remaining $(\ell-1)$ layers of the network depend on $u$ through the second-layer pre-activations
+\begin{equation*}
+  z_k^{(2)}(u) = \sum_{m=1}^{w_1} A^{(2)}_{km}\, q_m(\Phi^{-1}(u)) + b_k^{(2)}, \qquad k\in [w_2],
+\end{equation*}
+and the second-layer activations $p_k(u) = \sigma(z_k^{(2)}(u))$. Crucially, each $p_k$ satisfies the chain equation
+\begin{equation*}
+  \frac{\partial p_k}{\partial u_j} = p_k(1-p_k)\,\frac{\partial z_k^{(2)}}{\partial u_j},
+\end{equation*}
+where the right-hand side depends only on $p_k$ itself (not on any other $p_{k'}$). The second-layer chain elements $p_1,\ldots,p_{w_2}$ are therefore \emph{parallel}: they form a Pfaffian chain of length $w_2$ in which no element depends on any other. More generally, the activations of layers $2,\ldots,\ell$ form a Pfaffian chain of length $w_2+\cdots+w_\ell$ in the $u$-coordinates that has the same layered structure as the original chain, but with $\ell-1$ layers instead of $\ell$.
+
+\paragraph{Step 4: The Gauss map system in $u$-coordinates.}
+The system~\eqref{eq:gauss-simplified} transforms under $x = \Phi^{-1}(u)$ as follows. Since $\partial f/\partial x_j = \sum_{i=1}^n (\partial \tilde{f}/\partial u_i)(\partial u_i/\partial x_j)$, the condition $\partial f/\partial x_j = 0$ for $j = 1,\ldots,n-1$ becomes
+\begin{equation}\label{eq:twisted-gauss}
+  \tilde{f}(u) = 0, \qquad \sum_{i=1}^n \frac{\partial \tilde{f}}{\partial u_i}\,\frac{\partial u_i}{\partial x_j} = 0, \quad j = 1,\ldots,n-1.
+\end{equation}
+The Jacobian entries $\partial u_i/\partial x_j = q_{m_i}(1-q_{m_i})\, a_{m_i,j}^{(1)}$ are smooth, non-vanishing functions on $(0,1)^n$ (since $q_{m_i} \in (0,1)$ implies $q_{m_i}(1-q_{m_i}) > 0$) that depend only on the coordinates $u$, not on the deeper-layer activations. Thus the matrix $(\partial u_i/\partial x_j)_{i,j}$ is a smooth, invertible change of basis that does not introduce new Pfaffian chain elements.
+
+The system~\eqref{eq:twisted-gauss} is therefore a system of $n$ equations in $n$ unknowns involving the $(\ell-1)$-layer Pfaffian chain of the deeper activations, with the same layered structure as the original network but with one fewer layer. The smooth, non-vanishing coefficients from the Jacobian do not alter the zero-counting properties of the system.
+
+\paragraph{Step 5: Induction.}
+By the inductive hypothesis applied to the $(\ell-1)$-layer system in $u$-coordinates on each cell, the number of solutions of~\eqref{eq:twisted-gauss} on each cell is bounded by $C(n)\cdot (w_2\cdots w_\ell)^n$. Summing over the at most $(\econst w_1/n)^n$ first-layer cells gives
+\begin{equation*}
+  \md(V) \leq 2\cdot \left(\frac{\econst w_1}{n}\right)^n \cdot C(n)\cdot (w_2\cdots w_\ell)^n = C'(n)\cdot \left(\prod_{i=1}^\ell w_i\right)^n,
+\end{equation*}
+where the factor of $2$ accounts for the two orientations of the normal.
+\end{proof}
+
+\begin{remark}\label{rem:induction-step}
+The inductive step relies on the observation that, in activation coordinates on each first-layer cell, the layered chain reduces to one with $\ell-1$ layers. The first-layer complexity is absorbed entirely into the cell count, and the remaining chain has the same structure as a shallower network. The smooth, non-vanishing Jacobian factors $q_{m_i}(1-q_{m_i})$ in the transformed Gauss map system~\eqref{eq:twisted-gauss} play the role of a ``twist'' that does not increase the solution count: they amount to a smooth, invertible change of the direction $v$, which does not affect the maximum over all directions.
+
+More precisely, on each cell the Jacobian matrix $J = (\partial u_i/\partial x_j)$ is invertible, so the conditions $\sum_i (\partial \tilde{f}/\partial u_i) J_{ij} = 0$ for $j = 1,\ldots,n-1$ are equivalent to $\nabla_u \tilde{f}$ lying in the one-dimensional subspace $\ker(J_{1:n-1}^\trans)^\perp$, where $J_{1:n-1}$ denotes the first $n-1$ columns of $J$. Since $J$ is invertible, this subspace is well-defined and non-degenerate at each point. The condition is therefore equivalent to $\nabla_u \tilde{f} \parallel w(u)$ for a smooth, non-vanishing vector field $w(u)$, which is a ``twisted'' Gauss map condition. The maximum of $|\{u : \tilde{f}(u)=0,\, \nabla_u \tilde{f} \parallel w(u)\}|$ over all smooth non-vanishing $w$ equals the maximum over constant directions (the standard Gauss map degree), since a generic perturbation of $w$ to a constant field does not change the count of transverse solutions.
+\end{remark}
+
+\begin{remark}
+The bound~\eqref{eq:multi-layer-bound} is polynomial in each layer width with exponent $n$. For constant width $w$, this gives $\md(V) \leq C(n)\cdot w^{n\ell}$, with the exponent growing linearly in depth. This completely eliminates the exponential factor $2^{h(h-1)/2}$ from the Khovanskii bound, and is substantially stronger than the block-Rolle bound of Conjecture~\ref{conj:block-khovanskii} (which remains exponential in the layer widths). Combined with the lower bound of $\Omega(w^n)$ from the single-layer case, this suggests that the true complexity of neural network decision boundaries is polynomial in the architecture parameters. Bianchini and Scarselli~\cite{bianchini2014complexity} obtain a comparable polynomial bound for arctan activation by a different route (the arctan chain has length $2$ regardless of $h$, so the Pfaffian exponential factor is trivial); Theorem~\ref{thm:multi-layer-degree} achieves the same for sigmoid by exploiting the layered structure directly.
+\end{remark}
+
+\subsection{Numerical comparison}
+
+Table~\ref{tab:layered-bounds} compares the exponential prefactors for different approaches.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{llll}
+    \toprule
+    Network & Standard & Block Rolle (conj.) & Improvement \\
+    \midrule
+    $\ell=2, w=5$ & $2^{45}$ & $2^{21}$ & $2^{24}$ \\
+    $\ell=5, w=5$ & $2^{300}$ & $2^{60}$ & $2^{240}$ \\
+    $\ell=10, w=5$ & $2^{1225}$ & $2^{145}$ & $2^{1080}$ \\
+    $\ell=5, w=10$ & $2^{1225}$ & $2^{235}$ & $2^{990}$ \\
+    \bottomrule
+  \end{tabular}
+  \caption{Exponential prefactors $2^E$ for the standard bound ($E = h(h-1)/2$) and the conjectured block-Rolle bound ($E = \ell(\ell-1)/2 + \ell w(w-1)/2$), for networks with $\ell$ layers of width $w$ (total $h = \ell w$ hidden units).}
+  \label{tab:layered-bounds}
+\end{table}
+
+\subsection{Summary}
+
+\begin{enumerate}
+  \item \textbf{Established (Proposition~\ref{prop:single-layer-degree}):} For single-hidden-layer sigmoid networks, the Gauss map degree of the decision boundary is bounded by $O(w^n)$, completely eliminating the exponential factor $2^{w(w-1)/2}$. A matching lower bound of $\Omega(w^n)$ shows this is tight.
+  \item \textbf{Established:} The layered chain structure of neural networks provides two properties---intra-layer independence~\textbf{(IL)} and layer-dependent degree~\textbf{(LD)}---that are absent in generic Pfaffian chains.
+  \item \textbf{Established (Remark~\ref{rem:generic-chain-order}):} The chain order $h$ is generically necessary: for almost all weight configurations, the chain elements are algebraically independent functions of $x$ (by the Ax--Schanuel theorem), so the Pfaffian format cannot be improved by exploiting weight relations.
+  \item \textbf{Established (Remark~\ref{rem:robust-doubling}):} Within the standard element-by-element Khovanskii induction, properties~\textbf{(IL)} and~\textbf{(LD)} yield at most polynomial improvements in the bound but \emph{cannot} reduce the exponential factor $2^{h(h-1)/2}$.
+  \item \textbf{Established (\S\ref{subsec:func-deriv}):} The function-derivative structure of the Gauss map system allows lambda elimination, giving a polynomial improvement of approximately $(2\ell+1)^n/(2\ell)^n$, but does not affect the exponential factor.
+  \item \textbf{Established (\S\ref{subsec:block-rolle}):} The block Rolle determinant for peeling an entire layer admits a Schur complement factorisation~\eqref{eq:block-schur} that reduces the $(n+w) \times (n+w)$ determinant to an $n \times n$ determinant, controlling the degree cost. The layer Jacobian factors as $\diag(\sigma') \cdot A^{(\ell)}$ with $\sigma' > 0$~\eqref{eq:layer-jacobian}; this positivity is a key unexploited structural feature.
+  \item \textbf{Conjectured (Conjecture~\ref{conj:block-khovanskii}):} A block Khovanskii--Rolle argument that processes entire layers simultaneously could replace the exponent $h(h-1)/2$ by $\ell(\ell-1)/2 + \sum_i w_i(w_i-1)/2$, reducing it from quadratic to linear in the depth $\ell$ (or width $w$). The main obstacles are the one-dimensional nature of the Rolle lemma and the degree-compounding across within-layer steps.
+  \item \textbf{Established (Theorem~\ref{thm:multi-layer-degree}):} By combining the cell decomposition with a change to activation coordinates on each cell, the multi-layer problem reduces inductively to single-layer problems, yielding the bound $\md(V) \leq C(n)\cdot (\prod_i w_i)^n$, which is polynomial in the layer widths for fixed $n$. The key step is that, in activation coordinates, the layered chain becomes parallel, and the Jacobian twist in the Gauss map system does not increase the solution count.
+  \item \textbf{Open:} Whether the subspace structure~\eqref{eq:backprop-subspace} of the backpropagation chain polynomial vectors, or the algebraic relationship between the Jacobian and Hessian of $f$ in the Gauss map system, yield additional cancellations in the Rolle determinant.
+\end{enumerate}

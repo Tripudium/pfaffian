@@ -1,0 +1,115 @@
+\documentclass[11pt,a4paper]{article}
+
+% Layout: 2cm margins on all sides, single spaced
+\usepackage[margin=2cm]{geometry}
+\usepackage{setspace}
+\setstretch{1.0}
+\raggedbottom
+
+% Arial-equivalent sans serif throughout
+\usepackage[scaled=0.95]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+% Figures, tables, and misc helpers
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\setlist{itemsep=0.25em,topsep=0.25em,leftmargin=*,labelsep=0.5em}
+\usepackage{hyperref}
+
+\title{Semi-Pfaffian Approximation of Definable Sets\\Vision and Approach}
+\author{Martin Lotz}
+\date{}
+
+\begin{document}
+\maketitle
+
+% Maximum length: 6 sides of A4, plus one optional page for the diagrammatic workplan.
+
+\section{Vision}
+Pfaffian functions are functions 
+\subsection*{Quality and importance}
+\begin{itemize}
+  \item Objective: extend Basu--Lerario's Hausdorff approximation theory from algebraic to semi-Pfaffian (and more general definable) sets by constructing semi-Pfaffian families of smooth complete intersections \(X_t\) with controlled Pfaffian format and \(d_H(X_t,X)\to0\).
+  \item Novelty: introduce Pfaffian polar varieties and Pfaffian deformations, providing the first quantitative metric approximation theory for transcendental o-minimal sets.
+  \item Significance: unlocks controlled metric and topological bounds (Betti numbers, tube volumes, distance-to-ill-posedness) for a major class of tame sets relevant to geometry, logic, and computation.
+\end{itemize}
+
+\subsection*{Timeliness}
+\begin{itemize}
+  \item Algebraic counterpart is mature and impactful (Basu--Lerario 2023); Pfaffian analogue is currently missing despite strong foundational finiteness results.
+  \item Recent progress on Pfaffian partitioning and incidence (Lotz--Natarajan--Vorobjov, 2024) provides fresh tools and complexity control, making the leap from algebraic to Pfaffian feasible now.
+\end{itemize}
+
+\subsection*{Impact and beneficiaries}
+\begin{itemize}
+  \item Beneficiaries: real algebraic/analytic geometry, o-minimal model theory, computational and metric geometry, incidence geometry; downstream impact on numerical analysis, condition-based complexity, and topological data analysis.
+  \item Pathway: publish theory and worked examples; share expository notes and code snippets for Pfaffian stratifications/approximations; engage via UK seminars/workshops and international visits.
+\end{itemize}
+
+\section{Approach}
+\subsection*{Objectives and programme}
+\begin{itemize}
+  \item O1: Recast Hausdorff-limit arguments in o-minimal terms for Pfaffian structures.
+  \item O2: Develop Pfaffian polar varieties and critical loci with format bounds.
+  \item O3: Prove Pfaffian analogues of Basu--Lerario's polar deformation theorem.
+  \item O4: Deliver semi-Pfaffian approximation by smooth complete intersections (hypersurfaces first, then higher codimension).
+\end{itemize}
+Programme: four WPs tied to O1--O4, with Year 1--2 on foundational limit/polar theory, Year 2--3 on Pfaffian deformations, Year 3--4 on approximation results and applications.
+
+\subsection*{Methodology}
+\begin{itemize}
+  \item WP1 (o-minimal Hausdorff limits): definable curve selection, Hardt triviality, and standard-part maps in elementary extensions to control limits; track Pfaffian format under closure, projection, and specialisation.
+  \item WP2 (Pfaffian polar varieties): define Pfaffian critical sets, prove dimension/multiplicity bounds via Gabrielov/Khovanskii estimates; show generic coordinates give expected dimensions; recover algebraic polar varieties when chains are polynomial.
+  \item WP3 (Pfaffian deformations): construct \(D(q,g,\zeta)=(1-\zeta)q-\zeta g\) with Pfaffian \(g\) built from Morse functions; analyse critical loci over non-Archimedean extensions; prove \(\lambda_\zeta\)-images cover \(Z(q)\) with explicit format bounds.
+  \item WP4 (approximation): build smooth Pfaffian \(X_t\) approximating \(X\) in Hausdorff metric; extend from hypersurfaces to complete intersections and to projections (sub-Pfaffian sets) via upstairs approximations and Hardt triviality; derive Betti and tube-volume consequences.
+\end{itemize}
+
+\subsection*{Risks and mitigation}
+\begin{itemize}
+  \item Risk: Pfaffian polar varieties may fail generic transversality. Mitigation: use o-minimal Sard-type results and slight perturbations of chains/linear forms; fall back to stratified versions with controlled singular loci.
+  \item Risk: complexity bounds could grow too fast. Mitigation: aggressive format bookkeeping in each construction; restrict to bounded domains; leverage existing multiplicity bounds to keep tower heights under control.
+  \item Risk: projections of approximants may lose smoothness. Mitigation: approximate upstairs manifolds and use Hardt triviality to transfer control; allow mild thickenings where necessary.
+\end{itemize}
+
+\subsection*{Previous work}
+\begin{itemize}
+  \item Basu--Lerario provide the algebraic blueprint (Hausdorff approximation by smooth complete intersections, polar deformation).
+  \item PI and collaborators (Lotz--Natarajan--Vorobjov) established Pfaffian partitioning with explicit format control, demonstrating feasibility of quantitative global constructions in the Pfaffian setting.
+  \item Related foundations: Khovanskii (fewnomials), Gabrielov (multiplicity, Pfaffian stratifications), Basu--Vorobjov (homotopy types of Pfaffian fibres).
+\end{itemize}
+
+\subsection*{Translation and impact pathway}
+\begin{itemize}
+  \item Numerical analysis/complexity: use Pfaffian approximations to quantify distance to ill-posedness and condition numbers for analytic problems.
+  \item TDA/definable modelling: provide smooth approximants with controlled format for stable filtrations and homology computation.
+  \item Knowledge exchange: talks, workshops, open lecture notes, and small code kernels for Pfaffian stratification/approximation.
+\end{itemize}
+
+\subsection*{Environment and resources}
+\begin{itemize}
+  \item Team: PI, 3-year PDRA, 3.5-year PhD; strong local expertise in real algebraic geometry and o-minimality; collaborations with Pfaffian/o-minimal specialists.
+  \item Facilities: standard mathematical computing (symbolic prototypes), travel funds for collaboration and workshops; weekly project meetings, monthly open seminars.
+\end{itemize}
+
+\subsection*{Project plan}
+\begin{itemize}
+  \item Year 1--2: WP1 (o-minimal Hausdorff limits) and WP2 (Pfaffian polar varieties); foundational lemmas and format bounds.
+  \item Year 2--3: WP3 (Pfaffian deformations and \(\lambda_\zeta\)-coverage); first technical papers.
+  \item Year 3--4: WP4 (approximation theorems; Betti/tube-volume applications); synthesis and dissemination.
+\end{itemize}
+
+\clearpage
+\section*{Diagrammatic workplan (one additional A4 page)}
+\begin{figure}[h]
+  \centering
+  % Replace the placeholder with your Gantt chart or diagram.
+  \fbox{\begin{minipage}[c][0.7\textheight][c]{0.9\textwidth}
+  \centering
+  Diagrammatic workplan / Gantt chart
+  \end{minipage}}
+  \caption{Project milestones and timeline at a glance.}
+\end{figure}
+
+\end{document}

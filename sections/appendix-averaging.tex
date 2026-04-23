@@ -1,0 +1,133 @@
+\section{Average-case bounds via integral geometry}\label{app:averaging}
+
+The bounds in Section~\ref{sec:tubular} are worst-case: they bound the maximal degree of the Gauss map, which corresponds to the maximum over all directions $v\in S^{n-1}$ of the number of preimages $|\gamma^{-1}(v)|$. In this appendix we explore a complementary \emph{average-case} analysis, showing that the expected number of zeros along a random line, or the expected Gauss map fiber size over a random direction, can be bounded independently of $w$ using classical integral geometry.
+
+\subsection{Average zeros along a random line}
+
+Let $h\colon \R^n\to \R$ be a Lipschitz function with Lipschitz constant $G := \sup_{x\neq y} |h(x)-h(y)|/\|x-y\|$. For the sigmoid sum $h(x) = c + \sum_{k=1}^w \gamma_k \sigma'(a_k\cdot x + b_k)$, we have
+\begin{equation*}
+  G \leq \sum_{k=1}^w |\gamma_k|\, \|a_k\|\, \sup_s |\sigma''(s)| \leq \frac{1}{4}\sum_{k=1}^w |\gamma_k|\, \|a_k\|,
+\end{equation*}
+since $|\sigma''(s)| \leq 1/4$ for all $s$.
+
+Fix $x_0\in \R^n$ and $R > 0$, and let $e\in S^{n-1}$ be a uniformly random direction. By Crofton's formula (see, e.g.,~\cite[Chapter~14]{gray2004tubes}), the expected number of zeros of $h$ along the line $\ell_e(t) = x_0 + te$ in the interval $|t| < R$ is related to the $(n-1)$-dimensional Hausdorff measure of the zero set:
+\begin{equation}\label{eq:crofton}
+  \Expect_e\bigl[\#\{t\in (-R,R) \colon h(x_0+te) = 0\}\bigr] = \frac{1}{\omega_{n-1}} \int_{S^{n-1}} \#\{t\in (-R,R)\colon h(x_0+te)=0\}\,\diff{e},
+\end{equation}
+where $\omega_{n-1} = \mathrm{vol}(S^{n-1})$. The right-hand side equals $C_n \cdot \mathcal{H}^{n-1}(\{h=0\}\cap B(x_0,R))/R^{n-1}$ for a dimensional constant $C_n$.
+
+\begin{proposition}\label{prop:avg-zeros}
+Let $h(x) = c + \sum_{k=1}^w \gamma_k \sigma'(a_k\cdot x+b_k)$ with $c\neq 0$. Then for all $x_0\in \R^n$ and $R > 0$,
+\begin{equation}\label{eq:avg-zero-bound}
+  \Expect_{e\sim \mathrm{Unif}(S^{n-1})}\bigl[\#\{t\in (-R,R)\colon h(x_0+te) = 0\}\bigr] \leq C_n \cdot \frac{G\cdot R}{|c|},
+\end{equation}
+where $G$ is the Lipschitz constant of $h$ and $C_n$ depends only on $n$.
+\end{proposition}
+
+\begin{proof}
+By the co-area formula, for any Lipschitz function $h\colon \R^n\to \R$ and any measurable set $B\subset \R^n$,
+\begin{equation*}
+  \int_{-\infty}^{\infty} \mathcal{H}^{n-1}(\{h=s\}\cap B)\,\diff{s} = \int_B |\nabla h(x)|\,\diff{x} \leq G\cdot \mathrm{vol}(B).
+\end{equation*}
+With $B = B(x_0,R)$, the left-hand side integrates the $(n-1)$-volume of level sets over all levels $s$. By Chebyshev's inequality, for any interval $I\subset \R$ of length $|I|$:
+\begin{equation*}
+  \inf_{s\in I} \mathcal{H}^{n-1}(\{h=s\}\cap B) \leq \frac{1}{|I|}\int_I \mathcal{H}^{n-1}(\{h=s\}\cap B)\,\diff{s} \leq \frac{G\cdot \omega_n R^n}{|I|}.
+\end{equation*}
+Since $h(x_0+te) \to c$ as $t\to 0$ (for generic $x_0$ away from the peaks of $\sigma'$) and $|h-c|\leq G\cdot R$ on $B(x_0,R)$, the level $s = 0$ satisfies $|0-c|\leq G\cdot R$ (otherwise $h\neq 0$ on $B$ and the bound is trivially zero). For $|c|>0$, the level $s=0$ may or may not be ``typical''; we bound $\mathcal{H}^{n-1}(\{h=0\}\cap B)$ by comparing to nearby levels.
+
+By the co-area formula applied to the specific level $s=0$, and using $|\nabla h|\leq G$:
+\begin{equation*}
+  \mathcal{H}^{n-1}(\{h=0\}\cap B) \leq \frac{G \cdot \omega_n R^n}{\delta}
+\end{equation*}
+for any $\delta$ such that $\{|h|\leq \delta\}\cap B$ has volume at most $\omega_n R^n$. Taking $\delta = |c|/2$ (valid when $|c|/2 \leq G\cdot R$, i.e., when the zero level set actually enters $B$) gives
+\begin{equation*}
+  \mathcal{H}^{n-1}(\{h=0\}\cap B) \leq \frac{2G\,\omega_n R^n}{|c|}.
+\end{equation*}
+Combining with~\eqref{eq:crofton} yields~\eqref{eq:avg-zero-bound}.
+\end{proof}
+
+\begin{remark}
+The bound~\eqref{eq:avg-zero-bound} is $O(w)$ in the network width (since $G = O(w)$) and is \emph{independent of the number of zeros along worst-case lines}. It says that for a \emph{random} line direction, the expected crossing count grows at most linearly in $w$. This should be compared with the worst-case bounds of $(4Lw+1)^n$ (Lemma~\ref{lem:line-intersection}) or $2^{w(w-1)/2}\cdot \mathrm{poly}(w)$ (generic Khovanskii). The price is that the bound holds in expectation over line directions, not for every direction.
+\end{remark}
+
+\subsection{Average Gauss map fiber size}
+
+The same integral-geometric framework can be applied directly to the Gauss map. Let $V = \{f = 0\}\subset \R^n$ be a smooth, bounded hypersurface (a pairwise decision boundary). The Gauss map $\gamma\colon V\to S^{n-1}$ sends $x$ to the unit normal $\nabla f(x)/\|\nabla f(x)\|$. The \emph{total absolute curvature} of $V$ is
+\begin{equation*}
+  \mathrm{TAC}(V) := \int_V |K(x)|\,\diff{\mathcal{H}^{n-1}(x)},
+\end{equation*}
+where $K$ is the Gauss--Kronecker curvature (the determinant of the Weingarten map). By the area formula for the Gauss map (see~\cite[Section~3.2]{gray2004tubes}),
+\begin{equation}\label{eq:gauss-area}
+  \int_{S^{n-1}} |\gamma^{-1}(v)|\,\diff{v} = \int_V |K(x)|\,\diff{\mathcal{H}^{n-1}(x)} = \mathrm{TAC}(V).
+\end{equation}
+Hence the expected fiber size of the Gauss map over a uniformly random direction is
+\begin{equation}\label{eq:avg-gauss}
+  \Expect_{v\sim \mathrm{Unif}(S^{n-1})} [|\gamma^{-1}(v)|] = \frac{\mathrm{TAC}(V)}{\omega_{n-1}}.
+\end{equation}
+
+\begin{proposition}\label{prop:avg-gauss}
+Let $V = \{f = 0\}\subset B(0,R)$ be a smooth, bounded decision boundary of a single-hidden-layer sigmoid network with width $w$ and weights $(a_k, b_k, d_k)$. Then
+\begin{equation}\label{eq:tac-bound}
+  \Expect_{v\sim \mathrm{Unif}(S^{n-1})}[|\gamma^{-1}(v)|] \leq \frac{C_n\, G^{n-1}\, R^{n-1}}{m_{\nabla}^{n-1}},
+\end{equation}
+where $G = \sup_V \|\nabla^2 f\| / \|\nabla f\|$ is a curvature-type quantity and $m_\nabla = \inf_V \|\nabla f\| > 0$.
+\end{proposition}
+
+\begin{proof}
+The Gauss--Kronecker curvature satisfies $|K(x)| \leq \|\mathrm{II}_x\|^{n-1}$, where $\mathrm{II}_x$ is the second fundamental form at $x$. For a level set $\{f=0\}$ with $\nabla f\neq 0$, the principal curvatures are the eigenvalues of $(\nabla^2 f)|_{T_x V}/\|\nabla f\|$, so $\|\mathrm{II}_x\| \leq \|\nabla^2 f(x)\|/\|\nabla f(x)\|$. Therefore
+\begin{equation*}
+  \mathrm{TAC}(V) = \int_V |K|\,\diff{\mathcal{H}^{n-1}} \leq \left(\sup_V \frac{\|\nabla^2 f\|}{\|\nabla f\|}\right)^{n-1}\cdot \mathcal{H}^{n-1}(V).
+\end{equation*}
+The volume $\mathcal{H}^{n-1}(V)$ can be bounded by the co-area estimate of Proposition~\ref{prop:avg-zeros}: $\mathcal{H}^{n-1}(V\cap B(0,R)) = O(R^{n-1})$ (with constants depending on $w$ through the Lipschitz constant). Combining with~\eqref{eq:avg-gauss} gives~\eqref{eq:tac-bound}.
+\end{proof}
+
+\begin{remark}
+The curvature-type quantity $G = \sup_V \|\nabla^2 f\|/\|\nabla f\|$ depends on $w$ through the second derivatives of $f$, which involve $\sigma'''$ terms and products of weights. A careful computation shows that for generic weights, $G = O(w \cdot \max_k \|a_k\|^2)$. The expected Gauss map fiber size is therefore $O(w^{n-1}\cdot \mathrm{poly}(\|a\|))$, which is polynomial in $w$. In contrast, the worst-case Gauss map degree $\md(V) = \max_v |\gamma^{-1}(v)|$ is bounded by $O(w^{n^2})$ via Proposition~\ref{prop:single-layer-degree}. The average-case bound has a better exponent ($n-1$ versus $n^2$) but only controls the expected fiber size, not the maximum.
+\end{remark}
+
+\subsection{Random networks: the Kac--Rice approach}
+
+A different probabilistic model considers networks with \emph{random coefficients}. Suppose $\gamma_1,\ldots,\gamma_w$ are iid standard Gaussian random variables (with the $a_k, b_k$ fixed). Then $h(x) = c + \sum_k \gamma_k \sigma'(a_k\cdot x + b_k)$ is a Gaussian random field, and the expected number of zeros along a line can be computed via the Kac--Rice formula~\cite{adler2007random}.
+
+\begin{proposition}\label{prop:kac-rice}
+Let $h(x) = c + \sum_k \gamma_k \sigma'(a_k\cdot x + b_k)$ with $\gamma_k\sim \mathcal{N}(0,1)$ iid, and let $\ell(t) = x_0+te$. Then
+\begin{equation}\label{eq:kac-rice-bound}
+  \Expect_\gamma\bigl[\#\{t\in (-R,R)\colon h(x_0+te)=0\}\bigr] \leq \frac{R}{\pi}\cdot \sup_{t\in (-R,R)} \sqrt{\frac{\Var[h'(\ell(t))]}{\Var[h(\ell(t))]}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The Kac--Rice formula gives
+\begin{equation*}
+  \Expect_\gamma[Z] = \int_{-R}^R \Expect[|h'(\ell(t))|\mid h(\ell(t))=0]\cdot p_{h(\ell(t))}(0)\,\diff{t},
+\end{equation*}
+where $p_{h(\ell(t))}$ is the density of $h(\ell(t))$ at $0$. Since $h(\ell(t))$ is Gaussian with mean $c$ and variance $\sigma^2(t) = \sum_k \sigma'(\lambda_k t+\mu_k)^2$, and $h'(\ell(t))$ is Gaussian with variance $\tau^2(t) = \sum_k \lambda_k^2 [\sigma''(\lambda_k t+\mu_k)]^2$, the conditional expectation and density are bounded by standard Gaussian estimates:
+\begin{equation*}
+  \Expect[|h'|\mid h = 0]\cdot p_h(0) \leq \frac{1}{\pi}\sqrt{\frac{\tau^2(t)}{\sigma^2(t)}}.
+\end{equation*}
+Integrating over $(-R,R)$ gives~\eqref{eq:kac-rice-bound}.
+\end{proof}
+
+\begin{remark}
+The ratio $\tau^2(t)/\sigma^2(t) = \sum_k \lambda_k^2 [\sigma''(\lambda_k t+\mu_k)]^2 / \sum_k [\sigma'(\lambda_k t+\mu_k)]^2$ is bounded by $\max_k \lambda_k^2 \cdot \sup_s [\sigma''(s)/\sigma'(s)]^2 = \max_k \lambda_k^2 \cdot \sup_s (1-2\sigma(s))^2 \leq \max_k \lambda_k^2$. Hence
+\begin{equation*}
+  \Expect_\gamma[Z] \leq \frac{R}{\pi}\max_k |\lambda_k| = \frac{R}{\pi}\max_k |a_k\cdot e|,
+\end{equation*}
+which is \emph{independent of $w$}. This is the Edelman--Kostlan phenomenon for random sums: when the coefficients are iid Gaussian, the expected number of zeros grows with the ``frequency content'' (controlled by the $\lambda_k$) but not with the number of terms. For random networks with bounded weights, this gives $\Expect_\gamma[Z] = O(R\cdot \max_k \|a_k\|)$ --- a bound that does not grow with $w$ at all.
+\end{remark}
+
+\begin{remark}
+The three averaging regimes give complementary information:
+\begin{center}
+\begin{tabular}{llll}
+  \toprule
+  Model & What is random & Bound on $\Expect[Z]$ & Dependence on $w$ \\
+  \midrule
+  Crofton (Prop.~\ref{prop:avg-zeros}) & Line direction $e$ & $O(G R/|c|)$ & $O(w)$ \\
+  Gauss map (Prop.~\ref{prop:avg-gauss}) & Normal direction $v$ & $O(G^{n-1}R^{n-1})$ & $O(w^{n-1})$ \\
+  Kac--Rice (Prop.~\ref{prop:kac-rice}) & Coefficients $\gamma_k$ & $O(R\max|\lambda_k|)$ & $O(1)$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+The Kac--Rice bound is the strongest but applies to the least natural model (random coefficients). The Crofton bound applies to a fixed network with a random line direction and gives $O(w)$, linear in the width. All three should be contrasted with the worst-case bound of $O(w^n)$ from Lemma~\ref{lem:line-intersection}.
+\end{remark}

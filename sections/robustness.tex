@@ -1,150 +1,150 @@
 \section{Robustness}\label{sec:robustness}
-Consider a data space $\mX$ with a norm $\|\cdot\|$ (for example, $\R^d$ with the Euclidean norm) and a map $F\colon \mX \to \R^k$, 
-where $F=(f_1,\dots,f_k)$. We interpret this map as a classifier, with $f_i(\vct{x})$ representing the likelihood that $\vct{x}$ belongs to class $i$. Thus a data point $\vct{x}\in \mX$ is assigned to class $j$ if $f_j(\vct{x})>f_i(\vct{x})$ for all $i\neq j$, with an arbitrary tie break if $f_i(\vct{x})=f_j(\vct{x})$. We denote the class to which $\vct{x}$ is assigned to by $\hat{j}(\vct{x})$.
-For $i\neq j$, define the functions
-$g_{ij} := f_j-f_i$. The map $F$ induces a subdivision of $\mX$ into $k$ regions
+We now apply the tube bounds from the previous section to the classification setting introduced in Section~\ref{sec:pfaffian}. Recall that a classifier $F\colon \R^n \to \R^m$ induces decision regions $C_j$ separated by the decision boundary $\Sigma = \bigcup_{i<j} V_{ij}$, where $V_{ij} = \mathcal{Z}(g_{ij})$ and $g_{ij} = F_j - F_i$. For $x\in \R^n\setminus \Sigma$, the distance to misclassification is
 \begin{equation*}
- C_j = \{\vct{x}\in \mX \colon g_{ij}(\vct{x}) \geq 0 \text{ for } i\neq j\}, \quad \quad j\in \{1,\dots,k\}.
+  \Delta(x) := \dist(x, \Sigma) = \inf\{\|x - y\| \colon y \in \Sigma\}.
 \end{equation*}
-For convenience, and because this is the practically relevant setting, we assume that the functions $g_{ij}$ are continuous and that the sets $C_j$ have a non-empty interior. The sets $C_j$ are thus closed and the interior $\inter(C_j)$ is the set of $\vct{x}$ that are unequivocally assigned to class $j$. 
-The boundary of $C_j$ and the decision boundary of the classification problem are given by
+
+It is natural to measure the distance to misclassification relative to the size of the input. In analogy to the theory of conditioning in numerical analysis and optimisation~\cite{burgisser2013condition}, we define the condition of a classifier.
+
+\begin{definition}\label{def:condition}
+The \emph{condition number} of the classifier $F$ at $x\in \R^n\setminus \Sigma$ is
 \begin{equation*}
- \Sigma_j = \bigcup_{i\neq j} (C_j\cap C_i), \quad j\in \{1,\dots,k\} \quad \text{ and }  \quad \Sigma = \bigcup_j \Sigma_j,
+  \mC(x) := \frac{\|x\|}{\Delta(x)}.
 \end{equation*}
-respectively. 
-
-For each $j\in \{1,\dots,k\}$ and $\vct{x}\in \mX$, define the distance 
+More generally, the \emph{local condition number} centred at $p\in \R^n$ is
 \begin{equation*}
- \Delta_j(\vct{x}) = \inf \{ \|\vct{x}-\vct{y}\| \colon \vct{y}\not\in C_j\} =: \dist(\vct{x},\mX \backslash C_j).
-\end{equation*}
-It follows that $\Delta_j(\vct{x})=0$ if and only if $\vct{x}\in \mX\backslash C_j$, and for $\vct{x}\in C_j$, $\Delta_j(\vct{x})$ is the distance to misclassification. For arbitrary $\vct{x}$, the distance to misclassification (or robustness certificate) is given by
-\begin{equation}
- \Delta(\vct{x}) := \sum_{i=1}^k \Delta_i(\vct{x}). 
-\end{equation}
-This distance can be defined alternatively as $\Delta(\vct{x}) = \inf \{ \|\vct{x}-\vct{y}\| \colon \vct{y}\in \Sigma\} = \dist(\vct{x},\Sigma)$.
-Assuming that $\vct{x}\in \mX\backslash \Sigma$ has a unique closest point on $\Sigma$, define
-\begin{equation*}
-\vct{r}(\vct{x}) := \argmin_{\vct{r}}\{\|\vct{r}\| \mid \vct{x}+\vct{r}\in \Sigma\} = \argmin_{\vct{r}} \{\|\vct{r}\| \mid \hat{j}(\vct{x}+\vct{r})\neq \hat{j}(\vct{x})\}.
-\end{equation*} 
-In particular, in this case we have $\Delta(\vct{x})=\|\vct{r}(\vct{x})\|$. 
-
-It is reasonable to measure the distance to misclassification relative to the size of $\vct{x}$. In analogy to the theory of conditioning in numerical analysis 
-and optimization~\cite{burgisser2013condition}, we can define the condition of $\vct{x}$.
-
-\begin{definition}
-The condition of the classification map $F$ at $\vct{x}\in \mX\backslash \Sigma$ is defined as
-\begin{equation*}
-  \mC(\vct{x}) := \frac{\|\vct{x}\|}{\Delta(\vct{x})}. 
+  \mC_p(x) := \frac{\|x - p\|}{\Delta(x)}.
 \end{equation*}
 \end{definition}
 
-The robustness, and the associated notion of condition number, quantify the sensitivity of a classification problem to worst-case perturbations of an input $\vct{x}$, and is therefore referred to as adversarial robustness. A different problem arises if we ask for the sensitivity of a classifier to random perturbations, rather than targeted, adversarial perturbations. For absolutely continuous probability distributions, the probability that a random perturbation of size $\Delta(\vct{x})$ will lead to misclassification is zero. For a random perturbation of size $\eta>\Delta(\vct{x})$, however, this probability can be non-negligible. This motivates Definition~\ref{def:randrob}.
-In what follows, we denote by $\mathbb{S}:=S^{d-1}$ the unit sphere in $\R^d$ and we write $\Prob_{\vct{v}\in \mathbb{S}}(\vct{v}\in A)=\mu_{\mathrm{unif}}(A)$, where
-$\mu_{\mathrm{unif}}$ is the uniform probability measure on $\mathbb{S}$. We can get a uniformly distributed $\vct{v}$ on $\mathbb{S}$ by taking a Gaussian vector $\vct{g}$ and setting $\vct{v}=\vct{g}/\|\vct{g}\|_2$. 
+The condition number $\mC(x)$ is the reciprocal of the relative distance to the decision boundary, so that $\mC(x) > t$ means the classification of $x$ can be changed by a perturbation of relative size less than $1/t$. This is entirely analogous to the role of the condition number in numerical analysis, where the ``ill-posed problems'' correspond to the decision boundary~$\Sigma$.
 
-\begin{definition}\label{def:randrob}
-For $\epsilon\in [0,1)$, define the (uniform) $\epsilon$-robustness of $f\colon \mX\to \R^k$ at $\vct{x}\in \mX$ as
+\begin{remark}[Weak condition number]\label{rem:weak-condition}
+For absolutely continuous distributions, the probability that a random perturbation of size exactly $\Delta(x)$ leads to misclassification is zero. For a random direction $v$ uniformly distributed on $\mathbb{S}^{n-1}$, define the directional distance $\Delta(x;v) = \inf\{\eta > 0 \colon \hat{j}(x+\eta v) \neq \hat{j}(x)\}$. If $C_{\hat{j}(x)}$ is star-shaped with respect to~$x$, the $(1-\delta)$-quantile of $\|x\|/\Delta(x;v)$ defines a \emph{weak condition number}
 \begin{equation*}
-  \Delta_{\epsilon}(\vct{x}) = \Delta_{\mathrm{unif},\epsilon}(\vct{x}) := \inf \{\eta \mid \Prob_{\vct{v}\in \mathbb{S}}(\hat{j}(\vct{x}+\eta \vct{v})\neq \hat{j}(\vct{x}))> \epsilon\}.
+  \mC_\delta(x) := \inf\left\{\eta > 0 \colon \Prob_{v\in \mathbb{S}^{n-1}}\!\left(\frac{\|x\|}{\Delta(x;v)} > \eta\right) \leq \delta\right\},
 \end{equation*}
-\end{definition}
+in analogy with the weak condition numbers introduced in~\cite{lotz2020weak} and further studied in~\cite{burgisser2013condition}. The weak condition number captures the typical-case rather than worst-case sensitivity of a classification to perturbations.
+\end{remark}
 
-Clearly, $\Delta_0(\vct{x})=\Delta(\vct{x})$. 
-Note that if $\vct{x}\not\in \Sigma$ and $C_{\hat{j}(\vct{x})}$ is bounded, then $\Delta_{\epsilon}$ is finite, but this need not be the case in general. 
-Under certain circumstances, one can interpret $\Delta_{\epsilon}(\vct{x})$ as a quantile function. More precisely, assume $C_{\hat{j}(\vct{x})}$ is star-shaped, and consider the function
-$\Delta(\vct{x};\vct{v})=\inf\{\eta \colon \hat{j}(\vct{x}+\eta \vct{v})\neq \hat{j}(\vct{x})\}$. Then $\hat{j}(\vct{x}+\eta \vct{v})\neq \hat{j}(\vct{x})$ is equivalent to
-$\Delta(\vct{x};\vct{v})\leq \eta$, the function $\eta\mapsto \Prob(\Delta(\vct{x};\vct{v})\leq \eta)$ is monotonically increasing, and 
-\begin{equation*}
-  \Delta_{\epsilon}(\vct{x}) = \inf\{ \eta \colon \Prob_{\vct{v}\in \mathbb{S}}(\Delta(\vct{x};\vct{v})\leq \eta)> \epsilon\}, 
-\end{equation*} 
-which is the definition of a quantile function. This definition is reminiscent of the definition of weak condition number in~\cite{}.
 
-\begin{definition}
-Let $\delta\in [0,1)$. Then the $\delta$-weak condition number of the classification problem $F\colon \mX\to \R^k$ at $\vct{x}\in \mX\backslash \Sigma$ is defined to be 
-\begin{equation*}
-  \mathcal{C}_\delta(\vct{x}) = \inf \left\{ \eta \colon \Prob\left(\frac{\|\vct{x}\|}{\Delta(\vct{x};\vct{v})}\right) \right\}
-\end{equation*}
-\end{definition}
-
-\subsection{Probabilistic analysis}
-When considering a distribution on data space, we can consider different settings:
-
+\subsection{Tail bounds on the condition number}
+We are interested in the probability that the condition number $\mC(X)$ exceeds a threshold~$t$, for $X$ drawn from a probability distribution on the data space. This is an instance of the probabilistic analysis of condition numbers, studied in detail in~\cite{burgisser2013condition}. In what follows, we distinguish two settings:
 \begin{enumerate}
-\item Robustness of random data;
-\item Robustness of a random perturbation of a given data point.
+\item \emph{Random data:} $X$ is drawn from a distribution on the data space (average-case analysis);
+\item \emph{Random perturbation:} $X = \overline{x} + \xi$ for a fixed data point $\overline{x}$ and a random perturbation $\xi$ (smoothed analysis).
 \end{enumerate}
+The tube bounds of Section~\ref{sec:tubular} apply to both settings.
 
-In the classical analysis of condition numbers, these two cases correspond to average-case and smoothed analysis, as discussed in~\cite{burgisser2013condition}. 
-We look at both these cases in a unified way. The first 
-natural question to ask is regarding the distribution of $\Delta(X)$, namely
-\begin{equation}\label{eqn:main-problem}
-  \Prob(\Delta(X) \leq \epsilon)
-\end{equation}
-for $\epsilon\geq 0$. 
-As an example, $X$ could be a Guassian density centred around $\vct{x}$. Alternatively, we may restrict to a single class, say $j$, and consider the probability
+\begin{theorem}[Uniform tail bound]\label{thm:condition-uniform}
+Let $F\colon \R^n \to \R^m$ be a classifier whose pairwise decision boundaries $V_{ij} = \mathcal{Z}(g_{ij})$ are bounded Pfaffian hypersurfaces with format $(\alpha, \beta, s)$, $s\geq n$, and non-vanishing gradient. Let $X$ be uniformly distributed in $B(p, \sigma)$. Then for $t > 0$,
 \begin{equation*}
-  \Prob(\Delta_j(X)\leq \epsilon).
+  \Prob(\mC_p(X) > t) \leq \binom{m}{2}\, C_{\alpha,\beta,s,n}\left(1 + \frac{\alpha + \overline{\beta} + 1}{t}\right)^n,
 \end{equation*}
-The case $\epsilon=0$ then corresponds to the probability of misclassification. 
+where $C_{\alpha,\beta,s,n}$ and $\overline{\beta}$ are as in Theorem~\ref{thm:prob_bound}.
+\end{theorem}
 
- We are interested in whether 
-a typical problem is robust to adversarial perturbations, or more generally, whether a typical perturbation of a fixed data point is 
-adversarially robust.\\
-
-{\bf Problem 1} (Smoothed analysis) Given a data point $\vct{x}$ and a random perturbation $\vct{\delta}$, find a bound on
+\begin{proof}
+  For $X\in B(p,\sigma)$ we have $\|X - p\|\leq \sigma$, so the event $\mC_p(X) > t$ implies $\Delta(X) < \|X-p\|/t \leq \sigma/t$. Since $\Sigma = \bigcup_{i<j}V_{ij}$, we get $\{\Delta(X) < \sigma/t\} \subseteq \bigcup_{i<j}\{\dist(X, V_{ij}) < \sigma/t\}$. By a union bound and Theorem~\ref{thm:prob_bound} applied to each $V_{ij}$ with $\varepsilon = \sigma/t$,
 \begin{equation*}
-  \Prob\{\mathcal{C}(X)>t\}
+  \Prob(\mC_p(X) > t) \leq \binom{m}{2}\, C_{\alpha,\beta,s,n}\left(1 + (\alpha + \overline{\beta} + 1)\frac{1}{t}\right)^n. \qedhere
 \end{equation*}
-for some $t>0$ in terms of parameters of the neural network.\\
-This problem is an instance of smoothed analysis of condition numbers, studied in detail in~\cite{burgisser2013condition}. 
+\end{proof}
 
-\subsection{Gaussian perturbations} In the literature on smoothed analysis it is common to consider Guassian perturbations. 
-
-\begin{lemma}\label{lem:lem1}
-Let $X$ be normal distributed around a point $\overline{\vct{x}}\in \R^{d}$ with variance $\sigma^2 \mathrm{Id}$. Assume that $\Sigma\subset \R^{d}$ is contained in an algebraic hypersurface of degree at most $D$. Then for $t\geq t_0=8\econst dD$,
+\begin{remark}\label{rem:global-condition}
+For the global condition number $\mC(X) = \|X\|/\Delta(X)$, the bound $\|X\|\leq \|p\| + \sigma$ gives the variant
 \begin{equation*}
-\Prob(\|X-\overline{\vct{x}}\|\cdot \dist(X,\Sigma)^{-1}\geq t) \leq \frac{8\econst dD}{t}.
+  \Prob(\mC(X) > t) \leq \binom{m}{2}\, C_{\alpha,\beta,s,n}\left(1 + (\alpha + \overline{\beta} + 1)\frac{\|p\| + \sigma}{t\sigma}\right)^n.
+\end{equation*}
+The local form of Theorem~\ref{thm:condition-uniform} is preferred because it is independent of~$\sigma$ and has $O(1/t)$ tail decay for large~$t$.
+\end{remark}
+
+We now turn to the smoothed analysis setting, where the data point is a Gaussian perturbation of a fixed input $\overline{x}$. The following result is sharper than the uniform bound, as the Gaussian concentration around $\overline{x}$ yields a tighter estimate via a Fubini decomposition.
+
+\begin{theorem}[Gaussian tail bound]\label{thm:condition-gaussian}
+Under the hypotheses of Theorem~\ref{thm:condition-uniform}, let $X$ be normally distributed around $\overline{x}\in \R^n$ with covariance $\sigma^2 \mathrm{Id}$. Then for $t > 0$,
+\begin{equation*}
+\Prob(\mC_{\overline{x}}(X) > t) \leq \binom{m}{2}\, C_{\alpha,\beta,s,n}\left[\left(1+\frac{\alpha+\overline{\beta}+1}{t}\right)^n - \left(1+\frac{1}{t}\right)^n\right].
+\end{equation*}
+\end{theorem}
+
+\begin{remark}
+For large $t$, the Gaussian bound decays as $\binom{m}{2}\, C_{\alpha,\beta,s,n}\cdot n(\alpha+\overline{\beta})/t$.
+\end{remark}
+
+The proof of Theorem~\ref{thm:condition-gaussian} relies on a standard reduction from Gaussian to uniform distributions (cf.~\cite[Section~3.1]{burgisser2013condition}).
+
+\begin{lemma}\label{lem:gauss-to-uniform}
+Let $V = \mathcal{Z}(f)$ be a bounded Pfaffian hypersurface with format $(\alpha, \beta, s)$, $s\geq n$, and non-vanishing gradient. Let $X$ be normally distributed around $\overline{x}\in \R^{n}$ with covariance $\sigma^2 \mathrm{Id}$. Then
+\begin{equation*}
+\Prob(\|X-\overline{x}\|\cdot \dist(X,V)^{-1}\geq t) \leq C_{\alpha,\beta,s,n}\left[\left(1+\frac{\alpha+\overline{\beta}+1}{t}\right)^n - \left(1+\frac{1}{t}\right)^n\right].
 \end{equation*}
 \end{lemma}
 
 \begin{proof}
-The proof relies on a corresponding bound from~\cite{lotz2015volume} for uniform perturbations and extends this to Gaussian ones. 
-Set $A:=\{\vct{x}\in \R^{d} \mid \|\vct{x}-\overline{\vct{x}}\|\cdot \dist(x,\Sigma)^{-1}\geq t\}$. 
-Let $U_{s}$ be uniformly distributed on a closed ball $B(\overline{\vct{x}},s)$ around $\overline{\vct{x}}$ of radius $s$. Note that $U_{s}$ has density
-\begin{equation}\label{eq:uniform-density}
-  \frac{1}{\mathrm{vol}\ B(0,1) s^{d}}\cdot \onemtx\{\|x-\overline{\vct{x}}\|\leq s\}.
+Set $A:=\{x\in \R^{n} \mid \|x-\overline{x}\|\cdot \dist(x,V)^{-1}\geq t\}$.
+Let $U_{s}$ be uniformly distributed on a closed ball $B(\overline{x},s)$ around $\overline{x}$ of radius $s$, with density
+\begin{equation*}
+  \frac{1}{\omega_n s^{n}}\cdot \onemtx\{\|x-\overline{x}\|\leq s\},
+\end{equation*}
+where $\omega_n = \vol B(0,1)$.
+For a Gaussian vector $X$ centred at $\overline{x}$ with covariance $\sigma^2\mathrm{Id}$, a standard Fubini argument (see, e.g.,~\cite{burgisser2013condition}) gives
+\begin{equation}\label{eq:gauss-to-uniform}
+ \Prob(X\in A) = \frac{\omega_n}{(2\pi)^{\frac{n}{2}}}\int_{0}^{\infty} \Prob(U_{\sigma s}\in A)\, s^{n+1} \econst^{-\frac{s^2}{2}} \ \diff{s}.
 \end{equation}
-For a Gaussian vector $X$ centred at $\overline{\vct{x}}$ and with covariance $\sigma^2\mathrm{Id}$, we then get
-\begin{align*}
- \Prob(X\in A) &= \frac{1}{(2\pi\sigma^2)^{\frac{d}{2}}}\int_A \econst^{-\frac{\|\vct{x}-\overline{\vct{x}}\|^2}{2\sigma^2}} \ \diff{\vct{x}} = \frac{1}{(2\pi\sigma^2)^{\frac{d}{2}}}\int_A \left(\int_{\frac{\|\vct{x}-\overline{\vct{x}}\|}{\sigma}}^\infty s \econst^{-\frac{s^2}{2}} \ \diff{s}\right) \ \diff{\vct{x}}\\
- &= \frac{1}{(2\pi\sigma^2)^{\frac{d}{2}}}\int_{0}^{\infty} \left( \int_A  \onemtx\{ \|\vct{x}-\overline{\vct{x}}\|\leq \sigma s\} \  \diff{\vct{x}} \right) s \econst^{-\frac{s^2}{2}} \ \diff{s} \\
- &\stackrel{(1)}{=} \frac{\mathrm{vol}\ B(0,1)}{(2\pi)^{\frac{d}{2}}}\int_{0}^{\infty} \Prob{\|U_{\sigma s}-\overline{\vct{x}}\| \cdot \dist(U_{\sigma s},\Sigma)^{-1}\geq t} s^{d}\cdot s \econst^{-\frac{s^2}{2}} \ \diff{s}\\
- &\leq \frac{\mathrm{vol}\ B(0,1)}{(2\pi)^{\frac{d}{2}}}\int_{0}^{\infty} \Prob{\dist(U_{\sigma s},\Sigma)^{-1}\geq t/(\sigma s)} s^{d}\cdot s \econst^{-\frac{s^2}{2}} \ \diff{s}.
-\end{align*}
-where in (1) we used ~\eqref{eq:uniform-density} and the definition of the set $A$.
-Starting from~\cite[Theorem 1.1]{lotz2015volume} in the special case of codimension one, we have
- \begin{align*}
- \Prob(\dist(U_{\sigma s},\Sigma)^{-1}\geq t/(\sigma s))
-& \leq 4 \sum_{i=0}^N\binom{d}{i+1}\left(\frac{2D}{t}\right)^{i+1}\left(1+\frac{1}{t}\right)^{d-1-i}\\
-&= 4(N+1) \int_{0}^{\frac{2D}{t}} \left(s+1+\frac{1}{ t}\right)^{d-1} \ \diff{s}
- \leq \frac{8d D}{ t} \left[1+\frac{1+2D}{t}\right]^{d-1}.
-\end{align*}
-In particular, if $t\geq t_0:=8\econst dD\geq (1+2D)(d-1)$, then
+Since $U_{\sigma s}\in A$ implies $\dist(U_{\sigma s},V)\leq \sigma s/t$, we can apply Corollary~\ref{cor:tight_prob_bound} with ball radius $\sigma s$ and $\varepsilon = \sigma s/t$. The ratio $\varepsilon/(\sigma s) = 1/t$ is independent of $s$, so
 \begin{equation*}
-  \left[1+\frac{1+2D}{t}\right]^{d-1} \leq \left[1+\frac{1}{d-1}\right]^{d-1} \leq \econst.
+  \Prob(U_{\sigma s}\in A) \leq C_{\alpha,\beta,s,n}\left[\left(1+\frac{\alpha+\overline{\beta}+1}{t}\right)^n - \left(1+\frac{1}{t}\right)^n\right].
 \end{equation*}
-Hence,
+This is independent of $s$ and factors out of the integral~\eqref{eq:gauss-to-uniform}. The remaining integral evaluates to
 \begin{equation*}
- \Prob(\|X-\overline{\vct{x}}\|\cdot \dist(\vct{x},\Sigma)^{-1} \geq t) \leq \frac{8\econst dD}{t} \cdot \frac{\mathrm{vol}\ B(0,1)}{(2\pi)^{\frac{d}{2}}}\int_{0}^{\infty} s^{d+1} \econst^{-\frac{s^2}{2}} \ \diff{s}\\
-  = \frac{8\econst dD}{t}
+  \frac{\omega_n}{(2\pi)^{\frac{n}{2}}}\int_{0}^{\infty} s^{n+1} \econst^{-\frac{s^2}{2}} \ \diff{s} = 1,
 \end{equation*}
-for $t\geq t_0$. The last equality follows from the identity
-\begin{equation*}
- \mathrm{vol} \ B(0,1) = \frac{\pi^{\frac{d}{2}}}{\Gamma\left(\frac{d}{2}+1\right)},
-\end{equation*}
-and writing out the Gamma function,
-\begin{equation*}
- \Gamma\left(\frac{d}{2}+1\right) = \int_0^\infty t^{\frac{d}{2}} \econst^{-t} \ \diff{t} \stackrel{t=s^2/2}{=} \frac{1}{2^{\frac{d}{2}}} \int_0^\infty s^{d+1} \econst^{-\frac{s^2}{2}} \ \diff{s}.
-\end{equation*}
-This completes the proof.
+which follows from $\omega_n = \pi^{n/2}/\Gamma(n/2+1)$ and the substitution $u=s^2/2$ in the Gamma function.
 \end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:condition-gaussian}]
+The event $\mC_{\overline{x}}(X) > t$ implies $\|X - \overline{x}\|/\dist(X,\Sigma) > t$, which in turn implies $\|X-\overline{x}\|/\dist(X,V_{ij}) > t$ for some pair $i < j$. By a union bound and Lemma~\ref{lem:gauss-to-uniform} applied to each~$V_{ij}$,
+\begin{equation*}
+  \Prob(\mC_{\overline{x}}(X) > t) \leq \binom{m}{2}\, C_{\alpha,\beta,s,n}\left[\left(1+\frac{\alpha+\overline{\beta}+1}{t}\right)^n - \left(1+\frac{1}{t}\right)^n\right]. \qedhere
+\end{equation*}
+\end{proof}
+
+
+\subsection{Neural network classifiers}
+We now specialise the tail bounds to neural network classifiers with Pfaffian activation functions.
+
+\begin{corollary}[Sigmoid/tanh network]\label{cor:nn-condition}
+Let $F\colon \R^n\to \R^m$ be a fully connected neural network classifier with $\ell$ hidden layers, $h$ total hidden units, and an activation function with Pfaffian format $(\alpha, \beta, s)$ that is autonomous with $s\geq 1$. Assume the pairwise decision boundaries $V_{ij}$ are bounded with non-vanishing gradient.
+
+If $X$ is uniformly distributed in $B(p,\sigma)$, then
+\begin{equation*}
+  \Prob(\mC_p(X) > t) \leq \binom{m}{2}\, C_{\alpha_F,\beta_F,s_F,n}\left(1 + \frac{\alpha_F + \overline{\beta}_F + 1}{t}\right)^n,
+\end{equation*}
+where $\alpha_F = \ell(\alpha+\beta-1)-\beta+1$, $\beta_F = \beta$, $s_F = sh$, and $\overline{\beta}_F = \max\{\beta_F, 2\}$.
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:nn-format}, the network output has Pfaffian format $(\alpha_F, \beta_F, s_F)$. Since $g_{ij} = F_j - F_i$ shares the same Pfaffian chain (Remark~\ref{re:1}), each $V_{ij}$ is a Pfaffian hypersurface with the same format. The result follows from Theorem~\ref{thm:condition-uniform}.
+\end{proof}
+
+\begin{example}[Sigmoid activation]\label{ex:sigmoid-condition}
+For the logistic sigmoid $\sigma(x) = (1+\econst^{-x})^{-1}$ with format $(2,1,1)$, we get $\alpha_F = 2\ell$, $\beta_F = 1$, $s_F = h$, and $\overline{\beta}_F = 2$, so
+\begin{equation*}
+  \Prob(\mC_p(X) > t) \leq \binom{m}{2}\cdot 6\cdot 2^{\frac{h(h-1)}{2}}\big(n(4\ell+1)+2\big)^h\left(1+\frac{2\ell+3}{t}\right)^n,
+\end{equation*}
+provided $h\geq n$. The Gaussian variant (Theorem~\ref{thm:condition-gaussian}) gives, for $X\sim \mathcal{N}(\overline{x}, \sigma^2\mathrm{Id})$,
+\begin{equation*}
+  \Prob(\mC_{\overline{x}}(X) > t) \leq \binom{m}{2}\cdot 6\cdot 2^{\frac{h(h-1)}{2}}\big(n(4\ell+1)+2\big)^h\left[\left(1+\frac{2\ell+3}{t}\right)^n - \left(1+\frac{1}{t}\right)^n\right].
+\end{equation*}
+For large $t$, the Gaussian bound decays as $\binom{m}{2}\cdot 6\cdot 2^{h(h-1)/2}(n(4\ell+1)+2)^h \cdot n(2\ell+2)/t$.
+\end{example}
+
+\begin{remark}\label{rem:bound-interpretation}
+The dependence on the network architecture enters through two terms: the Khovanskii prefactor $2^{h(h-1)/2}(n(4\ell+1)+2)^h$, which grows rapidly with the number of hidden units~$h$, and the polynomial tail $(1+(2\ell+3)/t)^n$, which depends on the depth~$\ell$ and the input dimension~$n$. For practical networks, the Khovanskii prefactor renders the bound quantitatively vacuous; however, the bound is qualitatively meaningful in several ways:
+\begin{enumerate}
+\item The $O(1/t)$ tail decay is sharp in the sense that it matches the generic behaviour of condition number tails for smooth hypersurfaces;
+\item The bound captures an explicit depth-width tradeoff: deeper networks increase the polynomial base while wider networks increase the exponential prefactor;
+\item For fixed architecture, the bound gives the correct scaling in $\varepsilon$ and~$n$.
+\end{enumerate}
+\end{remark}

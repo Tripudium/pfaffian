@@ -1,0 +1,263 @@
+\section{Khovanski{\u\i}'s theorem}
+We give a self-contained proof of Khovanski{\u\i}'s Theorem (Theorem \ref{thm:khovanskii}).
+The two main ingredients of the proof are B\'ezout's Inequality for real algebraic sets, Theorem~\ref{thm:real-bezout}, and a generalization of Rolle's Theorem~\cite[\S 3.2]{khovanskiui1991fewnomials}.
+
+\begin{theorem}[Real B\'ezout Inequality] \label{thm:real-bezout}
+  Let $P_1, \dots, P_n \in \R[X_1, \dots, X_n]$ be polynomials of degrees $d_1, \dots, d_n$. Then the number of non-degenerate solutions of the system
+  \begin{equation*}
+  P_1(x) = \cdots = P_n(x) = 0
+  \end{equation*}
+  is bounded by the product of the degrees $d_1 \cdots d_n$.
+  \end{theorem}
+
+In the following, we refer to two roots $y$, $z$ of a function $g\colon C\to \R$ on a smooth $1$-manifold $C\subset \R^{n+1}$ as {\em consecutive roots} if there is an arc connecting $y$ and $z$ that does not contain any other root of $g$. A point $x$ is said to be between two consecutive roots $y$ and $z$ if $x$ is on the arc between $y$ and $z$ that does not contain any other roots. A function $f\colon C\to \R$ is said to \emph{change sign} at $x$, if $f(x)=0$ and there exists an open neighbourhood $U\subset C$, $x\in U$, such that $U\backslash \{x\}$ is the union of two connected components, and $f$ has different signs on each of them. 
+%A form $\omega\in \Lambda^n \R^{n+1}$ is said to change sign at $y\in C$ if $\omega = f(x) \ \diff{x}^1\wedge\cdots \wedge \diff{x}^n$ in local coordinates and $f|_{C}$ changes sign at $x$. 
+For an illustration of the following generalization of Rolle's Lemma, see~\cite{bates2011khovanskii}.
+%If $C\subset M$, with $M$ an $n$-dimensional differentiable manifold, then an $n$-form $\omega$ on $M$ is said to change %sign on $x\in C$ if $\omega=f\cdot \diff{x}_1\wedge\cdots \wedge\diff{x}_n$ in local coordinates around $x$ and $f|%_{C}$ changes sign at $x$. 
+
+\begin{lemma}[Khovanski{\u\i}-Rolle] \label{lem:kho-rolle}
+Let $G = (g_1, \ldots, g_n)\colon \R^{n+1} \rightarrow \R^n$ be a smooth map and let $y \in \R^n$ be a regular value of $G$, so that $C = G^{-1}(y)$ is a smooth $1$-submanifold of $\R^{n+1}$. Let $g\colon \R^{n+1} \rightarrow \R$ be a smooth map such that all the roots of $g|_C$ are non-degenerate, i.e., the differential $\diff(g|_C)$ does not vanish at any root. Then between any two consecutive roots of $g|_C$, the determinant
+\begin{equation}\label{eq:kho-rolle-det}
+ \det([\nabla g_1, \ldots, \nabla g_n, \nabla g])
+\end{equation}
+takes values of both signs. If, in addition, the functions are real-analytic, then there exists a point $x\in C$ between the two consecutive roots at which the determinant~\eqref{eq:kho-rolle-det} changes sign.
+\end{lemma}
+
+\begin{proof}
+The $1$-form $\omega(v) = \det([\nabla g_1, \ldots, \nabla g_n, v])$ on $\R^{n+1}$ induces a vector field $X_{\omega}$ that satisfies $\ip{X_{\omega}}{v} = \omega(v)$ for any $v \in T_{x}\R^{n+1}$. Since $y \in \R^n$ is a regular value of $G$, $X_{\omega}$ restricts to a non-vanishing tangent vector field on $C$.
+Let $C_0 \subseteq C$ be an arc joining two consecutive roots of $g|_C$. Let $I=[t_1,t_2]$ be an interval, and let $\gamma : I \rightarrow C_0$ be a parameterization of $C_0$ such that $\dot{\gamma}(t) = X_{\omega}(\gamma(t))$ for all $t$ (see \cite[Chapter 14]{tu2011manifolds} for a proof of existence of such a parameterization). Consider the function $h := g \circ \gamma\colon I \rightarrow \R$, so that $h(t_1) = h(t_2) = 0$ and $h(t)\neq 0$ for all $t\in I\backslash \{t_1, t_2\}$.
+The derivative of $h$ at a point $t \in I$ is then given by
+\begin{equation*}
+  \dot{h}(t) = \ip{X_{\omega}(\gamma(t))}{\nabla g(\gamma(t))} = \omega(\nabla g(\gamma(t))).
+\end{equation*}
+Note that $\dot{h}(t) = \det([\nabla g_1, \ldots, \nabla g_n, \nabla g])$ evaluated at $\gamma(t)$.
+
+Since the roots of $g|_C$ are non-degenerate, $\dot{h}(t_1) \neq 0$ and $\dot{h}(t_2) \neq 0$. We first show that $\dot{h}(t_1)$ and $\dot{h}(t_2)$ must have opposite signs. Indeed, if both have the same sign, say they are both positive, then $h$ is increasing at $t_1$ and increasing at $t_2$. Since $h(t_1) = 0$ and $\dot{h}(t_1) > 0$, there exists $\eps_1 > 0$ with $h(t_1 + \eps_1) > 0$. Since $h(t_2) = 0$ and $\dot{h}(t_2) > 0$, there exists $\eps_2 > 0$ with $h(t_2 - \eps_2) < 0$. Choosing $\eps_1, \eps_2 < (t_2-t_1)/2$, the intermediate value theorem gives a point $s\in (t_1+\eps_1, t_2-\eps_2)$ with $h(s) = 0$, contradicting the assumption that $\gamma(t_1)$ and $\gamma(t_2)$ are consecutive roots.
+
+Since $\dot{h}(t_1)$ and $\dot{h}(t_2)$ have opposite signs, the determinant~\eqref{eq:kho-rolle-det} takes values of both signs on $C_0$. By the intermediate value theorem, the determinant vanishes at some point between the two roots.
+
+If the functions are real-analytic, then $\dot{h}$ is a real-analytic function on $I$ that is not identically zero (since $\dot{h}(t_1)\neq 0$). The zeros of a non-identically-zero real-analytic function are isolated. Since $\dot{h}$ changes from positive to negative (or vice versa) on $(t_1, t_2)$, it must have an isolated zero at which it changes sign.
+\end{proof}
+
+\begin{corollary} \label{cor:kho-rolle} Let $G = (g_1, \ldots, g_n)\colon \R^{n+1} \rightarrow \R^{n}$ be a smooth map and let $y \in \R^n$ be a regular value of $G$, so that $C = G^{-1}(y)$ is a smooth $1$-submanifold of $\R^{n+1}$. Assume that $C$ is compact. Let $g\colon \R^{n+1} \rightarrow \R$ be a smooth map such that all the roots of $g|_C$ are non-degenerate. Define
+\begin{equation*}
+  M(x) := \left[\nabla g_1(x)\enspace \ldots\enspace \nabla g_n(x)\enspace \nabla g(x)\right].
+\end{equation*}
+Then there exists a regular value $\delta > 0$ of $\det(M)|_C$ such that
+\begin{equation*}
+  \left|\left\{x \in C \suchthat g(x) = 0\right\}\right| \le \left|\left\{x \in C \suchthat \det(M(x)) = \delta\right\}\right|.
+\end{equation*}
+\end{corollary}
+
+\begin{proof}
+Set $h(x) := \det\left(M(x)\right)$. Since $C$ is a compact $1$-manifold, every connected component $\Gamma$ of $C$ is diffeomorphic to $S^1$~\cite[Appendix]{milnor1997topology}. Let $\theta\colon S^1 \rightarrow \Gamma$ be such a diffeomorphism. Let $\theta(t_1), \ldots, \theta(t_p)$ be the roots of $g$ on $\Gamma$ (listed in cyclic order), so that consecutive roots $\theta(t_i)$ and $\theta(t_{(i\bmod p)+1})$ bound an arc containing no other roots. By Lemma~\ref{lem:kho-rolle}, for each $i\in [p]$, $h|_\Gamma$ takes values of both signs on the arc between $\theta(t_i)$ and $\theta(t_{(i\bmod p)+1})$. In particular, there exist points $\theta(t_i')$ between consecutive roots where $h$ vanishes and takes values of both signs nearby. For each such $t_i'$, there exists a disjoint open neighbourhood $U_i$ of $\theta(t_i')$ and an $\eps_i > 0$ such that $(-\eps_i, \eps_i) \subseteq h|_\Gamma(U_i)$.
+
+Set $\eps = \min_j \eps_j > 0$ (minimising over all components and all arcs). Then for any $\delta \in (0, \eps)$, each $U_i$ contains at least one point with $h = \delta$, giving 
+\begin{equation*}
+  |\{x\in C \suchthat h(x) = \delta\}| \geq |\{x\in C \suchthat g(x) = 0\}|.
+\end{equation*} 
+By Sard's theorem, we can choose $\delta \in (0, \eps)$ to be a regular value of $h|_C$.
+\end{proof}
+
+The following technical lemma, which bounds the degree of the determinant arising in the Khovanski{\u\i}--Rolle step, is the key ingredient in the induction.
+
+\begin{lemma}[Rolle determinant degree]\label{lem:rolle-det-degree}
+Let $f_1,\dots,f_n$ be Pfaffian functions on $\R^n$ with common chain $\boldq = (q_1,\dots,q_s)$ of chain-degree $\alpha$, where the chain depends on $k\leq n$ of the variables, and with respective degrees $\beta_1,\dots,\beta_n$, so that $f_i(x) = Q_i(x, q_1(x),\dots,q_s(x))$ for polynomials $Q_i$ of degree $\beta_i$. Let $P_{ij}$ denote the chain polynomials of $\boldq$. Define $G = (g_1,\dots,g_n)\colon \R^{n+1}\to \R^n$ and $g\colon \R^{n+1}\to \R$ by
+\begin{align*}
+  g_i(x, x_{n+1}) &= Q_i(x, q_1(x),\dots,q_{s-1}(x), x_{n+1}), \qquad i\in [n],\\
+  g(x, x_{n+1}) &= q_s(x) - x_{n+1},
+\end{align*}
+and let $M$ be the $(n+1)\times (n+1)$ matrix $M = [\nabla g_1, \dots, \nabla g_n, \eta]$, where
+\begin{equation*}
+  \eta(x, x_{n+1}) = \bigl(P_{s,1}',\dots,P_{s,k}', 0,\dots,0, -1\bigr)^{\trans}
+\end{equation*}
+with $P_{s,j}' := P_{s,j}(x_1,\dots,x_k, q_1(x),\dots,q_{s-1}(x), x_{n+1})$. 
+Then $\det(M)$ is a Pfaffian function with format $(\alpha, \beta_{n+1}, s-1)$ belonging to the chain $(q_1,\dots,q_{s-1})$, where
+\begin{equation}\label{eqn:rolle-det-degree}
+  \beta_{n+1} \leq \sum_{i=1}^n (\beta_i - 1) + \min\{k, s\}\alpha.
+\end{equation}
+\end{lemma}
+
+%\AtBeginEnvironment{bmatrix}{\everymath{\displaystyle}}
+\begin{proof}[Proof of Lemma~\ref{lem:rolle-det-degree}]
+Since each $g_i(x, x_{n+1}) = Q_i(x, q_1(x), \ldots, q_{s-1}(x), x_{n+1})$, the functions $g_1, \ldots, g_n$ are Pfaffian with formats $(\alpha, \beta_i, s-1)$ and share the common chain $(q_1, \ldots, q_{s-1})$. The last column $\eta$ of $M$ is Pfaffian with chain $(q_1,\dots,q_{s-1})$ by construction (the entries $P_{s,j}'$ are polynomials in $x$, $q_1(x),\dots,q_{s-1}(x)$, and the free variable $x_{n+1}$). Writing out $M$ explicitly:
+\begin{align*}
+  M(x, x_{n+1}) = \begin{bmatrix}
+  \frac{\partial g_1}{\partial x_1} & \cdots & \frac{\partial g_n}{\partial x_1} & P_{s,1}' \\[4pt]
+  \vdots & \ddots & \vdots & \vdots \\[4pt]
+  \frac{\partial g_1}{\partial x_k} & \cdots & \frac{\partial g_n}{\partial x_k} & P_{s,k}' \\[4pt]
+  \frac{\partial g_1}{\partial x_{k+1}} & \cdots & \frac{\partial g_n}{\partial x_{k+1}} & 0 \\[4pt]
+  \vdots & \ddots & \vdots & \vdots \\[4pt]
+  \frac{\partial g_1}{\partial x_n} & \cdots & \frac{\partial g_n}{\partial x_n} & 0 \\[4pt]
+  \frac{\partial Q_1}{\partial y_s} & \cdots & \frac{\partial Q_n}{\partial y_s} & -1
+  \end{bmatrix},
+\end{align*}
+where each $\frac{\partial g_i}{\partial x_j}$ (for $j \in [n]$) is
+\begin{equation}\label{eq:expansion}
+  \frac{\partial Q_i}{\partial x_j} + \sum_{l=1}^{s-1} \frac{\partial Q_i}{\partial y_l}\, P_{l,j}.
+\end{equation}
+All entries of $M$ are Pfaffian functions with chain $(q_1, \ldots, q_{s-1})$, so $\det(M)$ is as well.
+
+It remains to bound the degree $\beta_{n+1}$ of $\det(M)$. We first bound the degree of $t\times t$ submatrices formed from the first $n$ rows and columns (i.e., excluding the last row and column), and then handle the full determinant via Laplace expansion. 
+
+Let $J=\{j_1,\dots,j_t\}$ be a subset of rows and let $I=\{i_1,\dots,i_t\}$ be a subset of columns, with $t\in [n]$, and denote by $M_{I,J}$ the corresponding submatrix. Using 
+the expansion~\eqref{eq:expansion}, we see that $M_{I,J}$ can 
+be written as
+\begin{equation*}
+  M_{J,I} = A + UV^\trans,
+\end{equation*}
+where $A\in \R^{t\times t}$, $U\in \R^{(s-1)\times t}$, and $V\in \R^{t\times (s-1)}$ have entries given by
+\begin{equation*}
+  A_{ab} = \frac{\partial Q_{i_a}}{\partial x_{j_b}}, \ U_{a\ell} = P_{\ell,j_a}, \ V_{b\ell} = \frac{\partial Q_{i_b}}{\partial y_\ell} \qquad \text{for} \qquad a, b \in [t], \ell \in [s-1].
+\end{equation*} 
+Setting $\gamma = \min \{t,s-1\}$, we can expand the determinant of $M_{J,I}$ as
+\begin{equation*}
+ \det(M_{J,I}) = \det(A+UV^\trans) = \det\begin{pmatrix} A & -U \\ V^{\trans} & I_{s-1}\end{pmatrix},
+\end{equation*}
+where $I_{s-1}$ is the $(s-1)\times (s-1)$ identity matrix. By expanding this determinant, we see that the degree is bounded by
+\begin{equation}\label{eqn:deg-bound-submatrix}
+  \deg \det(M_{J,I})\leq \sum_{i=1}^t (\beta_i-1)+\min\{t,s-1\}\alpha.
+\end{equation}
+
+To bound $\deg(\det(M))$, we perform Laplace expansion along the last column $\eta$. Since $\eta$ has zero entries in rows $k+1,\dots,n$, only two types of terms contribute: the last row (entry $-1$), and rows $j\in [k]$ (entries $P_{s,j}'$, each of degree~$\alpha$).
+
+The cofactor of the last row is $\pm\det(A + UV^\trans)$ with $t = n$. Since $P_{\ell,j} = 0$ for $j > k$, the matrix $U$ has at most $k$ nonzero rows, so the block determinant expansion gives degree at most $\sum_{i=1}^n(\beta_i-1) + \min\{k,s-1\}\alpha$.
+
+For $j\in [k]$, the cofactor of $P_{s,j}'$ is $\pm\det(\widehat{M}_j)$, where $\widehat{M}_j$ is the $n\times n$ matrix obtained from the first $n$ columns of $M$ by replacing row $j$ with the last row $(\frac{\partial Q_1}{\partial y_s},\dots,\frac{\partial Q_n}{\partial y_s})$. Extending the decomposition to include~$y_s$, we write $\widehat{M}_j = \widehat{A}_j + \widehat{U}_j\widetilde{V}^\trans$, where $\widetilde{V}\in \R^{n\times s}$ extends $V$ by the column $(\frac{\partial Q_i}{\partial y_s})_{i\in [n]}$, the matrix $\widehat{A}_j$ equals $A$ with row $j$ replaced by zeros, and $\widehat{U}_j\in \R^{n\times s}$ is obtained from $U$ (extended by a zero column) by replacing row $j$ with $e_s^\trans$. In the block matrix $\bigl(\begin{smallmatrix} \widehat{A}_j & -\widehat{U}_j \\ \widetilde{V}^\trans & I_s\end{smallmatrix}\bigr)$, row $j$ reduces to $(0,\dots,0,-1)$; expanding along it and then along the resulting last row shows that $\deg\det(\widehat{M}_j) \le \sum_{i=1}^n(\beta_i - 1) + \min\{k-1,s-1\}\alpha$, since $U$ with row $j$ deleted has at most $k-1$ nonzero rows. Including the factor $P_{s,j}'$ of degree $\alpha$, and using $\min\{k-1,s-1\}+1 = \min\{k,s\}$, each such term has degree at most $\sum_{i=1}^n(\beta_i-1)+\min\{k,s\}\alpha$. Since $\min\{k,s-1\} \le \min\{k,s\}$, taking the maximum over both types of terms yields
+\begin{equation*}
+  \beta_{n+1} = \deg(\det(M)) \le \sum_{i=1}^n (\beta_i - 1) + \min\{k, s\}\alpha,
+\end{equation*}
+which establishes~\eqref{eqn:rolle-det-degree}.
+\end{proof}
+
+\begin{remark}[Autonomous case]\label{rem:autonomous-rolle}
+  If the functions $f_1,\dots,f_n$ are autonomous (see~\eqref{eq:simplepfaff}), then each representing polynomial $Q_i$ depends only on the chain variables $y_1,\dots,y_s$ and not on $x$, so $\partial Q_i/\partial x_j = 0$ for all $i, j$. In the decomposition $M_{J,I} = A + UV^\trans$, this gives $A = 0$, and hence $M_{J,I} = UV^\trans$. Since $U$ and $V^\trans$ factor through $\R^{s-1}$, the rank of $M_{J,I}$ is at most $\min\{t, s-1\}$, and $\det(M_{J,I}) = 0$ whenever $t > s - 1$. Moreover, if the chain depends on only $k$ of the variables, then $P_{\ell,j} = 0$ for $j > k$, so that $U$ has at most $\min\{k, t\}$ nonzero rows, and $\det(M_{J,I}) = 0$ whenever $t > \min\{k, s-1\}$.
+
+  Despite this structural simplification, the degree bound~\eqref{eqn:rolle-det-degree} on $\beta_{n+1}$ is unchanged: the terms in the Laplace expansion involving the chain polynomials $P_{s,j}'$ dominate, and their degrees are unaffected by the vanishing of $A$. When $\beta_i = 1$ for all $i$ (as for neural networks, see Proposition~\ref{prop:nn-format}), the $V$ matrix has constant entries and $\det(M_{J,I})$ reduces to a sum of $\binom{s-1}{t}$ products of maximal minors of $U$, each of degree at most $t\alpha$, by the Cauchy--Binet formula.
+\end{remark}
+
+\begin{proof}[Proof of Theorem \ref{thm:khovanskii}]
+We prove the theorem by induction on the chain order $s$. In the base case $s=0$, every $f_i$ is a polynomial of degree $\beta_i$, and the bound reduces to $\beta_1 \dotsm \beta_n$, which follows from Theorem~\ref{thm:real-bezout}. Now let $s \ge 1$ and assume the bound holds for all Pfaffian systems whose chain has order at most $s-1$.
+
+\medskip
+\noindent\textbf{Step 1: Lifting to $\boldsymbol{n+1}$ dimensions.}
+Each component of $F$ has the form
+\begin{equation*}
+  f_i(x) = Q_i(x, q_1(x), \ldots, q_s(x)), \qquad Q_i \in \R[X_1, \ldots, X_n, Y_1, \ldots, Y_s].
+\end{equation*}
+Introduce a new variable $x_{n+1}$ that will play the role of $q_s$. Define $G = (g_1, \ldots, g_n)\colon \R^{n+1} \to \R^n$ and $g\colon \R^{n+1} \to \R$ by
+\begin{align*}
+  g_i(x, x_{n+1}) &= Q_i(x, q_1(x), \ldots, q_{s-1}(x), x_{n+1}), \qquad i \in [n], \\
+  g(x, x_{n+1}) &= q_s(x) - x_{n+1}.
+\end{align*}
+Since $\frac{\partial g}{\partial x_{n+1}} = -1$, the value $0$ is a regular value of $g$ and $N = g^{-1}(0)$ is a smooth hypersurface in $\R^{n+1}$. By construction, for any $y \in \R^n$,
+\begin{equation} \label{eqn:counting-in-n+1}
+  \left\{x \in \R^n \suchthat F(x) = y\right\} = \pi_n\!\left(\left\{(x, x_{n+1}) \in N \suchthat G(x, x_{n+1}) = y\right\}\right),
+\end{equation}
+where $\pi_n$ denotes projection onto the first $n$ coordinates. Moreover, $(x, q_s(x))$ is a regular solution of $(G, g) = (y, 0)$ if and only if $x$ is a regular solution of $F = y$ (see Claim~\ref{claim:regular-solutions} below). Thus, it suffices to bound the number of regular solutions of $(G, g) = (y, 0)$.
+
+\medskip
+\noindent\textbf{Step 2: Applying the Khovanski{\u\i}--Rolle Corollary.}
+We first assume that $G$ is a proper map; this assumption will be removed in Claim~\ref{claim:G-proper}. By a standard argument based on the implicit function theorem~\cite[Chapter~1]{milnor1997topology}, the number of regular preimage points of a proper map is locally constant. By Sard's theorem, we may choose $y \in \R^n$ that is a regular value of both $G$ and of $G|_N$. For such $y$, the set $C = G^{-1}(y) \subset \R^{n+1}$ is a smooth, compact $1$-manifold, and
+\begin{equation*}
+  \left\{(x, x_{n+1}) \in N \suchthat G(x, x_{n+1}) = y\right\} = \left\{(x, x_{n+1}) \in C \suchthat g(x, x_{n+1}) = 0\right\}.
+\end{equation*}
+
+Define the $(n+1) \times (n+1)$ matrix
+\begin{equation} \label{eqn:matrix-J}
+  J(x, x_{n+1}) := \left[\nabla g_1(x, x_{n+1}) \enspace \cdots \enspace \nabla g_n(x, x_{n+1}) \enspace \nabla g(x, x_{n+1}) \right].
+\end{equation}
+By Corollary~\ref{cor:kho-rolle}, there exists a regular value $\delta > 0$ of $\det(J)|_C$ such that
+\begin{multline} \label{eqn:new-system}
+  \abs{\left\{(x, x_{n+1}) \in C \suchthat g(x, x_{n+1}) = 0\right\}} \\
+  \le \abs{\left\{(x, x_{n+1}) \in C \suchthat \det(J(x, x_{n+1})) = \delta\right\}}.
+\end{multline}
+The right-hand side of~\eqref{eqn:new-system} is the number of regular solutions of the system
+\begin{equation} \label{eqn:lifted-system}
+  g_1(x, x_{n+1}) = y_1, \quad \ldots, \quad g_n(x, x_{n+1}) = y_n, \quad \det(J(x, x_{n+1})) = \delta,
+\end{equation}
+which consists of $n+1$ equations in $n+1$ unknowns. The key observation is that this new system is Pfaffian with chain order $s-1$, enabling the induction.
+
+\medskip
+\noindent\textbf{Step 3: Format of the new system.}
+Each $g_i$ is obtained from $f_i$ by replacing $q_s(x)$ with the free variable $x_{n+1}$. Therefore, $g_1, \ldots, g_n$ are Pfaffian functions of formats $(\alpha, \beta_i, s-1)$ with respect to the common chain $(q_1, \ldots, q_{s-1})$. The function $g = q_s - x_{n+1}$ involves $q_s$ and hence belongs to a chain of order $s$; however, $\det(J)$ absorbs $g$ via differentiation. By Lemma~\ref{lem:rolle-det-degree}, $\det(J)$ is Pfaffian with format $(\alpha, \beta_{n+1}, s-1)$ belonging to the same chain, where
+\begin{equation} \label{eqn:beta-n+1-ub}
+  \beta_{n+1} \le \sum_{i=1}^n (\beta_i - 1) + \min\{k, s\}\alpha.
+\end{equation}
+
+\medskip
+\noindent\textbf{Step 4: Induction.}
+Applying the induction hypothesis to the system~\eqref{eqn:lifted-system}, which has $n+1$ Pfaffian equations in $n+1$ unknowns with chain order $s-1$ and the chain still depending on $k$ variables, gives
+\begin{align}
+  \eqref{eqn:new-system} &\le 2^{\frac{(s-1)(s-2)}{2}} \left(\prod_{i=1}^{n+1} \beta_i\right) \left(\sum_{i=1}^{n+1}\beta_i - (n+1) + \min\{k,s-1\}\alpha + 1\right)^{s-1} \nonumber \\
+  &= 2^{\frac{(s-1)(s-2)}{2}} \left(\prod_{i=1}^{n} \beta_i\right) \cdot \pool, \label{eqn:new-system-upto-A}
+\end{align}
+where
+\begin{equation*}
+  \pool := \beta_{n+1} \left(\sum_{i=1}^{n}\beta_i + \beta_{n+1} - n + \min\{k,s-1\}\alpha\right)^{s-1}.
+\end{equation*}
+Using~\eqref{eqn:beta-n+1-ub} from Lemma~\ref{lem:rolle-det-degree}, we bound
+\begin{align}
+  \pool &\le \beta_{n+1} \left(\sum_{i=1}^{n}\beta_i + \sum_{i=1}^n (\beta_i - 1) + \min\{k, s\}\alpha - n + \min\{k,s-1\}\alpha\right)^{s-1} \nonumber \\
+  &\le \beta_{n+1} \cdot 2^{s-1}\left(\sum_{i=1}^{n}\beta_i - n + \min\{k,s\}\alpha\right)^{s-1} \nonumber \\
+  &\le 2^{s-1}\left(\sum_{i=1}^{n}\beta_i - n + \min\{k,s\}\alpha\right)^{s}, \label{eqn:simplify-A-bound}
+\end{align}
+where in the second line we used $2\sum_{i=1}^n\beta_i - 2n + (\min\{k,s\}+\min\{k,s-1\})\alpha \le 2(\sum_{i=1}^n\beta_i - n + \min\{k,s\}\alpha)$ (since $\min\{k,s-1\}\le \min\{k,s\}$) and the bound $\beta_{n+1} \le \sum_{i=1}^n\beta_i - n + \min\{k,s\}\alpha$ in the last line.
+
+Combining~\eqref{eqn:simplify-A-bound} with~\eqref{eqn:new-system-upto-A} yields
+\begin{equation} \label{eqn:sharper-kho-proper}
+  \eqref{eqn:new-system} \le 2^{\frac{s(s-1)}{2}}\left(\prod_{i=1}^n \beta_i \right)\left(\sum_{i=1}^{n}\beta_i - n + \min\{k,s\}\alpha\right)^s,
+\end{equation}
+which is a sharper bound than claimed (the right-hand side of~\eqref{eqn:sharper-kho-proper} omits the $+1$ in the exponent base). This completes the proof under the assumption that $G$ is proper.
+\end{proof}
+
+\begin{claim} \label{claim:regular-solutions}
+  A point $x \in \R^n$ is a regular solution of $F(x) = y$ if and only if $(x, q_s(x))$ is a regular solution of $(G, g)(x, x_{n+1}) = (y, 0)$.
+  \end{claim}
+  
+\begin{proof}
+By the chain rule, for each $i \in [n]$ and $j \in [n]$,
+\begin{align*}
+  \frac{\partial g_i}{\partial x_j}(x, x_{n+1}) &= \frac{\partial Q_i}{\partial x_j}(x, q_1(x), \ldots, q_{s-1}(x), x_{n+1}) \\
+  &\qquad + \sum_{l=1}^{s-1} \frac{\partial Q_i}{\partial y_l}(x, q_1(x), \ldots, q_{s-1}(x), x_{n+1})\cdot P_{l,j}(x, q_1(x), \ldots, q_l(x)),
+\end{align*}
+and
+\begin{equation*}
+  \frac{\partial g_i}{\partial x_{n+1}}(x, x_{n+1}) = \frac{\partial Q_i}{\partial y_s}(x, q_1(x), \ldots, q_{s-1}(x), x_{n+1}).
+\end{equation*}
+On the hypersurface $N = \{g = 0\}$, i.e.\ at points $(x, q_s(x))$, the tangent space is
+\begin{equation*}
+  T_{(x, q_s(x))} N = \ker \diff{g}(x, q_s(x)) = \left\{v \in \R^{n+1} \suchthat v_{n+1} = \sum_{j=1}^n P_{s,j}(x, q_1(x), \ldots, q_s(x))\, v_j\right\}.
+\end{equation*}
+A direct calculation shows that for $v \in T_{(x, q_s(x))} N$,
+\begin{equation*}
+  \diff{g_i}(x, q_s(x))(v) = \diff{f_i}(x)(v_1, \ldots, v_n).
+\end{equation*}
+It follows that the $n \times n$ matrix $[\diff{f_1}(x), \ldots, \diff{f_n}(x)]$ is nonsingular if and only if $\diff{(G|_N)}(x, q_s(x))$ has rank $n$. Hence $(x, q_s(x))$ is a regular solution of $(G, g) = (y, 0)$ if and only if $x$ is a regular solution of $F = y$.
+\end{proof}
+
+\begin{claim} \label{claim:G-proper}
+  The properness assumption on $G$ can be removed, and in doing so we obtain the bound stated in Theorem~\ref{thm:khovanskii}.
+\end{claim}
+
+\begin{proof}
+We show that the properness assumption can be removed via a standard compactification argument, and that this yields the full bound in Theorem~\ref{thm:khovanskii}.
+
+For $R > 0$, introduce a new variable $x_0$ and add the equation
+\begin{equation*}
+  f_0(x_0, x_1, \ldots, x_n) = x_0^2 + x_1^2 + \cdots + x_n^2 - R^2
+\end{equation*}
+to the system. The augmented system $\mathcal{S}' = \{f_0 = 0, f_1 = 0, \ldots, f_n = 0\}$ consists of $n+1$ Pfaffian equations in $n+1$ unknowns $(x_0, x_1, \ldots, x_n)$, with the same chain $(q_1, \ldots, q_s)$ (which depends on $\{x_1, \ldots, x_k\}$ and is independent of $x_0$). Since $f_0$ defines a proper map, the lifted map $G' = (g_0, g_1, \ldots, g_n)\colon \R^{n+2} \to \R^{n+1}$ (constructed as in Step~1) is proper. Indeed, the properness of $f_0$ ensures that preimages of compact sets under $G'$ are bounded, hence compact.
+
+Any regular solution $x = (x_1, \ldots, x_n)$ of $\{f_1 = \cdots = f_n = 0\}$ inside the open ball $\{x \in \R^n \suchthat \norm{x} < R\}$ gives rise to exactly two solutions $(x_0, x) = (\pm\sqrt{R^2 - \norm{x}^2}, x)$ of $\mathcal{S}'$. Since the original system is $0$-dimensional (having $n$ equations in $n$ unknowns with isolated regular solutions), choosing $R$ large enough captures all solutions. Moreover, $f_0$ is a polynomial of degree $\beta_0 = 2$, and the chain still depends on only $k$ of the $n+1$ variables $\{x_0, x_1, \ldots, x_n\}$.
+
+Applying the bound~\eqref{eqn:sharper-kho-proper} (proved above under the properness assumption) to the $(n+1)$-dimensional system $\mathcal{S}'$ gives at most
+\begin{equation*}
+  2^{\frac{s(s-1)}{2}} \beta_0 \beta_1 \dotsm \beta_n \left(\beta_0 + \beta_1 + \dotsb + \beta_n - (n+1) + \min\{k,s\}\alpha\right)^s
+\end{equation*}
+regular solutions. Dividing by $2$ (since each original solution corresponds to two solutions of $\mathcal{S}'$) and setting $\beta_0 = 2$ yields
+\begin{equation*}
+  2^{\frac{s(s-1)}{2}} \beta_1 \dotsm \beta_n \left(\beta_1 + \dotsb + \beta_n - n + \min\{k,s\}\alpha + 1\right)^s,
+\end{equation*}
+which is the bound stated in Theorem~\ref{thm:khovanskii}.
+\end{proof}
