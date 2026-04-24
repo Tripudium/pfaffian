@@ -217,13 +217,4 @@ For $\ell=1$ and $h=w$, with first-layer weights rational in general position an
 whenever $V_{ij}\subset B(p,\sigma)$ for all pairs $i<j$. For large $t$ this decays as $\binom{m}{2}\cdot 4\,n!\,(2L+2)^n\cdot n\,w^n/t$ by Remark~\ref{rem:single-layer-condition-tight}. The Khovanski\u\i{} prefactor $2^{w(w-1)/2}\cdot(n\cdot 5 + 2)^w$ of Example~\ref{ex:sigmoid-condition} is replaced by the polynomial $C_n(L)\cdot w^n$, making the bound quantitatively meaningful at practical widths.
 \end{example}
 
-\begin{remark}\label{rem:bound-interpretation}
-The dependence on the network architecture enters through two terms. In the general $\ell$-layer form (Example~\ref{ex:sigmoid-condition}), the Khovanski\u\i{} prefactor $2^{h(h-1)/2}(n(4\ell+1)+2)^h$ grows rapidly with the number of hidden units~$h$, and the polynomial tail $(1+(2\ell+3)/t)^n$ depends on the depth~$\ell$ and the input dimension~$n$. For practical networks the Khovanski\u\i{} prefactor renders the bound quantitatively vacuous. For single-hidden-layer sigmoid networks with rational weights in general position (Example~\ref{ex:sigmoid-condition-single}), the exponential prefactor is replaced by the polynomial $C_n(L)\,w^n$, at the cost of the additional hypothesis $V_{ij}\subset B(p,\sigma)$; the resulting bound is quantitatively usable at practical widths. Whether an analogous polynomial-in-widths bound holds for multi-hidden-layer networks is the content of Conjecture~\ref{conj:multi-layer-degree}.
-
-Beyond the quantitative improvement, the bounds are qualitatively meaningful in several ways:
-\begin{enumerate}
-\item The $O(1/t)$ tail decay is sharp in the sense that it matches the generic behaviour of condition number tails for smooth hypersurfaces;
-\item The bound captures an explicit depth-width tradeoff: in the general $\ell$-layer form, deeper networks increase the polynomial base while wider networks increase the exponential prefactor;
-\item For fixed architecture, the bound gives the correct scaling in $\varepsilon$ and~$n$.
-\end{enumerate}
 \end{remark}
