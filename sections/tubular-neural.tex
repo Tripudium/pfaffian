@@ -1,6 +1,7 @@
 \section{Tubular neighbourhoods of neural networks}\label{sec:tubular-neural}
-Artificial neural networks, or multilayer perceptrons, with common continuous activation functions are examples of Pfaffian functions, a fact that has been exploited in order to study their VC dimension~\cite{karpinski1997polynomial} and topological complexity~\cite{bianchini2014complexity}. When used as classifiers, neural networks
-subdivide the input space into decision regions separated by decision boundaries. The structure of these decision boundaries depends on the activation functions and the network architecture; in the case of piecewise linear (ReLU) activation functions, the decision boundaries are piecewise linear, while in the case of common continuous activation functions such as sigmoid and tanh, the decision boundaries are semi-Pfaffian sets. As such, the Pfaffian volume bounds derived in Section~\ref{sec:tubular} apply in this setting. In this section, we begin by describing the Pfaffian structure of neural networks. It turns out that the bounds derived by applying Theorem~\ref{thm:prob_bound} are overly pessimistic, with an exponential growth in the number of hidden units. By exploiting the special structure of neural networks, we derive bounds that are polynomial in the number of hidden units.
+Artificial neural networks, or multilayer perceptrons, with common continuous activation functions are examples of Pfaffian functions~\cite{karpinski1997polynomial, bianchini2014complexity}. When used as classifiers, neural networks
+subdivide the input space into decision regions separated by semi-Pfaffian decision boundaries and the Pfaffian volume bound in Theorem~\ref{thm:prob_bound} can be used to quantify the probability that a randomly chosen input is close to that boundary. 
+The general volume bound for Pfaffian functions is, however, overly pessimistic for neural networks. In this section we derive an improved volume bound for one-layer neural networks with sigmoid activation.
 
 \subsection{Neural networks as Pfaffian functions}
  Let $\cN$ be a fully connected neural network with $\ell$ hidden layers and $h$ hidden units. Such a network is characterized by a function $F=F^{\ell+1}\circ \cdots \circ F^1\colon \R^n\to \R^m$, where
@@ -181,7 +182,7 @@ where $h$ is the total number of hidden nodes.
 \subsection{The Gauss map of a neural network}
 The tubular neighbourhood bound for general Pfaffian functions involves a constant that is exponential in the length $s$ of the Pfaffian chain. In the case of neural networks, the chain consists of one element for every hidden unit, so $s=h$ and this factor becomes prohibitive. We show that, for decision boundaries of sigmoid classifiers, the bound can be improved to a polynomial in the number of hidden units.
 
-The strategy is to replace the Khovanski\u i--Rolle bound with a global argument based on the Bernstein--Kushnirenko--Khovanski\u i (BKK) theorem~\cite{bernstein1975} (see also~\cite[Chapter 7,\S 5]{cox2005using}). After an exponential substitution, the Gauss-map system becomes a Laurent polynomial system whose $n$ equations share a single Newton polytope, a zonotope $\conv(A)$ determined by the (integer-scaled) weight vectors. Bernstein's theorem then bounds the number of solutions by $n!\,\operatorname{Vol}(\conv(A))$, which is polynomial in the width. The multi-layer extension (Theorem~\ref{thm:multi-layer-degree}) handles layer-by-layer complexity via the hyperplane arrangement of the first layer combined with an activation-coordinate change, which turns the layered chain into a shallower one on each cell.
+The strategy is to replace the Khovanski\u i--Rolle bound with a global argument based on the Bernstein--Kushnirenko--Khovanski\u i (BKK) theorem~\cite{bernstein1975} (see also~\cite[Chapter 7,\S 5]{cox2005using}). After an exponential substitution, the Gauss-map system becomes a Laurent polynomial system whose $n$ equations share a single Newton polytope, a zonotope $\conv(A)$ determined by the (integer-scaled) weight vectors. Bernstein's theorem then bounds the number of solutions by $n!\,\operatorname{Vol}(\conv(A))$, which is polynomial in the width. For networks with $\ell\geq 2$ hidden layers, the direct BKK approach is obstructed by the transcendentality of sigmoid composition, and we state the corresponding polynomial-in-widths bound as a conjecture.
 
 
 \begin{proposition}\label{prop:single-layer-degree}
@@ -216,14 +217,14 @@ Set $\vec p_k := q\,a_k\in\Z^n$, so that $\|\vec p_k\|_\infty\leq L$, and set $y
   \;=:\; u_k(y),
 \end{equation*}
 where we use the notation $y^{\vec p_k}=y_1^{qa_{k1}}\cdots y_n^{qa_{kn}}$. 
-Each sigmoid becomes $\sigma_k = (1+u_k)^{-1}$ and its derivative $\sigma'_k = u_k(1+u_k)^{-2}$. Set $\Phi(y):=\prod_{k=1}^w(1+u_k(y))^2$, a strictly positive analytic function on $\R_{>0}^n$. Using $\partial x_j = -q\,y_j^{-1}\partial y_j$ and multiplying~\eqref{eq:single-layer-system} by the non-vanishing factor $y_1\cdots y_{n-1}\,\Phi(y)$, the system transforms into the following polynomial system on $(\R_{>0})^n$:
+Each sigmoid becomes $\sigma_k = (1+u_k)^{-1}$ and its derivative $\sigma'_k = u_k(1+u_k)^{-2}$. Set $\Phi(y):=\prod_{k=1}^w(1+u_k(y))^2$, a strictly positive analytic function on $\R_{>0}^n$. Multiplying~\eqref{eq:single-layer-system} by the non-vanishing factor $\Phi(y)$, the system transforms into the following polynomial system on $(\R_{>0})^n$:
 \begin{equation}\label{eq:laurent-system}
-  F_0(y) \;:=\; c_0\prod_{k=1}^w(1+u_k)^2 + \sum_{k=1}^w d_k\, u_k\!\!\prod_{l\neq k}(1+u_l)^2 \;=\; 0,
+  F_0(y) \;:=\; c_0\prod_{k=1}^w(1+u_k)^2 + \sum_{k=1}^w d_k\, \prod_{l\neq k}(1+u_l)^2 \;=\; 0,
 \end{equation}
 \begin{equation}\label{eq:laurent-system-j}
   F_j(y) \;:=\; \sum_{k=1}^w d_k\,a_{kj}\,u_k\!\!\prod_{l\neq k}(1+u_l)^2 \;=\; 0, \qquad j=1,\ldots,n-1.
 \end{equation}
-Each factor $(1+u_k)^2 = 1 + 2u_k + u_k^2$ contributes exponents in $\{0,\vec p_k,2\vec p_k\}$, so all monomials appearing in~\eqref{eq:laurent-system}--\eqref{eq:laurent-system-j} have exponent vectors in the Minkowski sum
+Each factor $(1+u_k)^2 = 1 + 2u_k + u_k^2$ contributes monomials withexponents in $\{0,\vec p_k,2\vec p_k\}$, so all monomials appearing in~\eqref{eq:laurent-system}--\eqref{eq:laurent-system-j} have exponent vectors in the Minkowski sum
 \begin{equation}\label{eq:zonotope-support}
   A \;:=\; \sum_{k=1}^w \{0,\vec p_k,2\vec p_k\} \;\subset\; \Z^n.
 \end{equation}
@@ -233,115 +234,134 @@ By Bernstein's theorem~\cite{bernstein1975}, a system of $n$ Laurent polynomials
 \begin{equation*}
   n!\,\operatorname{MV}(P_0,\ldots,P_{n-1})
 \end{equation*}
-isolated solutions in $(\C^*)^n$, where $\operatorname{MV}$ denotes the mixed volume, counted with multiplicity, provided no solution escapes to a lower-dimensional face (a non-degeneracy condition discussed later). Since $P_j\subseteq\conv(A)$ for all $j$ and the mixed volume is monotone in each argument, this is at most $n!\,\operatorname{Vol}(\conv(A))$. The diffeomorphism $\Psi\colon x_j\mapsto y_j=\econst^{-x_j/q}$ embeds $\R^n$ bijectively onto $(\R_{>0})^n\subset(\C^*)^n$, and multiplication by $y_1\cdots y_{n-1}\Phi(y)$ is non-vanishing there, so every isolated real solution of~\eqref{eq:single-layer-system} corresponds to an isolated complex solution of~\eqref{eq:laurent-system}--\eqref{eq:laurent-system-j} in $(\C^*)^n$. Hence the real count is bounded by $n!\,\operatorname{Vol}(\conv(A))$.
+isolated solutions in $(\C^*)^n$, counted with multiplicity, where $\operatorname{MV}$ denotes the mixed volume, provided no solution escapes to a lower-dimensional face (a non-degeneracy condition discussed later). Since $P_j\subseteq\conv(A)$ for all $j$ and the mixed volume is monotone in each argument, this is at most $n!\,\operatorname{Vol}(\conv(A))$. The diffeomorphism $\Psi\colon x_j\mapsto y_j=\econst^{-x_j/q}$ embeds $\R^n$ bijectively onto $(\R_{>0})^n\subset(\C^*)^n$, and multiplication by $\Phi(y)$ is non-vanishing there, so every isolated real solution of~\eqref{eq:single-layer-system} corresponds to an isolated complex solution of~\eqref{eq:laurent-system}--\eqref{eq:laurent-system-j} in $(\C^*)^n$. Hence the real count is bounded by $n!\,\operatorname{Vol}(\conv(A))$.
 
 The set $A$ lies in the zonotope $Z := \sum_{k=1}^w[0,2\vec p_k]$, so $\conv(A)\subseteq Z$. The zonotope volume formula (see~\cite[Ch.~7]{ziegler1995}) gives
 \begin{equation}\label{eq:zonotope-volume}
   \operatorname{Vol}(Z) \;=\; 2^n \sum_{\substack{S\subset[w]\\ |S|=n}} \bigl|\det(\vec p_{k_1},\ldots,\vec p_{k_n})\bigr|,
 \end{equation}
-where $S=\{k_1,\ldots,k_n\}$. Hadamard's inequality together with $\|\vec p_k\|_\infty\leq L$ gives $|\det(\vec p_{k_1},\ldots,\vec p_{k_n})|\leq n!\,L^n$, and there are $\binom{w}{n}\leq w^n/n!$ subsets, so
+where $S=\{k_1,\ldots,k_n\}$. Hadamard's inequality together with $\|\vec p_k\|_\infty\leq L$ gives 
+\begin{equation*}
+|\det(\vec p_{k_1},\ldots,\vec p_{k_n})|\leq n^{n/2}\,L^n \leq n!\,L^n,
+\end{equation*}
+and there are $\binom{w}{n}\leq w^n/n!$ subsets, so
 \begin{equation*}
   \operatorname{Vol}(\conv(A)) \;\leq\; \operatorname{Vol}(Z) \;\leq\; 2^n\cdot n!\,L^n\cdot\frac{w^n}{n!} \;=\; (2L)^n\,w^n.
 \end{equation*}
-Combining with Step~2 yields at most $n!\,(2L)^n\,w^n$ solutions of~\eqref{eq:single-layer-system}, and the orientation factor $2$ is absorbed into the constant $C(n,L)\leq 2\cdot n!\,(2L)^n$ in~\eqref{eq:single-layer-bound}.
+The Bernstein bound implies that there are at most $n!\,(2L)^n\,w^n$ solutions of~\eqref{eq:single-layer-system}, and the orientation factor $2$ is absorbed into the constant $C(n,L)\leq 2\cdot n!\,(2L)^n$ in~\eqref{eq:single-layer-bound}.
 
-Bernstein's bound is achieved generically and can be exceeded only at degenerate systems for which the face-truncation corresponding to some non-trivial face of $\conv(A)$ has a common zero in $(\C^*)^n$. The coefficients of~\eqref{eq:laurent-system}--\eqref{eq:laurent-system-j} are polynomials in the data $(d_k,b_k,c_0,a_{kj})$, so the degenerate locus is a proper algebraic subset of parameter space. Under the general-position hypothesis on $A}$ and a Sard-type genericity assumption on $(b_k,d_k,c_0)$, which holds outside a measure-zero set and which may be imposed by an arbitrarily small perturbation that does not increase the zero count, by upper-semicontinuity of intersection numbers under generic perturbations~\cite[Ch.~3]{guillemin2010differential}, the system avoids the degenerate locus and Bernstein's bound applies.
+Bernstein's bound is achieved generically and can be exceeded only at degenerate systems. The coefficients of~\eqref{eq:laurent-system}--\eqref{eq:laurent-system-j} are polynomials in the data $(d_k,b_k,c_0,a_{kj})$, so the degenerate locus is a proper algebraic subset of parameter space. Under the general-position hypothesis on $A$ and a Sard-type genericity assumption on $(b_k,d_k,c_0)$, which holds outside a measure-zero set and which may be imposed by an arbitrarily small perturbation that does not increase the zero count, the system avoids the degenerate locus and Bernstein's bound applies.
 \end{proof}
 
 \begin{remark}\label{rem:single-layer-lowerbound}
-    The bound $\md(V) = O(w^n)$ of Proposition~\ref{prop:single-layer-degree} is tight up to the constant $C(n,L)$. A matching lower bound $\Omega(w^n)$ is obtained by choosing the weight vectors $a_k$ in general position and the output weights $d_k$ with alternating signs, producing $\Theta(w^n)$ connected components of the zero set; equivalently, the zonotope $Z$ contains $\Theta(w^n)$ lattice points, and a generic choice of $(d_k,b_k)$ realises the corresponding monomials with non-zero coefficients, saturating the BKK count up to constants.
-    \end{remark}
+  The exponent $n$ in the bound $\md(V) = O(w^n)$ of Proposition~\ref{prop:single-layer-degree} is tight: a matching lower bound $\md(V) = \Omega(w^n)$ is achieved by a grid construction, as follows. Assume $w = nm$ for some integer $m\ge 2$. For $j\in [n]$ and $k\in[m]$, take weight vectors $a_{j,k} \in \mathbb{Q}^n$ obtained by small rational perturbation of $e_j$, chosen so that the $w$ rows $\{a_{j,k}\}$ are in general position, biases $b_{j,k} = -k$, output weights $d_{j,k} = (-1)^k$, and offset $c_0 = 1/2$. Consider the sharpened family
+  \begin{equation*}
+    f_\lambda(x) \;=\; \frac{1}{2} + \sum_{j=1}^n\sum_{k=1}^m (-1)^k\,\sigma\bigl(\lambda(a_{j,k}^{\trans}x-k)\bigr), \qquad \lambda \to \infty.
+  \end{equation*}
+  In the threshold limit $\lambda\to\infty$, each sigmoid converges pointwise to an indicator, and $f_\lambda$ converges to a piecewise constant function $g$ on the cells of the (nearly axis-aligned) hyperplane arrangement. On the cell indexed by $(i_1,\ldots,i_n)\in\{0,1,\ldots,m\}^n$ (with $i_j$ counting how many of the $j$-direction hyperplanes lie ``below'' the cell), $g$ takes the value $c_0 + \sum_{j=1}^n S_{i_j}$, where $S_i = \sum_{k\le i}(-1)^k \in\{0,-1\}$.
+  With $c_0 = 1/2$, all-even cells (every $i_j$ even) have $g = +1/2$, and one-odd cells (exactly one $i_j$ odd) have $g = -1/2$. Each all-even cell is adjacent to $n$ one-odd cells across axis-aligned facets, so the arrangement contains at least $n\cdot\lfloor m/2\rfloor^n = \Omega(w^n)$ sign-change facets (for fixed~$n$). For $\lambda$ sufficiently large, the smooth zero set $\{f_\lambda = 0\}$ contains a distinct compact component near each such facet, and each component contributes at least $2$ to the Gauss-map count $\md\gamma_V$. Hence $\md(V) = \Omega(w^n)$.
+\end{remark}
 
 
 \begin{remark}\label{rem:why-not-fewnomials}
-One might hope to sharpen~\eqref{eq:single-layer-bound} using a real-fewnomial bound in place of BKK, since the system~\eqref{eq:laurent-system}--\eqref{eq:laurent-system-j} has highly structured support. However, fewnomial bounds such as the Bihan--Sottile bound~\cite{bihansottile2007} which imply
-\begin{equation*}
-  N_{\R_{>0}}(n,n+q+1) \;\leq\; \tfrac{\econst^2+3}{4}\cdot 2^{\binom{q-n-1}{2}}(q-n-1)^n
-\end{equation*}
-for $n$ polynomials in $n$ variables with a combined support of $n+q+1$ distinct monomials, are controlled by the number of monomials $|A|$, not by $\operatorname{Vol}(\conv(A))$. In our setting $|A|=\Theta(w^n)$ already, so $q=O(w^n)$ and the right-hand side becomes $2^{\binom{w^n}{2}}\cdot w^{n^2}$.
+One might hope to sharpen~\eqref{eq:single-layer-bound} using a real-fewnomial bound in place of BKK, since the system~\eqref{eq:laurent-system}--\eqref{eq:laurent-system-j} has highly structured support. However, fewnomial bounds such as the Bihan--Sottile bound~\cite{bihansottile2007} are controlled by the number of monomials $|A|$, not by $\operatorname{Vol}(\conv(A))$.
 \end{remark}
 
-\subsection{The multi-layer case}\label{subsec:multi-layer}
+For networks with more than one hidden layer, we expect the single-layer bound of Proposition~\ref{prop:single-layer-degree} to extend to a fully polynomial bound in each layer width, as recorded in the conjecture below.
 
-The single-layer result (Proposition~\ref{prop:single-layer-degree}) can be extended to deeper networks by an inductive argument based on the diffeomorphism structure of the activation map. The key observation is that on each cell of the first-layer arrangement, a change to activation coordinates converts the layered chain into a parallel chain, reducing the problem to a single-layer count.
-
-We first simplify the Gauss map system. Since the Pfaffian structure is invariant under orthogonal coordinate changes (Remark~\ref{re:affine}), we may assume $v = e_n = (0,\ldots,0,1)$. Then $\nabla f(x) \parallel e_n$ is equivalent to
-\begin{equation}\label{eq:gauss-simplified}
-  f(x) = 0, \qquad \frac{\partial f}{\partial x_j}(x) = 0, \quad j = 1,\ldots, n-1.
-\end{equation}
-This is a system of $n$ equations in $n$ unknowns, with no auxiliary variables.
-
-\begin{theorem}\label{thm:multi-layer-degree}
-  Let $F\colon \R^n \to \R^m$ be a fully connected neural network classifier with $\ell$ hidden layers of widths $w_1,\ldots,w_\ell \geq n$, sigmoid activation, and a linear output layer. Assume that the weight matrices $A^{(1)},\ldots,A^{(\ell)}$ are rational and in general position, and let $L$ denote the (combined) lattice constant of Lemma~\ref{lem:line-intersection} across all layers. Then each pairwise decision boundary $V_{ij} = \mathcal{Z}(g_{ij})$, if bounded and smooth, satisfies
+\begin{conjecture}\label{conj:multi-layer-degree}
+  Let $F\colon \R^n \to \R^m$ be a fully connected neural network classifier with $\ell$ hidden layers of widths $n_1,\ldots,n_\ell \geq n$, logistic sigmoid activation at each hidden layer, and a linear output layer. Assume that the weight matrices $A^{(1)},\ldots,A^{(\ell)}$ are rational with common denominator $q$ and in general position, and let $L=q\max_{k,i,j}|a_{ki}^{(j)}|$ be the lattice constant, where the $a_{ki}^{(j)}$ are the entries of the $j$-th layer's weight matrix. Then each pairwise decision boundary $V_{ij} = \mathcal{Z}(F_i-F_j)$, if bounded and smooth, satisfies
   \begin{equation}\label{eq:multi-layer-bound}
-    \md(V_{ij}) \leq C(n,L)\cdot \left(\prod_{i=1}^\ell w_i\right)^n,
+    \md(V_{ij}) \leq C(n,L)\cdot \left(\prod_{i=1}^\ell n_i\right)^n,
   \end{equation}
-  where $C(n,L)$ depends only on $n$ and $L$. In particular, the rationality hypothesis holds automatically for any finite-precision (floating-point) network.
+  where $C(n,L)$ depends only on $n$ and $L$.
+\end{conjecture}
+
+The conjecture is supported by two observations. The single-layer case $\ell = 1$ is Proposition~\ref{prop:single-layer-degree}, where the exponent $n$ is sharp by Remark~\ref{rem:single-layer-lowerbound}. For piecewise-linear (ReLU) networks, which lie outside the Pfaffian framework but share the layered composition structure, the number of linear regions---and hence the number of affine pieces making up the decision boundary---is bounded by $O(\prod_j n_j^{\,n})$~\cite{montufar2014,hanin2019}, matching the form of~\eqref{eq:multi-layer-bound}. Recovering this scaling for sigmoid networks by Pfaffian methods appears to require an improvement of the Khovanski\u\i--Rolle factor $2^{s(s-1)/2}$ for chains of length $s = n_1+\cdots+n_\ell$ to one that reflects the layered structure of the chain (the ``layered Rolle'' problem; see Conjecture~\ref{conj:block-khovanskii}). A direct BKK argument on the compounded system is obstructed by the transcendentality of sigmoid composition: after a single layer of the exponential substitution used in Proposition~\ref{prop:single-layer-degree}, the deeper pre-activations involve exponentials of rational---rather than affine---functions, which are not Laurent monomials in any natural substitution.
+
+\begin{remark}
+Bianchini and Scarselli~\cite{bianchini2014complexity} obtain comparable polynomial bounds for networks with arctan activation by a different route: the arctan chain has length $2$ regardless of the number of hidden units, so the Pfaffian exponential factor is trivial. For sigmoid networks the chain length grows linearly with the number of hidden units, and a polynomial bound analogous to the arctan case is the content of Conjecture~\ref{conj:multi-layer-degree}.
+\end{remark}
+
+\subsection{Tubular neighbourhood bound for neural networks}
+
+Combining Theorem~\ref{thm:tube_bound} with the BKK degree bound of Proposition~\ref{prop:single-layer-degree}, we obtain a tubular neighbourhood bound for single-hidden-layer sigmoid classifiers whose dependence on the width $w$ is polynomial rather than exponential.
+We first extend Proposition~\ref{prop:single-layer-degree} from $\md(V)$ to the $i$-th maximal degrees $\md_i(V)$.
+
+\begin{proposition}\label{prop:single-layer-ideg}
+  Let $f\colon\R^n\to\R$ and $V = \mathcal{Z}(f)$ be as in Proposition~\ref{prop:single-layer-degree}, with lattice constant $L=q\max_{k,i}|a_{ki}|$. Then for every $0\le i\le n-1$,
+  \begin{equation}\label{eq:single-layer-ideg}
+    \md_i(V) \;\leq\; 2\cdot (i+1)!\,(2L+2)^{i+1}\,w^{i+1}.
+  \end{equation}
+\end{proposition}
+
+\begin{proof}
+  Fix an affine subspace $L'\in\cE^n_{i+1}$ such that $V\cap L'$ is transverse. By Remark~\ref{re:affine}, choose an orthogonal transformation $h\in O(n)$ such that $h(L')=\{x\in\R^n\colon x_{i+2}=\cdots=x_n=0\}$, and write $\tilde f(u)=f(h^{-1}(u,0))$ for $u\in\R^{i+1}$. Then
+  \begin{equation*}
+    \tilde f(u) = c_0 + \sum_{k=1}^w d_k\,\sigma(\tilde a_k^{\trans}u + b_k),
+  \end{equation*}
+  where $\tilde a_k\in\R^{1+i}$ is the projection of $a_k$ onto the first $i+1$ coordinates in the rotated frame. The entries of $\tilde a_k$ need not be rational.
+
+  For each $k$, let $\tilde a_k'\in(1/q)\Z^{1+i}$ be the coordinatewise round of $\tilde a_k$ to the nearest multiple of $1/q$. Then $\tilde a_k'$ has common denominator $q$ and $\|\tilde a_k'-\tilde a_k\|_\infty\le 1/(2q)$; since $\|\tilde a_k\|_\infty\le\|a_k\|_\infty\le L/q$ by orthogonal projection, the rational lattice constant for the approximants is $L^*:=q\max_k\|\tilde a_k'\|_\infty\le L+1$. Let
+  \begin{equation*}
+    \tilde f'(u) \;=\; c_0+\sum_{k=1}^w d_k\,\sigma(\tilde a_k'^{\trans}u+b_k).
+  \end{equation*}
+  Applying Proposition~\ref{prop:single-layer-degree} in dimension $i+1$ to $\tilde f'$ with lattice constant $L^*\le L+1$ gives
+  \begin{equation}\label{eq:ideg-approx}
+    \md(\mathcal{Z}(\tilde f')) \;\leq\; 2\cdot(i+1)!\,(2L+2)^{i+1}\,w^{i+1},
+  \end{equation}
+  after an arbitrarily small further perturbation of $(\tilde a_k',b_k,c_0,d_k)$ to restore general position and the Sard-type non-degeneracy hypotheses of Proposition~\ref{prop:single-layer-degree}, which hold outside a measure-zero subset of parameter space.
+
+  By repeating the construction with $q$ replaced by $Nq$ for $N=1,2,\ldots$, the approximants $\tilde f'^{(N)}$ converge to $\tilde f$ in $C^2_{\mathrm{loc}}$ as $N\to\infty$. For any regular value $v$ of the Gauss map of $V\cap L'$, the corresponding real solutions of the Gauss-map system~\eqref{eq:single-layer-system} for $\tilde f$ are non-degenerate, and by the implicit function theorem each persists as a unique non-degenerate real solution of the perturbed system for all $N$ sufficiently large. Upper semicontinuity of the intersection number under compact perturbations~\cite[Ch.~3]{hirsch1976differential,guillemin2010differential} gives
+  \begin{equation*}
+    \md(V,L') \;\leq\; \liminf_{N\to\infty}\md(\mathcal{Z}(\tilde f'^{(N)})) \;\leq\; 2\cdot(i+1)!\,(2L+2)^{i+1}\,w^{i+1}.
+  \end{equation*}
+  Taking the supremum over $L'\in\cE^n_{i+1}$ yields~\eqref{eq:single-layer-ideg}.
+\end{proof}
+
+In particular, using $w\ge 1$ and $i+1\le n$, Proposition~\ref{prop:single-layer-ideg} gives the uniform bound $\md_i(V)\le 2\cdot n!\,(2L+2)^n\,w^n$ for $0\le i\le n-1$. We now state the main result of this section: the analogue of Theorem~\ref{thm:prob_bound} for the decision boundary of a single-hidden-layer sigmoid network. We restrict to the case $V\subset B(p,\sigma)$, which eliminates the sphere-boundary term $\partial M$ from the proof of Theorem~\ref{thm:prob_bound}; this assumption is natural in the robustness setting of Section~\ref{sec:robustness}, where the data distribution is supported in a bounded region and $\sigma$ exceeds its diameter. The obstruction to dropping this hypothesis is recorded in Remark~\ref{rem:sphere-obstruction} below.
+
+\begin{theorem}\label{thm:prob_bound_single_layer}
+  Let $f\colon\R^n\to\R$ be as in Proposition~\ref{prop:single-layer-degree} and set $V=\mathcal{Z}(f)$. Assume that $\nabla f$ is non-vanishing on $V$ and that $V\subset B(p,\sigma)$. Let $X$ be uniformly distributed on $B(p,\sigma)$. Then
+  \begin{equation}\label{eq:single-layer-prob-bound}
+    \prob\{d(X,V)\le\varepsilon\}
+    \;\leq\; C_n(L)\cdot w^n\left[\left(1+\frac{\varepsilon}{\sigma}\right)^n - 1\right],
+  \end{equation}
+  where $C_n(L) \le 4\cdot n!\,(2L+2)^n$ depends only on $n$ and $L$.
 \end{theorem}
 
 \begin{proof}
-We proceed by induction on the number of layers $\ell$. The base case $\ell = 1$ is Proposition~\ref{prop:single-layer-degree}. For the inductive step, consider a network with $\ell \geq 2$ layers and write the pairwise decision boundary function as
-\begin{equation*}
-  f(x) = g\bigl(q^{(1)}(x)\bigr),
-\end{equation*}
-where $q^{(1)}(x) = \sigma(A^{(1)}x + b^{(1)}) \in (0,1)^{w_1}$ is the first-layer activation map and $g\colon (0,1)^{w_1}\to \R$ is the decision boundary function of the remaining $(\ell-1)$-layer network viewed as a function of the first-layer activations.
-
-\paragraph{Step 1: Cell decomposition.}
-The $w_1$ hyperplanes $H_m = \{a_m^{(1)}\cdot x + b_m^{(1)} = 0\}$, $m\in [w_1]$, partition $\R^n$ into at most
-\begin{equation*}
-  \sum_{i=0}^n \binom{w_1}{i} \leq \left(\frac{\econst w_1}{n}\right)^n
-\end{equation*}
-open cells (by the hyperplane arrangement bound), provided the weight vectors $a_m^{(1)}$ are in general position.
-
-\paragraph{Step 2: Activation coordinates.}
-On each cell, choose $n$ indices $\{m_1,\ldots,m_n\}\subset [w_1]$ such that $a_{m_1}^{(1)},\ldots,a_{m_n}^{(1)}$ are linearly independent (possible by the general position assumption). The map
-\begin{equation*}
-  \Phi\colon x \mapsto u = (q_{m_1}(x),\ldots,q_{m_n}(x)) \in (0,1)^n
-\end{equation*}
-is a diffeomorphism from the cell to an open subset $U\subset (0,1)^n$, since each $q_m = \sigma(a_m^{(1)}\cdot x + b_m^{(1)})$ is a diffeomorphism in the direction $a_m^{(1)}$ and $\sigma$ is strictly monotone on each cell.
-
-\paragraph{Step 3: Parallel chain in $u$-coordinates.}
-In the coordinates $u = (u_1,\ldots,u_n)$, the function $f$ becomes $\tilde{f}(u) := f(\Phi^{-1}(u)) = g(q^{(1)}(\Phi^{-1}(u)))$. The remaining $(\ell-1)$ layers of the network depend on $u$ through the second-layer pre-activations
-\begin{equation*}
-  z_k^{(2)}(u) = \sum_{m=1}^{w_1} A^{(2)}_{km}\, q_m(\Phi^{-1}(u)) + b_k^{(2)}, \qquad k\in [w_2],
-\end{equation*}
-and the second-layer activations $p_k(u) = \sigma(z_k^{(2)}(u))$. Crucially, each $p_k$ satisfies the chain equation
-\begin{equation*}
-  \frac{\partial p_k}{\partial u_j} = p_k(1-p_k)\,\frac{\partial z_k^{(2)}}{\partial u_j},
-\end{equation*}
-where the right-hand side depends only on $p_k$ itself (not on any other $p_{k'}$). The second-layer chain elements $p_1,\ldots,p_{w_2}$ are therefore \emph{parallel}: they form a Pfaffian chain of length $w_2$ in which no element depends on any other. More generally, the activations of layers $2,\ldots,\ell$ form a Pfaffian chain of length $w_2+\cdots+w_\ell$ in the $u$-coordinates that has the same layered structure as the original chain, but with $\ell-1$ layers instead of $\ell$.
-
-\paragraph{Step 4: The Gauss map system in $u$-coordinates.}
-The system~\eqref{eq:gauss-simplified} transforms under $x = \Phi^{-1}(u)$ as follows. Since $\partial f/\partial x_j = \sum_{i=1}^n (\partial \tilde{f}/\partial u_i)(\partial u_i/\partial x_j)$, the condition $\partial f/\partial x_j = 0$ for $j = 1,\ldots,n-1$ becomes
-\begin{equation}\label{eq:twisted-gauss}
-  \tilde{f}(u) = 0, \qquad \sum_{i=1}^n \frac{\partial \tilde{f}}{\partial u_i}\,\frac{\partial u_i}{\partial x_j} = 0, \quad j = 1,\ldots,n-1.
-\end{equation}
-The Jacobian entries $\partial u_i/\partial x_j = q_{m_i}(1-q_{m_i})\, a_{m_i,j}^{(1)}$ are smooth, non-vanishing functions on $(0,1)^n$ (since $q_{m_i} \in (0,1)$ implies $q_{m_i}(1-q_{m_i}) > 0$) that depend only on the coordinates $u$, not on the deeper-layer activations. Thus the matrix $(\partial u_i/\partial x_j)_{i,j}$ is a smooth, invertible change of basis that does not introduce new Pfaffian chain elements.
-
-The system~\eqref{eq:twisted-gauss} is therefore a system of $n$ equations in $n$ unknowns involving the $(\ell-1)$-layer Pfaffian chain of the deeper activations, with the same layered structure as the original network but with one fewer layer. The smooth, non-vanishing coefficients from the Jacobian do not alter the zero-counting properties of the system.
-
-\paragraph{Step 5: Induction.}
-The inductive hypothesis is that, for any $(\ell-1)$-layer classifier, the number of solutions of its Gauss-map system of the form~\eqref{eq:gauss-simplified} (before multiplying by the orientation factor $2$) is bounded by $\tfrac12 C(n)\cdot (w_2\cdots w_\ell)^n$. Applied to the system~\eqref{eq:twisted-gauss} on each first-layer cell, this gives the same per-cell bound. Summing over the at most $(\econst w_1/n)^n$ first-layer cells and multiplying by $2$ for the orientation of the normal at the outer Gauss-map reduction yields
-\begin{equation*}
-  \md(V) \leq 2\cdot \left(\frac{\econst w_1}{n}\right)^n \cdot \tfrac12 C(n)\cdot (w_2\cdots w_\ell)^n = C'(n)\cdot \left(\prod_{i=1}^\ell w_i\right)^n.
-\end{equation*}
-The orientation factor is applied only once, at the outer level, and is \emph{not} reintroduced at each step of the induction.
+  Since $V\subset B(p,\sigma)$ is compact, Theorem~\ref{thm:tube_bound} applies to $V$ as a codimension-$1$ submanifold inside the ball $B(p,\sigma)$, giving
+  \begin{equation*}
+    \vol T(V,\varepsilon)
+    \;\leq\; 2\omega_n\sigma^n\sum_{i=0}^{n-1}\binom{n}{i+1}\md_i(V)\left(\frac{\varepsilon}{\sigma}\right)^{i+1}.
+  \end{equation*}
+  Substituting the uniform bound $\md_i(V)\le 2\cdot n!\,(2L+2)^n\,w^n$ from Proposition~\ref{prop:single-layer-ideg} and using the binomial identity $\sum_{j=1}^n\binom{n}{j}t^j=(1+t)^n-1$ with $t=\varepsilon/\sigma$,
+  \begin{equation*}
+    \vol T(V,\varepsilon)
+    \;\leq\; 4\omega_n\sigma^n\cdot n!\,(2L+2)^n\,w^n\left[\left(1+\frac{\varepsilon}{\sigma}\right)^n-1\right].
+  \end{equation*}
+  The inclusion $T(V,\varepsilon)\cap B(p,\sigma)\subseteq T(V,\varepsilon)$ and division by $\vol B(p,\sigma)=\omega_n\sigma^n$ give~\eqref{eq:single-layer-prob-bound} with $C_n(L)=4\cdot n!\,(2L+2)^n$.
 \end{proof}
 
-\begin{remark}\label{rem:induction-step}
-The inductive step relies on the observation that, in activation coordinates on each first-layer cell, the layered chain reduces to one with $\ell-1$ layers. The first-layer complexity is absorbed entirely into the cell count, and the remaining chain has the same structure as a shallower network. The smooth, non-vanishing Jacobian factors $q_{m_i}(1-q_{m_i})$ in the transformed Gauss map system~\eqref{eq:twisted-gauss} play the role of a ``twist'' that does not increase the solution count.
+\begin{corollary}\label{cor:single-layer-tight-prob-bound}
+  Under the hypotheses of Theorem~\ref{thm:prob_bound_single_layer},
+  \begin{equation*}
+    \prob\{d(X,V)\le\varepsilon\}
+    \;\leq\; n\,C_n(L)\cdot w^n\cdot\frac{\varepsilon}{\sigma}\left(1+\frac{\varepsilon}{\sigma}\right)^{n-1}.
+  \end{equation*}
+  In particular, for $\varepsilon\le\sigma$,
+  \begin{equation*}
+    \prob\{d(X,V)\le\varepsilon\} \;\leq\; 2^{n-1}\,n\,C_n(L)\cdot w^n\cdot\frac{\varepsilon}{\sigma}.
+  \end{equation*}
+\end{corollary}
 
-We spell this out. On each cell, the Jacobian matrix $J = (\partial u_i/\partial x_j)$ is invertible, so the conditions $\sum_i (\partial \tilde{f}/\partial u_i) J_{ij} = 0$ for $j = 1,\ldots,n-1$ are equivalent to $\nabla_u \tilde{f}$ lying in the one-dimensional subspace spanned by $w(u) := J(u)\, e_n$, where $e_n=(0,\ldots,0,1)^\trans$. Since $J$ is invertible, $w(u)$ is a smooth, non-vanishing vector field on the cell, and the system~\eqref{eq:twisted-gauss} takes the ``twisted Gauss map'' form
-\begin{equation}\label{eq:twisted-gauss-parallel}
-  \tilde f(u) = 0, \qquad \nabla_u \tilde f(u) \;\parallel\; w(u).
-\end{equation}
-The parallelism condition is equivalent to the vanishing of the $2\times 2$ minors of the $n\times 2$ matrix $[\nabla_u\tilde f\;|\;w(u)]$; in any local trivialisation where $w_i(u)\neq 0$, it reduces to the $n-1$ equations
-\begin{equation*}
-  w_i(u)\,\frac{\partial \tilde f}{\partial u_j}(u) \;=\; w_j(u)\,\frac{\partial \tilde f}{\partial u_i}(u), \qquad j\in \{1,\ldots,n\}\setminus\{i\},
-\end{equation*}
-which are polynomial in $\nabla_u\tilde f$ and $w$ and hence remain Pfaffian of the same format (up to the smooth non-vanishing coefficients coming from $w$). Since $w$ is smooth and non-vanishing, we may deform it along a smooth homotopy to the constant field $w_0(u)\equiv e_n$ through smooth non-vanishing vector fields. Standard transversality~\cite[Ch.~3]{hirsch1976differential} (see also \cite[Ch.~3]{guillemin2010differential}) implies that the intersection number $|\{u: \tilde f(u)=0,\,\nabla_u\tilde f\parallel w_t(u)\}|$, computed with signs at regular parameter values $t$, is homotopy-invariant, and in particular bounded by its value at $t=1$. The value at $t=1$ is the standard Gauss-map count for $\tilde f$ on the cell, which is controlled by the inductive hypothesis for the $(\ell-1)$-layer system. Hence the twist does not increase the solution count beyond the constant-direction case.
-\end{remark}
+\begin{proof}
+  By the mean-value theorem, for $t\ge 0$ there exists $\xi\in[1,1+t]$ with $(1+t)^n - 1 = n\,\xi^{n-1}\,t \le n\,t\,(1+t)^{n-1}$. Applied to~\eqref{eq:single-layer-prob-bound} with $t=\varepsilon/\sigma$ this gives the first assertion; for $\varepsilon\le\sigma$, $(1+\varepsilon/\sigma)^{n-1}\le 2^{n-1}$.
+\end{proof}
 
-\begin{remark}
-The bound~\eqref{eq:multi-layer-bound} is polynomial in each layer width with exponent $n$. For constant width $w$, this gives $\md(V) \leq C(n)\cdot w^{n\ell}$, with the exponent growing linearly in depth. This completely eliminates the exponential factor $2^{h(h-1)/2}$ from the Khovanskii bound, and is substantially stronger than the block-Rolle bound of Conjecture~\ref{conj:block-khovanskii} (which remains exponential in the layer widths). Combined with the lower bound of $\Omega(w^n)$ from the single-layer case, this suggests that the true complexity of neural network decision boundaries is polynomial in the architecture parameters. Bianchini and Scarselli~\cite{bianchini2014complexity} obtain a comparable polynomial bound for arctan activation by a different route (the arctan chain has length $2$ regardless of $h$, so the Pfaffian exponential factor is trivial); Theorem~\ref{thm:multi-layer-degree} achieves the same for sigmoid by exploiting the layered structure directly.
+The linear-in-$\varepsilon/\sigma$ scaling of Corollary~\ref{cor:single-layer-tight-prob-bound} is essential for deriving condition-number tail bounds of order $O(1/t)$ in Section~\ref{sec:robustness}; the corresponding statement in the general Pfaffian setting is Corollary~\ref{cor:tight_prob_bound}, whose exponential prefactor $2^{h(h-1)/2}$ is here replaced by the polynomial $w^n$ for single-hidden-layer networks.
+
+\begin{remark}[Sphere obstruction]\label{rem:sphere-obstruction}
+  The hypothesis $V\subset B(p,\sigma)$ in Theorem~\ref{thm:prob_bound_single_layer} eliminates the sphere-boundary contribution $\partial M = V\cap S^{n-1}(p,\sigma+\varepsilon)$ that appears in the proof of Theorem~\ref{thm:prob_bound}. Without it, one needs to bound the maximal degrees of $\partial M$, a codimension-$2$ intersection of a Pfaffian hypersurface with a polynomial sphere. The Khovanski\u\i{} complete-intersection bound~\eqref{eq:ideg} applied to $\partial M$ with $(\alpha,\beta,s)=(2,1,w)$ and $c=2$ yields a correction term of order $2^{w(w-1)/2}\cdot\mathrm{poly}(n,w)$, exponential in $w$ and dominating the BKK main term~\eqref{eq:single-layer-prob-bound}. A polynomial-in-$w$ replacement would require either a Pfaffian--algebraic B\'ezout-type inequality of the form $\md(V\cap S)\le\md(V)\cdot\deg(S)$ for Pfaffian hypersurfaces $V$ and polynomial hypersurfaces $S$, or a BKK-style global argument that accommodates mixed Laurent-polynomial and transcendental components: under the exponential substitution of Proposition~\ref{prop:single-layer-degree}, the sphere equation $\|x-p\|^2=r^2$ becomes $\sum_j(q\log y_j+p_j)^2=r^2$, which is transcendental in $y$. This is a weaker form of the layered-Rolle obstruction discussed in Section~\ref{subsec:improved-nn} (Conjecture~\ref{conj:block-khovanskii}).
 \end{remark}

@@ -128,7 +128,76 @@ where $\alpha_F = \ell(\alpha+\beta-1)-\beta+1$, $\beta_F = \beta$, $s_F = sh$, 
 By Proposition~\ref{prop:nn-format}, the network output has Pfaffian format $(\alpha_F, \beta_F, s_F)$. Since $g_{ij} = F_j - F_i$ shares the same Pfaffian chain (Remark~\ref{re:1}), each $V_{ij}$ is a Pfaffian hypersurface with the same format. The result follows from Theorem~\ref{thm:condition-uniform}.
 \end{proof}
 
-\begin{example}[Sigmoid activation]\label{ex:sigmoid-condition}
+For single-hidden-layer sigmoid networks, the BKK-based tube bound of Theorem~\ref{thm:prob_bound_single_layer} yields a sharper tail bound in which the Khovanski\u\i{} prefactor $2^{h(h-1)/2}$ of Corollary~\ref{cor:nn-condition} is replaced by a polynomial in the width.
+
+\begin{corollary}[Single-hidden-layer sigmoid]\label{cor:nn-condition-single-layer}
+  Let $F\colon \R^n\to \R^m$ be a classifier implemented by a neural network with a single hidden layer of width $w$ and logistic sigmoid activation, a linear output layer, and first-layer weights $a_k\in\Q^n$ in general position with common denominator~$q$. Set $L=q\max_{k,i}|a_{ki}|$. Assume that for each pair $i<j$ the decision boundary $V_{ij}=\mathcal{Z}(g_{ij})$ is smooth with non-vanishing gradient and is contained in the closed ball $B(p,\sigma)$. If $X$ is uniformly distributed on $B(p,\sigma)$, then for every $t>0$,
+  \begin{equation}\label{eq:single-layer-condition-bound}
+    \Prob(\mC_p(X)>t) \;\leq\; \binom{m}{2}\,C_n(L)\cdot w^n\left[\left(1+\frac{1}{t}\right)^n-1\right],
+  \end{equation}
+  where $C_n(L)\leq 4\,n!\,(2L+2)^n$ depends only on $n$ and $L$.
+\end{corollary}
+
+\begin{proof}
+  As in the proof of Theorem~\ref{thm:condition-uniform}, the event $\mC_p(X)>t$ implies $\Delta(X) < \sigma/t$, so by a union bound
+  \begin{equation*}
+    \Prob(\mC_p(X)>t) \;\leq\; \sum_{i<j}\Prob(d(X,V_{ij})<\sigma/t).
+  \end{equation*}
+  Each $g_{ij}=F_j-F_i$ has the form $\tilde c_0+\sum_k d_k\,\sigma(a_k^{\trans}x+b_k)$ with $d_k$ the differences of the second-layer output weights of $F$ and the $(a_k,b_k)$ the first-layer weights and biases (which are shared across all pairs $i<j$). Hence each $V_{ij}$ satisfies the hypotheses of Theorem~\ref{thm:prob_bound_single_layer} with the common lattice constant $L$. Applying that theorem with $\varepsilon=\sigma/t$ to each $V_{ij}$ and summing gives~\eqref{eq:single-layer-condition-bound}.
+\end{proof}
+
+\begin{remark}\label{rem:single-layer-condition-tight}
+  The tight form of Corollary~\ref{cor:single-layer-tight-prob-bound} applied to each $V_{ij}$ sharpens the bracket in~\eqref{eq:single-layer-condition-bound} to $n(1/t)(1+1/t)^{n-1}$. In particular, for $t\geq 1$,
+  \begin{equation*}
+    \Prob(\mC_p(X)>t) \;\leq\; \binom{m}{2}\cdot 2^{n-1}\,n\,C_n(L)\,w^n\cdot\frac{1}{t},
+  \end{equation*}
+  an explicit $O(1/t)$ tail bound with polynomial dependence on the width.
+\end{remark}
+
+The Gaussian analogue of Corollary~\ref{cor:nn-condition-single-layer} requires more care. The Fubini reduction of Lemma~\ref{lem:gauss-to-uniform} expresses a Gaussian probability as an integral of uniform-ball probabilities at all radii $s\sigma$, $s \in (0,\infty)$, but Theorem~\ref{thm:prob_bound_single_layer} applies only when the ball contains $V_{ij}$. Splitting the integral at the threshold $s^* = R_V/\sigma$ determined by an enclosing radius $R_V$ of $V_{ij}$, and using the general Pfaffian bound on the small-$s$ part, gives a hybrid bound whose Khovanski\u\i{} contribution is tempered by a Gaussian concentration factor.
+
+\begin{proposition}[Gaussian tail, single-hidden-layer sigmoid]\label{prop:single-layer-gaussian}
+  Under the hypotheses of Corollary~\ref{cor:nn-condition-single-layer}, assume further that each pairwise decision boundary $V_{ij}$ is contained in a common ball $B(\overline x, R_V)$ around a fixed centre $\overline x \in \R^n$. Let $X$ be normally distributed around $\overline x$ with covariance $\sigma^2\mathrm{Id}$. Then for every $t > 0$,
+  \begin{equation}\label{eq:single-layer-gaussian-bound}
+    \Prob(\mC_{\overline x}(X) > t) \;\leq\; \binom{m}{2}\Bigl[\,B_{\mathrm{BKK}}(t) \;+\; \gamma_n(R_V/\sigma)\cdot B_{\mathrm{Pf}}(t)\,\Bigr],
+  \end{equation}
+  where
+  \begin{align*}
+    B_{\mathrm{BKK}}(t) &\;:=\; n\,C_n(L)\,w^n\cdot\frac{1}{t}\!\left(1+\frac{1}{t}\right)^{\!n-1},\\
+    B_{\mathrm{Pf}}(t) &\;:=\; C_{2,1,w,n}\!\left[\left(1+\frac{5}{t}\right)^{\!n} - \left(1+\frac{1}{t}\right)^{\!n}\right],
+  \end{align*}
+  $C_n(L) \leq 4\,n!\,(2L+2)^n$ is the constant from Theorem~\ref{thm:prob_bound_single_layer}, $C_{2,1,w,n}$ is the Pfaffian constant of Theorem~\ref{thm:prob_bound} applied to the format $(\alpha,\beta,s) = (2,1,w)$ of a single-hidden-layer sigmoid network, and
+  \begin{equation*}
+    \gamma_n(u) \;:=\; \frac{\omega_n}{(2\pi)^{n/2}}\int_0^u s^{n+1}\econst^{-s^2/2}\,\diff s.
+  \end{equation*}
+\end{proposition}
+
+\begin{proof}
+  Fix a pair $i < j$ and set $A_{ij} := \{x \in \R^n : \|x - \overline x\|\cdot\dist(x, V_{ij})^{-1} \geq t\}$. By the Fubini identity~\eqref{eq:gauss-to-uniform} of Lemma~\ref{lem:gauss-to-uniform},
+  \begin{equation*}
+    \Prob(X \in A_{ij}) \;=\; \frac{\omega_n}{(2\pi)^{n/2}} \int_0^\infty \Prob(U_{\sigma s} \in A_{ij})\,s^{n+1}\econst^{-s^2/2}\,\diff s,
+  \end{equation*}
+  with $U_{\sigma s}$ uniform on $B(\overline x, \sigma s)$. Split the integral at $s^* := R_V/\sigma$.
+
+  \emph{Region $s \geq s^*$.} The hypothesis gives $V_{ij} \subset B(\overline x, R_V) \subset B(\overline x, \sigma s)$. The event $U_{\sigma s} \in A_{ij}$ implies $\dist(U_{\sigma s}, V_{ij}) \leq \sigma s/t$, and Corollary~\ref{cor:single-layer-tight-prob-bound} applied to $V_{ij}$ with ball radius $\sigma s$ and $\varepsilon = \sigma s/t$ gives $\Prob(U_{\sigma s} \in A_{ij}) \leq B_{\mathrm{BKK}}(t)$, a bound independent of $s$ since $\varepsilon/(\sigma s) = 1/t$. Using $\frac{\omega_n}{(2\pi)^{n/2}}\int_0^\infty s^{n+1}\econst^{-s^2/2}\,\diff s = 1$,
+  \begin{equation*}
+    \frac{\omega_n}{(2\pi)^{n/2}}\int_{s^*}^\infty \Prob(U_{\sigma s} \in A_{ij})\,s^{n+1}\econst^{-s^2/2}\,\diff s \;\leq\; B_{\mathrm{BKK}}(t).
+  \end{equation*}
+
+  \emph{Region $s < s^*$.} Without the containment hypothesis we use the unconditional Pfaffian bound: each $g_{ij}$ is Pfaffian of format $(2,1,w)$ (Example~\ref{ex:activations}), so Corollary~\ref{cor:tight_prob_bound} applied to $V_{ij}$ with ball radius $\sigma s$ and $\varepsilon = \sigma s/t$ gives $\Prob(U_{\sigma s} \in A_{ij}) \leq B_{\mathrm{Pf}}(t)$, again independent of $s$. Integrating over $[0, s^*]$ contributes $\gamma_n(R_V/\sigma)\,B_{\mathrm{Pf}}(t)$.
+
+  Summing the two regions and applying a union bound over the $\binom{m}{2}$ pairs $i < j$ yields~\eqref{eq:single-layer-gaussian-bound}.
+\end{proof}
+
+\begin{remark}[Concentration regime]\label{rem:gaussian-concentration-regime}
+  The factor $\gamma_n(u)$ is a chi-type probability, concentrated near $u = \sqrt{n+2}$ (the mode of the density $s^{n+1}\econst^{-s^2/2}$). Dropping the exponential factor in the integrand yields the elementary upper bound
+  \begin{equation*}
+    \gamma_n(u) \;\leq\; \frac{u^{n+2}}{(n+2)\,2^{n/2}\,\Gamma(n/2+1)},
+  \end{equation*}
+  which is superexponentially small in $n$ whenever $u \ll \sqrt n$. Consequently the Khovanski\u\i{} contribution $\gamma_n(R_V/\sigma)\cdot B_{\mathrm{Pf}}(t)$ in~\eqref{eq:single-layer-gaussian-bound} is dominated by the BKK term as soon as the Gaussian scale $\sigma$ is comparable to or larger than the enclosing radius $R_V$ of the decision boundary: in that regime the Gaussian condition-number tail decays polynomially in the width $w$, matching the uniform case of Corollary~\ref{cor:nn-condition-single-layer} up to constants. In the complementary concentration regime $\sigma \ll R_V/\sqrt n$---tight Gaussian perturbation of $\overline x$---the Khovanski\u\i{} term dominates, and Theorem~\ref{thm:condition-gaussian} remains the sharpest unconditional bound available.
+\end{remark}
+
+\begin{example}[Sigmoid activation, multi-layer]\label{ex:sigmoid-condition}
 For the logistic sigmoid $\sigma(x) = (1+\econst^{-x})^{-1}$ with format $(2,1,1)$, we get $\alpha_F = 2\ell$, $\beta_F = 1$, $s_F = h$, and $\overline{\beta}_F = 2$, so
 \begin{equation*}
   \Prob(\mC_p(X) > t) \leq \binom{m}{2}\cdot 6\cdot 2^{\frac{h(h-1)}{2}}\big(n(4\ell+1)+2\big)^h\left(1+\frac{2\ell+3}{t}\right)^n,
@@ -140,11 +209,21 @@ provided $h\geq n$. The Gaussian variant (Theorem~\ref{thm:condition-gaussian}) 
 For large $t$, the Gaussian bound decays as $\binom{m}{2}\cdot 6\cdot 2^{h(h-1)/2}(n(4\ell+1)+2)^h \cdot n(2\ell+2)/t$.
 \end{example}
 
+\begin{example}[Sigmoid activation, single hidden layer]\label{ex:sigmoid-condition-single}
+For $\ell=1$ and $h=w$, with first-layer weights rational in general position and lattice constant $L$, Corollary~\ref{cor:nn-condition-single-layer} gives
+\begin{equation*}
+  \Prob(\mC_p(X)>t) \;\leq\; \binom{m}{2}\cdot 4\,n!\,(2L+2)^n\,w^n\left[\left(1+\frac{1}{t}\right)^n-1\right]
+\end{equation*}
+whenever $V_{ij}\subset B(p,\sigma)$ for all pairs $i<j$. For large $t$ this decays as $\binom{m}{2}\cdot 4\,n!\,(2L+2)^n\cdot n\,w^n/t$ by Remark~\ref{rem:single-layer-condition-tight}. The Khovanski\u\i{} prefactor $2^{w(w-1)/2}\cdot(n\cdot 5 + 2)^w$ of Example~\ref{ex:sigmoid-condition} is replaced by the polynomial $C_n(L)\cdot w^n$, making the bound quantitatively meaningful at practical widths.
+\end{example}
+
 \begin{remark}\label{rem:bound-interpretation}
-The dependence on the network architecture enters through two terms: the Khovanskii prefactor $2^{h(h-1)/2}(n(4\ell+1)+2)^h$, which grows rapidly with the number of hidden units~$h$, and the polynomial tail $(1+(2\ell+3)/t)^n$, which depends on the depth~$\ell$ and the input dimension~$n$. For practical networks, the Khovanskii prefactor renders the bound quantitatively vacuous; however, the bound is qualitatively meaningful in several ways:
+The dependence on the network architecture enters through two terms. In the general $\ell$-layer form (Example~\ref{ex:sigmoid-condition}), the Khovanski\u\i{} prefactor $2^{h(h-1)/2}(n(4\ell+1)+2)^h$ grows rapidly with the number of hidden units~$h$, and the polynomial tail $(1+(2\ell+3)/t)^n$ depends on the depth~$\ell$ and the input dimension~$n$. For practical networks the Khovanski\u\i{} prefactor renders the bound quantitatively vacuous. For single-hidden-layer sigmoid networks with rational weights in general position (Example~\ref{ex:sigmoid-condition-single}), the exponential prefactor is replaced by the polynomial $C_n(L)\,w^n$, at the cost of the additional hypothesis $V_{ij}\subset B(p,\sigma)$; the resulting bound is quantitatively usable at practical widths. Whether an analogous polynomial-in-widths bound holds for multi-hidden-layer networks is the content of Conjecture~\ref{conj:multi-layer-degree}.
+
+Beyond the quantitative improvement, the bounds are qualitatively meaningful in several ways:
 \begin{enumerate}
 \item The $O(1/t)$ tail decay is sharp in the sense that it matches the generic behaviour of condition number tails for smooth hypersurfaces;
-\item The bound captures an explicit depth-width tradeoff: deeper networks increase the polynomial base while wider networks increase the exponential prefactor;
+\item The bound captures an explicit depth-width tradeoff: in the general $\ell$-layer form, deeper networks increase the polynomial base while wider networks increase the exponential prefactor;
 \item For fixed architecture, the bound gives the correct scaling in $\varepsilon$ and~$n$.
 \end{enumerate}
 \end{remark}
